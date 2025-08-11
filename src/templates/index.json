@@ -12,48 +12,34 @@
     "hero": {
       "type": "hero",
       "blocks": {
-        "benefit_1": {
-          "type": "benefit",
+        "default_hero": {
+          "type": "hero_slide",
           "settings": {
-            "text": "Bright, smooth, and refreshingly citrus flavored"
-          }
-        },
-        "benefit_2": {
-          "type": "benefit",
-          "settings": {
-            "text": "Combat age-related muscle loss"
-          }
-        },
-        "benefit_3": {
-          "type": "benefit",
-          "settings": {
-            "text": "Preserve and build lean muscle"
-          }
-        },
-        "benefit_4": {
-          "type": "benefit",
-          "settings": {
-            "text": "Boost strength and recovery"
+            "is_default_hero": true,
+            "main_title": "NEW Ageless Muscle® Citrus Splash",
+            "subtitle": "Introducing",
+            "show_stars": true,
+            "check_text_1": "Bright, smooth, and refreshingly citrus flavored",
+            "check_text_2": "Combat age-related muscle loss",
+            "check_text_3": "Preserve and build lean muscle",
+            "check_text_4": "Boost strength and recovery",
+            "button_text": "SHOP NOW",
+            "button_url": "/collections/all",
+            "money_back_text": "60-DAY MONEY BACK GUARANTEE",
+            "main_image": "shopify://shop_images/hero-citrus-splash.jpg",
+            "background_color": "#0066cc",
+            "text_color": "#ffffff"
           }
         }
       },
-      "block_order": [
-        "benefit_1",
-        "benefit_2",
-        "benefit_3",
-        "benefit_4"
-      ],
+      "block_order": ["default_hero"],
       "settings": {
-        "show_rating": true,
-        "rating_text": "Introducing",
-        "title_line1": "NEW Ageless Muscle",
-        "title_line2": "®",
-        "subtitle": "Citrus Splash",
-        "cta_text": "SHOP NOW",
-        "cta_link": "/collections/all",
-        "guarantee_text": "60-DAY MONEY BACK GUARANTEE",
-        "featured_product": "",
-        "hero_image": "shopify://shop_images/hero-citrus-splash.jpg"
+        "desktop_margin_top": 0,
+        "desktop_margin_bottom": 48,
+        "mobile_margin_top": 0,
+        "mobile_margin_bottom": 24,
+        "show_pagination": false,
+        "show_arrows": false
       }
     },
     "featured_on": {

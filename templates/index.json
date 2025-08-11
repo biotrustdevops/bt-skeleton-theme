@@ -9,12 +9,209 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "text": "Bright, smooth, and refreshingly citrus flavored"
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "text": "Combat age-related muscle loss"
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "text": "Preserve and build lean muscle"
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "text": "Boost strength and recovery"
+          }
+        }
+      },
+      "block_order": ["benefit_1", "benefit_2", "benefit_3", "benefit_4"],
+      "settings": {
+        "show_rating": true,
+        "rating_text": "Introducing",
+        "title_line1": "NEW Ageless Muscle",
+        "title_line2": "®",
+        "subtitle": "Citrus Splash",
+        "cta_text": "SHOP NOW",
+        "cta_link": "/collections/all",
+        "guarantee_text": "60-DAY MONEY BACK GUARANTEE"
+      }
+    },
+    "featured_on": {
+      "type": "featured-on",
+      "blocks": {
+        "logo_1": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Forbes"
+          }
+        },
+        "logo_2": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Hello!"
+          }
+        },
+        "logo_3": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Bustle"
+          }
+        },
+        "logo_4": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Woman's World"
+          }
+        },
+        "logo_5": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "GQ"
+          }
+        },
+        "logo_6": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Us Weekly"
+          }
+        },
+        "logo_7": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Elite Daily"
+          }
+        },
+        "logo_8": {
+          "type": "logo",
+          "settings": {
+            "logo_alt": "Life Your Way"
+          }
+        }
+      },
+      "block_order": [
+        "logo_1",
+        "logo_2",
+        "logo_3",
+        "logo_4",
+        "logo_5",
+        "logo_6",
+        "logo_7",
+        "logo_8"
+      ],
+      "settings": {
+        "heading_text": "FEATURED ON",
+        "animation_speed": 30
+      }
+    },
+    "healthy_aging": {
+      "type": "healthy-aging",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "category_name": "COLLAGEN PROTEIN",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/collagen",
+            "border_color": "#5b9bd5",
+            "background_color": "#e6f2ff"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "category_name": "PROTEIN POWDER",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/protein",
+            "border_color": "#40e0d0",
+            "background_color": "#e6fffc"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "category_name": "GLP-1 SUPPORT",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/glp-1",
+            "border_color": "#40e0d0",
+            "background_color": "#e6fffc"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "category_name": "MUSCLE AND JOINT",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/muscle-joint",
+            "border_color": "#90ee90",
+            "background_color": "#f0fff0"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "category_name": "WEIGHT AND METABOLISM",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/weight-metabolism",
+            "border_color": "#dda0dd",
+            "background_color": "#fff0f5"
+          }
+        },
+        "category_6": {
+          "type": "category",
+          "settings": {
+            "category_name": "COGNITIVE HEALTH",
+            "button_text": "SHOP NOW",
+            "button_link": "/collections/cognitive",
+            "border_color": "#ffd700",
+            "background_color": "#fffacd"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5",
+        "category_6"
+      ],
+      "settings": {
+        "heading_text": "Shop by Healthy Aging Category"
+      }
+    },
+    "our_mission": {
+      "type": "our-mission",
+      "settings": {
+        "section_title": "OUR MISSION",
+        "main_heading": "Live Healthier, Age Better",
+        "description_text": "We believe healthy aging means adding life to your years, not just years to your life. We're on a mission to empower you to take control of your health, so you can live a more vibrant, active and joyful life at every age."
+      }
+    },
+    "product_slider": {
+      "type": "product-slider",
+      "settings": {
+        "heading_text": "Shop Healthy Aging Bestsellers"
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "featured_on",
+    "healthy_aging",
+    "our_mission",
+    "product_slider"
   ]
 }

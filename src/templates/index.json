@@ -16,6 +16,11 @@
           "type": "hero_slide",
           "settings": {
             "is_default_hero": true,
+            "start_date": "",
+            "end_date": "",
+            "show_timer": false,
+            "background_color": "#0066cc",
+            "text_color": "#ffffff",
             "main_title": "NEW Ageless Muscle® Citrus Splash",
             "subtitle": "Introducing",
             "show_stars": true,
@@ -26,13 +31,13 @@
             "button_text": "SHOP NOW",
             "button_url": "/collections/all",
             "money_back_text": "60-DAY MONEY BACK GUARANTEE",
-            "main_image": "shopify://shop_images/hero-citrus-splash.jpg",
-            "background_color": "#0066cc",
-            "text_color": "#ffffff"
+            "main_image": "shopify://shop_images/hero-citrus-splash.jpg"
           }
         }
       },
-      "block_order": ["default_hero"],
+      "block_order": [
+        "default_hero"
+      ],
       "settings": {
         "desktop_margin_top": 0,
         "desktop_margin_bottom": 48,
@@ -220,6 +225,65 @@
         "button_text": "Shop Now",
         "show_rating": true
       }
+    },
+    "solutions_by_science": {
+      "type": "solutions-by-science",
+      "blocks": {
+        "feature_KhYLRa": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/hp-powered_by_science-icon-microscope.png",
+            "icon_text": "<p>Efficacious, research-backed formulas</p>"
+          }
+        },
+        "feature_p9aVY6": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/hp-powered_by_science-icon-leaves.png",
+            "icon_text": "<p>Clean, High-quality ingredients</p>"
+          }
+        },
+        "feature_eCVjRd": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/hp-powered_by_science-icon-no_junk.png",
+            "icon_text": "<p>No artificial junk, GMOs, Hormones or Fillers</p>"
+          }
+        },
+        "feature_cAzrPw": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/hp-powered_by_science-icon-hand_over_heart.png",
+            "icon_text": "<p>made in  gmp-certified facilities</p>"
+          }
+        },
+        "feature_aWFptG": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/hp-powered_by_science-icon-checkmark_badge.png",
+            "icon_text": "<p>Third-party tested for purity and quality</p>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_KhYLRa",
+        "feature_p9aVY6",
+        "feature_eCVjRd",
+        "feature_cAzrPw",
+        "feature_aWFptG"
+      ],
+      "settings": {
+        "use_gradient": true,
+        "bg_color": "#0b4f9a",
+        "image": "shopify://shop_images/hp-powered_by_science-scientist_in_lab.webp",
+        "hide_images_mobile": true,
+        "heading": "Solutions Powered by Science.",
+        "subheading": "<p>Every product is thoroughly crafted using cutting-edge scientific advancements to support your healthy aging journey:</p>",
+        "desktop_margin_top": 64,
+        "desktop_margin_bottom": 64,
+        "mobile_margin_top": 40,
+        "mobile_margin_bottom": 40
+      }
     }
   },
   "order": [
@@ -227,6 +291,7 @@
     "featured_on",
     "healthy_aging",
     "our_mission",
-    "product_slider"
+    "product_slider",
+    "solutions_by_science"
   ]
 }

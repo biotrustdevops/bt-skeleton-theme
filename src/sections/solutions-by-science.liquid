@@ -1,0 +1,306 @@
+{% liquid
+  assign bg_gradient = section.settings.use_gradient
+  if bg_gradient
+    assign bg_style = 'background: linear-gradient(270deg, #0B4F9A 0%, #246FC2 97.52%);'
+  else
+    assign bg_style = 'background-color: ' | append: section.settings.bg_color | append: ';'
+  endif
+%}
+
+<section class="solutions-section overflow-hidden" 
+         id="{{ section.id }}"
+         style="{{ bg_style }}">
+  <div class="container mx-auto px-5 py-10 lg:py-16">
+    <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-15 max-w-7xl mx-auto">
+      
+      {% comment %} Left side - Image {% endcomment %}
+      {% if section.settings.image != blank or section.settings.tablet_image != blank or section.settings.mobile_image != blank %}
+        <div class="w-full lg:w-1/2 {% if section.settings.hide_images_mobile %}hidden sm:block{% endif %}">
+          <div class="relative h-[400px] lg:h-[600px] xl:h-[722px]">
+            {% comment %} Desktop image {% endcomment %}
+            {% if section.settings.image != blank %}
+              {{ section.settings.image | image_url: width: 1000 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg hidden lg:block',
+                widths: '400,600,800,1000',
+                sizes: '(min-width: 1024px) 50vw, 100vw'
+              }}
+            {% endif %}
+            
+            {% comment %} Tablet image {% endcomment %}
+            {% if section.settings.tablet_image != blank %}
+              {{ section.settings.tablet_image | image_url: width: 800 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg hidden sm:block lg:hidden',
+                widths: '400,600,800',
+                sizes: '100vw'
+              }}
+            {% elsif section.settings.image != blank %}
+              {{ section.settings.image | image_url: width: 800 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg hidden sm:block lg:hidden',
+                widths: '400,600,800',
+                sizes: '100vw'
+              }}
+            {% endif %}
+            
+            {% comment %} Mobile image {% endcomment %}
+            {% if section.settings.mobile_image != blank %}
+              {{ section.settings.mobile_image | image_url: width: 600 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg block sm:hidden',
+                widths: '300,400,600',
+                sizes: '100vw'
+              }}
+            {% elsif section.settings.tablet_image != blank %}
+              {{ section.settings.tablet_image | image_url: width: 600 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg block sm:hidden',
+                widths: '300,400,600',
+                sizes: '100vw'
+              }}
+            {% elsif section.settings.image != blank %}
+              {{ section.settings.image | image_url: width: 600 | image_tag:
+                loading: 'lazy',
+                class: 'absolute inset-0 w-full h-full object-cover rounded-lg block sm:hidden',
+                widths: '300,400,600',
+                sizes: '100vw'
+              }}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% comment %} Right side - Content {% endcomment %}
+      <div class="w-full lg:w-1/2 lg:max-w-[625px]">
+        {% if section.settings.heading != blank %}
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal text-white mb-5 text-center lg:text-left leading-tight"
+              style="font-family: 'League Gothic', sans-serif;">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        
+        {% if section.settings.subheading != blank %}
+          <div class="text-white text-lg lg:text-xl mb-5 text-center lg:text-left leading-relaxed opacity-95">
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+        
+        {% comment %} Icon blocks {% endcomment %}
+        {% if section.blocks.size > 0 %}
+          <div class="flex flex-col gap-6">
+            {% for block in section.blocks %}
+              {% if block.settings.icon != blank or block.settings.icon_text != blank %}
+                <div class="flex items-center gap-5" {{ block.shopify_attributes }}>
+                  {% if block.settings.icon != blank %}
+                    <div class="flex-shrink-0 w-12 sm:w-14 lg:w-16">
+                      {{ block.settings.icon | image_url: width: 120 | image_tag:
+                        loading: 'lazy',
+                        class: 'w-full h-auto',
+                        widths: '60,80,120',
+                        sizes: '60px'
+                      }}
+                    </div>
+                  {% endif %}
+                  
+                  {% if block.settings.icon_text != blank %}
+                    <div class="text-white text-base sm:text-lg lg:text-xl xl:text-2xl font-bold uppercase leading-relaxed">
+                      {{ block.settings.icon_text }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+  
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+  }
+
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ section.settings.desktop_margin_top }}px;
+      margin-bottom: {{ section.settings.desktop_margin_bottom }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Solutions by Science",
+  "tag": "section",
+  "class": "solutions-by-science",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient",
+      "label": "Use gradient background",
+      "default": true,
+      "info": "Blue gradient background when checked"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0B4F9A",
+      "info": "Used when gradient is disabled"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image",
+      "info": "Main image for desktop screens"
+    },
+    {
+      "type": "image_picker",
+      "id": "tablet_image",
+      "label": "Tablet Image",
+      "info": "Optional image for tablet screens"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Optional image for mobile screens"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_images_mobile",
+      "label": "Hide images on mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SOLUTIONS POWERED BY SCIENCE"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Our team of scientists and researchers work tirelessly to bring you cutting-edge formulations backed by clinical studies.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_top",
+      "label": "Desktop Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_bottom",
+      "label": "Desktop Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "label": "Mobile Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_bottom",
+      "label": "Mobile Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Recommended: 60x60px icon"
+        },
+        {
+          "type": "richtext",
+          "id": "icon_text",
+          "label": "Feature Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Solutions by Science",
+      "settings": {
+        "use_gradient": true,
+        "heading": "SOLUTIONS POWERED BY SCIENCE",
+        "subheading": "<p>Our team of scientists and researchers work tirelessly to bring you cutting-edge formulations backed by clinical studies and proven results.</p>"
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_text": "<p>Clinically Proven Ingredients</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_text": "<p>Third-Party Tested</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_text": "<p>Science-Backed Formulations</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_text": "<p>Research & Development Excellence</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

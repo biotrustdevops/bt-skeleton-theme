@@ -15,7 +15,6 @@
   "type": "commonjs",
   "devDependencies": {
     "autoprefixer": "^10.4.21",
-    "lighthouse": "^12.8.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17"
   },

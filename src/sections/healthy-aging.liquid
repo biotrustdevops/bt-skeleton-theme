@@ -13,55 +13,49 @@
         {% case block.type %}
           {% when 'category' %}
             <div class="flex flex-col items-center" {{ block.shopify_attributes }}>
-              <div class="relative w-full aspect-square mb-4">
-                {% comment %} Hexagon shape container {% endcomment %}
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <div class="relative w-full h-full">
-                    {% comment %} Hexagon border SVG {% endcomment %}
-                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M100 10 L170 50 L170 130 L100 170 L30 130 L30 50 Z" 
-                            fill="none" 
-                            stroke="{{ block.settings.border_color | default: '#5b9bd5' }}" 
-                            stroke-width="3"/>
-                      <path d="M100 10 L170 50 L170 130 L100 170 L30 130 L30 50 Z" 
-                            fill="{{ block.settings.background_color | default: '#f0f8ff' }}" 
-                            opacity="0.3"/>
-                    </svg>
-                    
-                    {% comment %} Category content {% endcomment %}
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
-                      {% if block.settings.category_name %}
-                        <div class="text-center mb-2">
-                          <h3 class="text-sm md:text-base lg:text-lg font-bold text-[#003d78] uppercase leading-tight">
-                            {{ block.settings.category_name }}
-                          </h3>
-                        </div>
-                      {% endif %}
-                      
-                      {% if block.settings.product_image %}
-                        <div class="w-3/4 h-auto">
-                          <img 
-                            src="{{ block.settings.product_image | image_url: width: 300 }}"
-                            srcset="{{ block.settings.product_image | image_url: width: 150 }} 150w,
-                                    {{ block.settings.product_image | image_url: width: 200 }} 200w,
-                                    {{ block.settings.product_image | image_url: width: 300 }} 300w"
-                            sizes="(max-width: 768px) 150px, 200px"
-                            alt="{{ block.settings.image_alt | default: block.settings.category_name }}"
-                            width="{{ block.settings.product_image.width }}"
-                            height="{{ block.settings.product_image.height }}"
-                            loading="lazy"
-                            class="w-full h-auto object-contain"
-                          >
-                        </div>
-                      {% endif %}
-                    </div>
-                  </div>
+              {% liquid
+                # Use default image from assets if no custom image is set
+                assign has_custom_image = false
+                if block.settings.product_image != blank
+                  assign has_custom_image = true
+                  assign product_image = block.settings.product_image
+                elsif block.settings.default_image != blank
+                  assign default_image_path = block.settings.default_image | append: '.png'
+                  assign product_image_url = default_image_path | asset_url
+                endif
+              %}
+              
+              {% if has_custom_image or product_image_url %}
+                <div class="w-full aspect-square mb-4">
+                  {% if has_custom_image %}
+                    <img 
+                      src="{{ product_image | image_url: width: 400 }}"
+                      srcset="{{ product_image | image_url: width: 200 }} 200w,
+                              {{ product_image | image_url: width: 300 }} 300w,
+                              {{ product_image | image_url: width: 400 }} 400w"
+                      sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 200px"
+                      alt="{{ block.settings.image_alt | default: block.settings.category_name }}"
+                      width="{{ product_image.width }}"
+                      height="{{ product_image.height }}"
+                      loading="lazy"
+                      class="w-full h-full object-contain"
+                    >
+                  {% elsif product_image_url %}
+                    <img 
+                      src="{{ product_image_url }}"
+                      alt="{{ block.settings.image_alt | default: block.settings.category_name }}"
+                      width="400"
+                      height="400"
+                      loading="lazy"
+                      class="w-full h-full object-contain"
+                    >
+                  {% endif %}
                 </div>
-              </div>
+              {% endif %}
               
               {% if block.settings.button_text and block.settings.button_link %}
                 <a href="{{ block.settings.button_link }}" 
-                   class="inline-block px-6 py-2 bg-gray-200 hover:bg-gray-300 text-[#005eb8] font-semibold text-sm uppercase rounded transition-colors duration-200">
+                   class="inline-block px-6 py-3 bg-gray-200 hover:bg-gray-300 text-[#005eb8] font-bold text-sm uppercase rounded transition-colors duration-200">
                   {{ block.settings.button_text }}
                 </a>
               {% endif %}
@@ -90,22 +84,38 @@
       "name": "Category",
       "settings": [
         {
-          "type": "text",
-          "id": "category_name",
-          "label": "Category Name",
-          "default": "CATEGORY NAME"
+          "type": "select",
+          "id": "default_image",
+          "label": "Default Image",
+          "default": "",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "health_aging_category-1-Collagen-Protein", "label": "Collagen Protein" },
+            { "value": "health_aging_category-2-Protein-Powder", "label": "Protein Powder" },
+            { "value": "health_aging_category-3-GLP-1-Support", "label": "GLP-1 Support" },
+            { "value": "health_aging_category-4-Muscle-and-Joint", "label": "Muscle and Joint" },
+            { "value": "health_aging_category-5-Weight-and-Metabolism", "label": "Weight and Metabolism" },
+            { "value": "health_aging_category-6-Cognititve-Health", "label": "Cognitive Health" }
+          ],
+          "info": "Select a default image from the theme assets (includes hexagon design and text)"
         },
         {
           "type": "image_picker",
           "id": "product_image",
-          "label": "Product Image",
-          "info": "Recommended: Product image with transparent background"
+          "label": "Custom Image",
+          "info": "Upload a custom image with hexagon design (overrides default selection)"
         },
         {
           "type": "text",
           "id": "image_alt",
           "label": "Image Alt Text",
           "info": "Describes the image for accessibility"
+        },
+        {
+          "type": "text",
+          "id": "category_name",
+          "label": "Category Name (for alt text)",
+          "info": "Used for alt text if not specified"
         },
         {
           "type": "text",
@@ -117,18 +127,6 @@
           "type": "url",
           "id": "button_link",
           "label": "Button Link"
-        },
-        {
-          "type": "color",
-          "id": "border_color",
-          "label": "Hexagon Border Color",
-          "default": "#5b9bd5"
-        },
-        {
-          "type": "color",
-          "id": "background_color",
-          "label": "Hexagon Background Color",
-          "default": "#f0f8ff"
         }
       ]
     }
@@ -140,55 +138,49 @@
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-1-Collagen-Protein",
             "category_name": "COLLAGEN PROTEIN",
-            "button_text": "SHOP NOW",
-            "border_color": "#5b9bd5",
-            "background_color": "#e6f2ff"
+            "button_text": "SHOP NOW"
           }
         },
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-2-Protein-Powder",
             "category_name": "PROTEIN POWDER",
-            "button_text": "SHOP NOW",
-            "border_color": "#40e0d0",
-            "background_color": "#e6fffc"
+            "button_text": "SHOP NOW"
           }
         },
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-3-GLP-1-Support",
             "category_name": "GLP-1 SUPPORT",
-            "button_text": "SHOP NOW",
-            "border_color": "#40e0d0",
-            "background_color": "#e6fffc"
+            "button_text": "SHOP NOW"
           }
         },
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-4-Muscle-and-Joint",
             "category_name": "MUSCLE AND JOINT",
-            "button_text": "SHOP NOW",
-            "border_color": "#90ee90",
-            "background_color": "#f0fff0"
+            "button_text": "SHOP NOW"
           }
         },
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-5-Weight-and-Metabolism",
             "category_name": "WEIGHT AND METABOLISM",
-            "button_text": "SHOP NOW",
-            "border_color": "#dda0dd",
-            "background_color": "#fff0f5"
+            "button_text": "SHOP NOW"
           }
         },
         {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-6-Cognititve-Health",
             "category_name": "COGNITIVE HEALTH",
-            "button_text": "SHOP NOW",
-            "border_color": "#ffd700",
-            "background_color": "#fffacd"
+            "button_text": "SHOP NOW"
           }
         }
       ]

@@ -130,61 +130,55 @@
         "category_1": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-1-Collagen-Protein",
             "category_name": "COLLAGEN PROTEIN",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/collagen",
-            "border_color": "#5b9bd5",
-            "background_color": "#e6f2ff"
+            "button_link": "/collections/collagen"
           }
         },
         "category_2": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-2-Protein-Powder",
             "category_name": "PROTEIN POWDER",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/protein",
-            "border_color": "#40e0d0",
-            "background_color": "#e6fffc"
+            "button_link": "/collections/protein"
           }
         },
         "category_3": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-3-GLP-1-Support",
             "category_name": "GLP-1 SUPPORT",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/glp-1",
-            "border_color": "#40e0d0",
-            "background_color": "#e6fffc"
+            "button_link": "/collections/glp-1"
           }
         },
         "category_4": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-4-Muscle-and-Joint",
             "category_name": "MUSCLE AND JOINT",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/muscle-joint",
-            "border_color": "#90ee90",
-            "background_color": "#f0fff0"
+            "button_link": "/collections/muscle-joint"
           }
         },
         "category_5": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-5-Weight-and-Metabolism",
             "category_name": "WEIGHT AND METABOLISM",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/weight-metabolism",
-            "border_color": "#dda0dd",
-            "background_color": "#fff0f5"
+            "button_link": "/collections/weight-metabolism"
           }
         },
         "category_6": {
           "type": "category",
           "settings": {
+            "default_image": "health_aging_category-6-Cognititve-Health",
             "category_name": "COGNITIVE HEALTH",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/cognitive",
-            "border_color": "#ffd700",
-            "background_color": "#fffacd"
+            "button_link": "/collections/cognitive"
           }
         }
       },

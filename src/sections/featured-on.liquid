@@ -16,16 +16,37 @@
             {% case block.type %}
               {% when 'logo' %}
                 <div class="inline-flex items-center justify-center flex-shrink-0" {{ block.shopify_attributes }}>
-                  {% if block.settings.logo_image %}
+                  {% liquid
+                    # Use default image from assets if no custom image is set
+                    assign has_custom_image = false
+                    if block.settings.logo_image != blank
+                      assign has_custom_image = true
+                      assign logo_image = block.settings.logo_image
+                    elsif block.settings.default_logo != blank
+                      assign default_image_path = block.settings.default_logo | append: '.png'
+                      assign logo_image_url = default_image_path | asset_url
+                    endif
+                  %}
+                  
+                  {% if has_custom_image %}
                     <img 
-                      src="{{ block.settings.logo_image | image_url: width: 300 }}"
-                      srcset="{{ block.settings.logo_image | image_url: width: 150 }} 150w,
-                              {{ block.settings.logo_image | image_url: width: 200 }} 200w,
-                              {{ block.settings.logo_image | image_url: width: 300 }} 300w"
+                      src="{{ logo_image | image_url: width: 300 }}"
+                      srcset="{{ logo_image | image_url: width: 150 }} 150w,
+                              {{ logo_image | image_url: width: 200 }} 200w,
+                              {{ logo_image | image_url: width: 300 }} 300w"
                       sizes="(max-width: 768px) 150px, 200px"
                       alt="{{ block.settings.logo_alt | default: shop.name }}"
-                      width="{{ block.settings.logo_image.width }}"
-                      height="{{ block.settings.logo_image.height }}"
+                      width="{{ logo_image.width }}"
+                      height="{{ logo_image.height }}"
+                      loading="lazy"
+                      class="h-10 md:h-12 w-auto object-contain"
+                    >
+                  {% elsif logo_image_url %}
+                    <img 
+                      src="{{ logo_image_url }}"
+                      alt="{{ block.settings.logo_alt | default: shop.name }}"
+                      width="200"
+                      height="60"
                       loading="lazy"
                       class="h-10 md:h-12 w-auto object-contain"
                     >
@@ -45,12 +66,33 @@
             {% case block.type %}
               {% when 'logo' %}
                 <div class="inline-flex items-center justify-center flex-shrink-0">
-                  {% if block.settings.logo_image %}
+                  {% liquid
+                    # Use default image from assets if no custom image is set
+                    assign has_custom_image = false
+                    if block.settings.logo_image != blank
+                      assign has_custom_image = true
+                      assign logo_image = block.settings.logo_image
+                    elsif block.settings.default_logo != blank
+                      assign default_image_path = block.settings.default_logo | append: '.png'
+                      assign logo_image_url = default_image_path | asset_url
+                    endif
+                  %}
+                  
+                  {% if has_custom_image %}
                     <img 
-                      src="{{ block.settings.logo_image | image_url: width: 300 }}"
+                      src="{{ logo_image | image_url: width: 300 }}"
                       alt=""
-                      width="{{ block.settings.logo_image.width }}"
-                      height="{{ block.settings.logo_image.height }}"
+                      width="{{ logo_image.width }}"
+                      height="{{ logo_image.height }}"
+                      loading="lazy"
+                      class="h-10 w-auto object-contain"
+                    >
+                  {% elsif logo_image_url %}
+                    <img 
+                      src="{{ logo_image_url }}"
+                      alt=""
+                      width="200"
+                      height="60"
                       loading="lazy"
                       class="h-10 w-auto object-contain"
                     >
@@ -96,10 +138,28 @@
       "name": "Logo",
       "settings": [
         {
+          "type": "select",
+          "id": "default_logo",
+          "label": "Default Logo",
+          "default": "",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "featured_on-1-Forbes", "label": "Forbes" },
+            { "value": "featured_on-2-Hello", "label": "Hello" },
+            { "value": "featured_on-3-Bustle", "label": "Bustle" },
+            { "value": "featured_on-4-Womans_World", "label": "Woman's World" },
+            { "value": "featured_on-5-GQ", "label": "GQ" },
+            { "value": "featured_on-6-US_Weekly", "label": "US Weekly" },
+            { "value": "featured_on-7-Elite_Daily", "label": "Elite Daily" },
+            { "value": "featured_on-8-New_York_Post", "label": "New York Post" }
+          ],
+          "info": "Select a default logo from the theme assets"
+        },
+        {
           "type": "image_picker",
           "id": "logo_image",
-          "label": "Logo Image",
-          "info": "Recommended: PNG with transparent background, 200px width"
+          "label": "Custom Logo Image",
+          "info": "Upload a custom logo (overrides default selection)"
         },
         {
           "type": "html",
@@ -121,22 +181,46 @@
       "name": "Featured On",
       "blocks": [
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-1-Forbes",
+            "logo_alt": "Forbes"
+          }
         },
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-2-Hello",
+            "logo_alt": "Hello"
+          }
         },
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-3-Bustle",
+            "logo_alt": "Bustle"
+          }
         },
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-4-Womans_World",
+            "logo_alt": "Woman's World"
+          }
         },
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-5-GQ",
+            "logo_alt": "GQ"
+          }
         },
         {
-          "type": "logo"
+          "type": "logo",
+          "settings": {
+            "default_logo": "featured_on-6-US_Weekly",
+            "logo_alt": "US Weekly"
+          }
         }
       ]
     }

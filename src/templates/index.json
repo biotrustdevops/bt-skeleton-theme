@@ -55,49 +55,57 @@
         "logo_1": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-1-Forbes",
             "logo_alt": "Forbes"
           }
         },
         "logo_2": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-2-Hello",
             "logo_alt": "Hello!"
           }
         },
         "logo_3": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-3-Bustle",
             "logo_alt": "Bustle"
           }
         },
         "logo_4": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-4-Womans_World",
             "logo_alt": "Woman's World"
           }
         },
         "logo_5": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-5-GQ",
             "logo_alt": "GQ"
           }
         },
         "logo_6": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-6-US_Weekly",
             "logo_alt": "Us Weekly"
           }
         },
         "logo_7": {
           "type": "logo",
           "settings": {
+            "default_logo": "featured_on-7-Elite_Daily",
             "logo_alt": "Elite Daily"
           }
         },
         "logo_8": {
           "type": "logo",
           "settings": {
-            "logo_alt": "Life Your Way"
+            "default_logo": "featured_on-8-New_York_Post",
+            "logo_alt": "New York Post"
           }
         }
       },

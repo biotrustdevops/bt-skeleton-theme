@@ -20,14 +20,13 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "menu": "",
-        "show_payment_icons": true,
         "contact_phone": "(800) 766-5086",
         "contact_hours": "MON - FRI 9AM - 6PM ET",
         "social_facebook": "",
         "social_instagram": "",
         "social_youtube": "",
-        "social_pinterest": ""
+        "social_pinterest": "",
+        "show_payment_icons": true
       }
     }
   },

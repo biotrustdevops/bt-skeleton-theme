@@ -1,0 +1,145 @@
+{% liquid
+  assign heading_text = section.settings.heading_text | default: 'FEATURED ON'
+  assign animation_speed = section.settings.animation_speed | default: 30
+%}
+
+<section class="py-8 md:py-12 overflow-hidden bg-white" data-section-id="{{ section.id }}">
+  <div class="container mx-auto px-4">
+    {% if heading_text != blank %}
+      <h2 class="text-sm md:text-base font-semibold text-[#003d78] mb-6 md:mb-8">{{ heading_text }}</h2>
+    {% endif %}
+    
+    <div class="md:flex md:items-center md:justify-between md:gap-8">
+      <div class="flex relative md:contents">
+        <div class="flex gap-12 md:contents animate-marquee md:animate-none" style="--tw-animate-duration: {{ animation_speed }}s;">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'logo' %}
+                <div class="inline-flex items-center justify-center flex-shrink-0" {{ block.shopify_attributes }}>
+                  {% if block.settings.logo_image %}
+                    <img 
+                      src="{{ block.settings.logo_image | image_url: width: 300 }}"
+                      srcset="{{ block.settings.logo_image | image_url: width: 150 }} 150w,
+                              {{ block.settings.logo_image | image_url: width: 200 }} 200w,
+                              {{ block.settings.logo_image | image_url: width: 300 }} 300w"
+                      sizes="(max-width: 768px) 150px, 200px"
+                      alt="{{ block.settings.logo_alt | default: shop.name }}"
+                      width="{{ block.settings.logo_image.width }}"
+                      height="{{ block.settings.logo_image.height }}"
+                      loading="lazy"
+                      class="h-10 md:h-12 w-auto object-contain"
+                    >
+                  {% elsif block.settings.logo_svg %}
+                    <div class="h-10 md:h-12 [&_svg]:h-full [&_svg]:w-auto [&_svg]:max-w-[150px] md:[&_svg]:max-w-[200px]">
+                      {{ block.settings.logo_svg }}
+                    </div>
+                  {% endif %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+        
+        {% comment %} Duplicate set for seamless loop on mobile {% endcomment %}
+        <div class="flex gap-12 absolute left-full md:hidden animate-marquee-duplicate" style="--tw-animate-duration: {{ animation_speed }}s;" aria-hidden="true">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'logo' %}
+                <div class="inline-flex items-center justify-center flex-shrink-0">
+                  {% if block.settings.logo_image %}
+                    <img 
+                      src="{{ block.settings.logo_image | image_url: width: 300 }}"
+                      alt=""
+                      width="{{ block.settings.logo_image.width }}"
+                      height="{{ block.settings.logo_image.height }}"
+                      loading="lazy"
+                      class="h-10 w-auto object-contain"
+                    >
+                  {% elsif block.settings.logo_svg %}
+                    <div class="h-10 [&_svg]:h-full [&_svg]:w-auto [&_svg]:max-w-[150px]">
+                      {{ block.settings.logo_svg }}
+                    </div>
+                  {% endif %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured On",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "FEATURED ON"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation Speed (seconds)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "info": "Controls the marquee scroll speed on mobile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image",
+          "info": "Recommended: PNG with transparent background, 200px width"
+        },
+        {
+          "type": "html",
+          "id": "logo_svg",
+          "label": "Logo SVG Code",
+          "info": "Alternative to image. Paste SVG code directly."
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Alt Text",
+          "info": "Describes the logo for accessibility"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured On",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

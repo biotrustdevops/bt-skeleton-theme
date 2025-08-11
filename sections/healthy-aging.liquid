@@ -1,0 +1,198 @@
+{% liquid
+  assign heading_text = section.settings.heading_text | default: 'Shop by Healthy Aging Category'
+%}
+
+<section class="py-12 md:py-16 bg-gray-50" data-section-id="{{ section.id }}">
+  <div class="container mx-auto px-4">
+    {% if heading_text != blank %}
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#005eb8] text-center mb-10 md:mb-14">{{ heading_text }}</h2>
+    {% endif %}
+    
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'category' %}
+            <div class="flex flex-col items-center" {{ block.shopify_attributes }}>
+              <div class="relative w-full aspect-square mb-4">
+                {% comment %} Hexagon shape container {% endcomment %}
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="relative w-full h-full">
+                    {% comment %} Hexagon border SVG {% endcomment %}
+                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M100 10 L170 50 L170 130 L100 170 L30 130 L30 50 Z" 
+                            fill="none" 
+                            stroke="{{ block.settings.border_color | default: '#5b9bd5' }}" 
+                            stroke-width="3"/>
+                      <path d="M100 10 L170 50 L170 130 L100 170 L30 130 L30 50 Z" 
+                            fill="{{ block.settings.background_color | default: '#f0f8ff' }}" 
+                            opacity="0.3"/>
+                    </svg>
+                    
+                    {% comment %} Category content {% endcomment %}
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                      {% if block.settings.category_name %}
+                        <div class="text-center mb-2">
+                          <h3 class="text-sm md:text-base lg:text-lg font-bold text-[#003d78] uppercase leading-tight">
+                            {{ block.settings.category_name }}
+                          </h3>
+                        </div>
+                      {% endif %}
+                      
+                      {% if block.settings.product_image %}
+                        <div class="w-3/4 h-auto">
+                          <img 
+                            src="{{ block.settings.product_image | image_url: width: 300 }}"
+                            srcset="{{ block.settings.product_image | image_url: width: 150 }} 150w,
+                                    {{ block.settings.product_image | image_url: width: 200 }} 200w,
+                                    {{ block.settings.product_image | image_url: width: 300 }} 300w"
+                            sizes="(max-width: 768px) 150px, 200px"
+                            alt="{{ block.settings.image_alt | default: block.settings.category_name }}"
+                            width="{{ block.settings.product_image.width }}"
+                            height="{{ block.settings.product_image.height }}"
+                            loading="lazy"
+                            class="w-full h-auto object-contain"
+                          >
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {% if block.settings.button_text and block.settings.button_link %}
+                <a href="{{ block.settings.button_link }}" 
+                   class="inline-block px-6 py-2 bg-gray-200 hover:bg-gray-300 text-[#005eb8] font-semibold text-sm uppercase rounded transition-colors duration-200">
+                  {{ block.settings.button_text }}
+                </a>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Healthy Aging Categories",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Shop by Healthy Aging Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_name",
+          "label": "Category Name",
+          "default": "CATEGORY NAME"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image",
+          "info": "Recommended: Product image with transparent background"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Text",
+          "info": "Describes the image for accessibility"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "SHOP NOW"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Hexagon Border Color",
+          "default": "#5b9bd5"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Hexagon Background Color",
+          "default": "#f0f8ff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Healthy Aging Categories",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "COLLAGEN PROTEIN",
+            "button_text": "SHOP NOW",
+            "border_color": "#5b9bd5",
+            "background_color": "#e6f2ff"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "PROTEIN POWDER",
+            "button_text": "SHOP NOW",
+            "border_color": "#40e0d0",
+            "background_color": "#e6fffc"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "GLP-1 SUPPORT",
+            "button_text": "SHOP NOW",
+            "border_color": "#40e0d0",
+            "background_color": "#e6fffc"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "MUSCLE AND JOINT",
+            "button_text": "SHOP NOW",
+            "border_color": "#90ee90",
+            "background_color": "#f0fff0"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "WEIGHT AND METABOLISM",
+            "button_text": "SHOP NOW",
+            "border_color": "#dda0dd",
+            "background_color": "#fff0f5"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "COGNITIVE HEALTH",
+            "button_text": "SHOP NOW",
+            "border_color": "#ffd700",
+            "background_color": "#fffacd"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

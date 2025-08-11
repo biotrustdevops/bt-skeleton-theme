@@ -1,0 +1,186 @@
+{% liquid
+  assign heading_text = section.settings.heading_text | default: 'Shop Healthy Aging Bestsellers'
+  assign selected_collection = section.settings.collection
+  if selected_collection == blank
+    assign selected_collection = collections.all
+  endif
+  assign product_limit = section.settings.product_limit | default: 20
+  assign button_text = section.settings.button_text | default: 'Shop Now'
+  assign show_rating = section.settings.show_rating
+%}
+
+<section class="py-12 md:py-16 lg:py-20 bg-white" data-section-id="{{ section.id }}">
+  <div class="container mx-auto px-4">
+    {% if heading_text != blank %}
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#003d78] text-center mb-10 md:mb-14">{{ heading_text }}</h2>
+    {% endif %}
+    
+    {% comment %} Swiper Container {% endcomment %}
+    <div class="relative">
+      <div class="swiper product-slider-{{ section.id }}">
+        <div class="swiper-wrapper">
+        {% for product in selected_collection.products limit: product_limit %}
+            <div class="swiper-slide">
+              <div class="bg-gray-50 rounded-lg p-6 h-full flex flex-col">
+                {% comment %} Product Image {% endcomment %}
+                {% if product.featured_image %}
+                  <div class="mb-4 flex justify-center">
+                    <img 
+                      src="{{ product.featured_image | image_url: width: 400 }}"
+                      srcset="{{ product.featured_image | image_url: width: 200 }} 200w,
+                              {{ product.featured_image | image_url: width: 300 }} 300w,
+                              {{ product.featured_image | image_url: width: 400 }} 400w"
+                      sizes="(max-width: 768px) 300px, 250px"
+                      alt="{{ product.title | escape }}"
+                      width="{{ product.featured_image.width }}"
+                      height="{{ product.featured_image.height }}"
+                      loading="lazy"
+                      class="w-auto h-48 md:h-56 object-contain"
+                    >
+                  </div>
+                {% endif %}
+                
+                {% comment %} Product Title {% endcomment %}
+                <h3 class="text-[#005eb8] font-bold text-base md:text-lg text-center mb-2 uppercase">
+                  {{ product.title | truncate: 50 }}
+                </h3>
+                
+                {% comment %} Product Price {% endcomment %}
+                <div class="text-center mb-2">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="text-gray-400 line-through text-sm">{{ product.compare_at_price | money }}</span>
+                    <span class="text-[#005eb8] font-bold text-lg ml-2">{{ product.price | money }}</span>
+                  {% else %}
+                    <span class="text-[#005eb8] font-bold text-lg">{{ product.price | money }}</span>
+                  {% endif %}
+                </div>
+                
+                {% comment %} Product Description {% endcomment %}
+                {% if product.description != blank %}
+                  <p class="text-gray-600 text-xs md:text-sm text-center mb-4 flex-grow">
+                    {{ product.description | strip_html | truncate: 100 }}
+                  </p>
+                {% endif %}
+                
+                {% comment %} Star Rating (placeholder for now) {% endcomment %}
+                {% if show_rating %}
+                  <div class="flex items-center justify-center mb-4">
+                    <div class="flex items-center gap-1">
+                      {% for i in (1..5) %}
+                        <svg class="w-4 h-4 text-green-500 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                        </svg>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endif %}
+                
+                {% comment %} Shop Now Button {% endcomment %}
+                <div class="mt-auto">
+                  <a href="{{ product.url }}" 
+                     class="block w-full text-center py-3 bg-gray-200 hover:bg-gray-300 text-[#005eb8] font-bold text-sm uppercase rounded transition-colors duration-200">
+                    {{ button_text }}
+                  </a>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+        </div>
+        
+        {% comment %} Pagination {% endcomment %}
+        <div class="swiper-pagination !bottom-[-30px]"></div>
+      </div>
+      
+      {% comment %} Navigation buttons positioned outside {% endcomment %}
+      <button class="swiper-button-prev-{{ section.id }} absolute left-0 lg:-left-12 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-[#005eb8] hover:bg-gray-50 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button class="swiper-button-next-{{ section.id }} absolute right-0 lg:-right-12 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-[#005eb8] hover:bg-gray-50 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% comment %} Swiper CSS {% endcomment %}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+
+{% comment %} Swiper JS {% endcomment %}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiper{{ section.id | handleize | replace: '-', '_' }} = new Swiper('.product-slider-{{ section.id }}', {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: '.swiper-button-next-{{ section.id }}',
+        prevEl: '.swiper-button-prev-{{ section.id }}',
+      },
+      pagination: {
+        el: '.product-slider-{{ section.id }} .swiper-pagination',
+        clickable: true,
+      },
+      breakpoints: {
+        1024: {
+          slidesPerView: 5,
+          slidesPerGroup: 5,
+          spaceBetween: 30,
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Slider",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Shop Healthy Aging Bestsellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection to display products from"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Maximum products to show",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Rating Stars",
+      "default": true,
+      "info": "Shows placeholder 5-star rating for all products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Slider"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,352 @@
+{% liquid
+  assign newsletter_id = 'newsletter-' | append: section.id
+%}
+
+<section class="newsletter-section" id="{{ section.id }}">
+  <div class="newsletter__container">
+    <div class="newsletter__content">
+      <h2 class="newsletter__heading">{{ 'newsletter.heading' | t }}</h2>
+      
+      <div class="newsletter__offer">
+        <div class="newsletter__book-image">
+          <div class="newsletter__book-badge">{{ 'newsletter.free_badge' | t }}</div>
+          <div class="newsletter__book-cover">
+            <div class="newsletter__book-title">
+              <span class="newsletter__book-number">7</span>
+              <span class="newsletter__book-text">{{ 'newsletter.book_title_best' | t }}</span>
+              <span class="newsletter__book-subtitle">{{ 'newsletter.book_title_snacks' | t }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="newsletter__form-wrapper">
+          <p class="newsletter__description">
+            {{ 'newsletter.description_part1' | t }}
+            <em>{{ 'newsletter.book_full_title' | t }}</em>
+            {{ 'newsletter.description_part2' | t }}
+          </p>
+          
+          {% form 'customer', id: newsletter_id, class: 'newsletter__form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="newsletter__input-group">
+              <input
+                type="email"
+                name="contact[email]"
+                class="newsletter__input"
+                placeholder="{{ 'newsletter.email_placeholder' | t }}"
+                aria-label="{{ 'newsletter.email_label' | t }}"
+                required
+              >
+              <button type="submit" class="newsletter__submit">
+                {{ 'newsletter.submit_button' | t }}
+              </button>
+            </div>
+            
+            {% if form.errors %}
+              <div class="newsletter__errors">
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+            
+            {% if form.posted_successfully? %}
+              <div class="newsletter__success">
+                {{ 'newsletter.success_message' | t }}
+              </div>
+            {% endif %}
+          {% endform %}
+          
+          <p class="newsletter__consent">
+            {{ 'newsletter.consent_text' | t }}
+            <a href="{{ routes.root_url }}pages/privacy-policy" class="newsletter__privacy-link">{{ 'newsletter.privacy_policy' | t }}</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .newsletter-section {
+    background: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
+    padding: 3rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .newsletter-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #00cc66;
+  }
+
+  .newsletter__container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .newsletter__content {
+    text-align: center;
+  }
+
+  .newsletter__heading {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .newsletter__offer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .newsletter__book-image {
+    position: relative;
+    width: 200px;
+    height: 260px;
+    flex-shrink: 0;
+  }
+
+  .newsletter__book-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #0066cc;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+
+  .newsletter__book-cover {
+    background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .newsletter__book-cover::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  }
+
+  .newsletter__book-title {
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .newsletter__book-number {
+    display: block;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .newsletter__book-text {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+  }
+
+  .newsletter__book-subtitle {
+    display: block;
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  .newsletter__form-wrapper {
+    flex: 1;
+    max-width: 500px;
+    text-align: left;
+  }
+
+  .newsletter__description {
+    color: white;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletter__description em {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .newsletter__form {
+    margin-bottom: 1rem;
+  }
+
+  .newsletter__input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter__input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+  }
+
+  .newsletter__input:focus {
+    outline: 2px solid #00cc66;
+    outline-offset: 2px;
+  }
+
+  .newsletter__input::placeholder {
+    color: #999;
+  }
+
+  .newsletter__submit {
+    padding: 1rem 2rem;
+    background: #00cc66;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .newsletter__submit:hover {
+    background: #00aa55;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .newsletter__consent {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .newsletter__privacy-link {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .newsletter__privacy-link:hover {
+    color: #00cc66;
+  }
+
+  .newsletter__errors {
+    background: #ff4444;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .newsletter__success {
+    background: #00cc66;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .newsletter__heading {
+      font-size: 2rem;
+    }
+
+    .newsletter__offer {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .newsletter__form-wrapper {
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .newsletter__input-group {
+      flex-direction: column;
+    }
+
+    .newsletter__submit {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .newsletter__heading {
+      font-size: 1.5rem;
+    }
+
+    .newsletter__book-image {
+      width: 160px;
+      height: 200px;
+    }
+
+    .newsletter__book-number {
+      font-size: 3rem;
+    }
+
+    .newsletter__book-text {
+      font-size: 1rem;
+    }
+
+    .newsletter__description {
+      font-size: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FREE eBook + 20% OFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

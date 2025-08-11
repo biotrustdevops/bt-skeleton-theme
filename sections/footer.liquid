@@ -1,39 +1,318 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+{% liquid
+  assign contact_phone = section.settings.contact_phone | default: '(800) 766-5086'
+  assign contact_hours = section.settings.contact_hours | default: 'MON - FRI 9AM - 6PM ET'
+%}
+
+<footer class="footer">
+  {% # Contact banner %}
+  <div class="footer__contact-banner">
+    <div class="footer__container">
+      {{ 'footer.contact_us' | t }}: {{ contact_phone }} {{ contact_hours }}
+    </div>
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+  {% # Main footer content %}
+  <div class="footer__main">
+    <div class="footer__container">
+      <div class="footer__grid">
+        {% # Customer Support column %}
+        <div class="footer__column">
+          <h3 class="footer__heading">{{ 'footer.customer_support' | t }}</h3>
+          <ul class="footer__list">
+            <li><a href="{{ routes.root_url }}pages/purchase-history">{{ 'footer.purchase_history' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/manage-subscriptions">{{ 'footer.manage_subscriptions' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/subscribe-save-faq">{{ 'footer.subscribe_save_faq' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/track-my-order">{{ 'footer.track_my_order' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/shipping-policies">{{ 'footer.shipping_policies' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/return-policy">{{ 'footer.return_policy' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/forgot-password">{{ 'footer.forgot_password' | t }}</a></li>
+            <li><a href="{{ routes.account_register_url }}">{{ 'footer.create_account' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/customer-support">{{ 'footer.customer_support_page' | t }}</a></li>
+          </ul>
+        </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+        {% # Shop Now column %}
+        <div class="footer__column">
+          <h3 class="footer__heading">{{ 'footer.shop_now' | t }}</h3>
+          <ul class="footer__list">
+            <li><a href="{{ routes.all_products_collection_url }}">{{ 'footer.all_products' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/proteins">{{ 'footer.proteins' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/collagen-protein">{{ 'footer.collagen_protein' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/immune-support">{{ 'footer.immune_support' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/digestive-health">{{ 'footer.digestive_health' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/healthy-living">{{ 'footer.healthy_living' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/anti-aging">{{ 'footer.anti_aging' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}collections/gear-equipment">{{ 'footer.gear_equipment' | t }}</a></li>
+          </ul>
+        </div>
+
+        {% # Company column %}
+        <div class="footer__column">
+          <h3 class="footer__heading">{{ 'footer.company' | t }}</h3>
+          <ul class="footer__list">
+            <li><a href="{{ routes.root_url }}pages/our-coaches">{{ 'footer.our_coaches' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/quality">{{ 'footer.quality' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}blogs/biotrust-blog">{{ 'footer.biotrust_blog' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/reviews">{{ 'footer.reviews' | t }}</a></li>
+          </ul>
+        </div>
+
+        {% # Get In Touch column %}
+        <div class="footer__column">
+          <h3 class="footer__heading">{{ 'footer.get_in_touch' | t }}</h3>
+          <ul class="footer__list">
+            <li><a href="{{ routes.root_url }}pages/contact">{{ 'footer.contact_us' | t }}</a></li>
+            <li><a href="{{ routes.root_url }}pages/affiliates">{{ 'footer.affiliates' | t }}</a></li>
+          </ul>
+          <div class="footer__social">
+            {% if section.settings.social_facebook != blank %}
+              <a href="{{ section.settings.social_facebook }}" class="footer__social-link" aria-label="Facebook">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+            {% endif %}
+            {% if section.settings.social_instagram != blank %}
+              <a href="{{ section.settings.social_instagram }}" class="footer__social-link" aria-label="Instagram">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
+                </svg>
+              </a>
+            {% endif %}
+            {% if section.settings.social_youtube != blank %}
+              <a href="{{ section.settings.social_youtube }}" class="footer__social-link" aria-label="YouTube">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+              </a>
+            {% endif %}
+            {% if section.settings.social_pinterest != blank %}
+              <a href="{{ section.settings.social_pinterest }}" class="footer__social-link" aria-label="Pinterest">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.627 0-12 5.372-12 12 0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% # Payment icons %}
+      {% if section.settings.show_payment_icons %}
+        <div class="footer__payment">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% # Legal disclaimers %}
+      <div class="footer__disclaimer">
+        <p>{{ 'footer.disclaimer_line1' | t }}</p>
+        <p>{{ 'footer.disclaimer_line2' | t }}</p>
+      </div>
+
+      {% # Bottom section %}
+      <div class="footer__bottom">
+        <div class="footer__logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="white">
+            <circle cx="20" cy="20" r="18" stroke="white" stroke-width="2" fill="none"/>
+            <path d="M15 20L13 15h2l1 3 1-3h2l-2 5v5h-2v-5zm7 0v5h-2v-10h2l2 5 2-5h2v10h-2v-5l-2 5-2-5z" fill="white"/>
+          </svg>
+        </div>
+        <div class="footer__copyright">
+          © {{ 'now' | date: '%Y' }} BioTRUST Nutrition®
+        </div>
+        <div class="footer__legal-links">
+          <a href="{{ routes.root_url }}pages/sitemap">{{ 'footer.sitemap' | t }}</a> |
+          <a href="{{ routes.root_url }}pages/privacy-policy">{{ 'footer.privacy_policy' | t }}</a> |
+          <a href="{{ routes.root_url }}pages/terms-of-use">{{ 'footer.terms_of_use' | t }}</a> |
+          <a href="{{ routes.root_url }}pages/supplier-po-terms-conditions">{{ 'footer.supplier_po_terms' | t }}</a>
+        </div>
+        <div class="footer__offer-id">
+          Offer ID: 1000
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+  .footer {
+    width: 100%;
+    background: linear-gradient(to bottom, #0066cc, #003d7a);
+    color: white;
+    margin-top: 3rem;
   }
-  footer a {
+
+  .footer__contact-banner {
+    background: #00cc66;
+    color: white;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .footer__main {
+    padding: 3rem 0 2rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer__column {
+    min-width: 200px;
+  }
+
+  .footer__heading {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .footer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer__list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__list a {
+    color: white;
     text-decoration: none;
-    color: var(--color-foreground);
+    font-size: 0.875rem;
+    transition: opacity 0.2s;
   }
-  footer .footer__links,
-  footer .footer__payment {
+
+  .footer__list a:hover {
+    opacity: 0.8;
+  }
+
+  .footer__social {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    color: #0066cc;
+    transition: transform 0.2s;
+  }
+
+  .footer__social-link:hover {
+    transform: scale(1.1);
+  }
+
+  .footer__payment {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 2rem 0;
+  }
+
+  .footer__payment-icon {
+    height: 32px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .footer__disclaimer {
+    text-align: center;
+    font-size: 0.625rem;
+    line-height: 1.4;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+  }
+
+  .footer__disclaimer p {
+    margin: 0.5rem 0;
+  }
+
+  .footer__bottom {
+    text-align: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .footer__logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .footer__copyright {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__legal-links {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer__legal-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+
+  .footer__legal-links a:hover {
+    text-decoration: underline;
+  }
+
+  .footer__offer-id {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .footer__disclaimer {
+      padding: 0 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .footer__social {
+      justify-content: center;
+    }
   }
 {% endstylesheet %}
 
@@ -42,9 +321,36 @@
   "name": "t:general.footer",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact Phone",
+      "default": "(800) 766-5086"
+    },
+    {
+      "type": "text",
+      "id": "contact_hours",
+      "label": "Contact Hours",
+      "default": "MON - FRI 9AM - 6PM ET"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Pinterest URL"
     },
     {
       "type": "checkbox",

@@ -39,13 +39,42 @@
   endif
 %}
 
-<{{ wrapper }}
-  class="image {{ class }}"
-  {% if url %}
-    href="{{ url }}"
-  {% endif %}
->
-  {{ image | image_url: width: width, height: height, crop: crop | image_tag }}
+{% liquid
+  # Build responsive srcset (cap widths to requested width)
+  assign candidate_widths = '320,480,640,800,1024,1280,1600,1920' | split: ','
+  assign srcset_values = ''
+  for w in candidate_widths
+    assign w_int = w | plus: 0
+    if w_int <= width
+      assign url_variant = image | image_url: width: w_int, height: height, crop: crop
+      assign srcset_values = srcset_values | append: url_variant | append: ' ' | append: w | append: 'w, '
+    endif
+  endfor
+  assign srcset_values = srcset_values | strip | strip_newlines
+  assign srcset_values = srcset_values | replace: ',','' | replace: '  ',' '
+
+  # Determine loading + fetchpriority
+  assign loading_attr = 'lazy'
+  assign fetch_attr = 'auto'
+  if section and section.id == 'hero'
+    assign loading_attr = 'eager'
+    assign fetch_attr = 'high'
+  endif
+%}
+
+<{{ wrapper }} class="image {{ class }}" {% if url %}href="{{ url }}"{% endif %}>
+  <img
+    src="{{ image | image_url: width: width, height: height, crop: crop }}"
+    {% if srcset_values != blank %}srcset="{{ srcset_values }}"{% endif %}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    alt="{{ image.alt | escape }}"
+    width="{{ width }}"
+    {% if height %}height="{{ height }}"{% endif %}
+    loading="{{ loading_attr }}"
+    fetchpriority="{{ fetch_attr }}"
+    decoding="async"
+    style="aspect-ratio: {{ image.width }} / {{ image.height }}; height: auto;"
+  >
 </{{ wrapper }}>
 
 {% stylesheet %}

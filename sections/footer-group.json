@@ -11,15 +11,28 @@
   "type": "footer",
   "name": "t:general.footer",
   "sections": {
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "FREE eBook + 20% OFF"
+      }
+    },
     "footer": {
       "type": "footer",
       "settings": {
         "menu": "",
-        "show_payment_icons": true
+        "show_payment_icons": true,
+        "contact_phone": "(800) 766-5086",
+        "contact_hours": "MON - FRI 9AM - 6PM ET",
+        "social_facebook": "",
+        "social_instagram": "",
+        "social_youtube": "",
+        "social_pinterest": ""
       }
     }
   },
   "order": [
+    "newsletter",
     "footer"
   ]
 }

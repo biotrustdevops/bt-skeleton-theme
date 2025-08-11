@@ -30,6 +30,11 @@
 {% liquid
   unless height
     assign width = width | default: image.width
+    if width and image.height and image.width
+      assign height = width | times: image.height | divided_by: image.width
+    else
+      assign height = image.height
+    endif
   endunless
 
   if url
@@ -69,7 +74,7 @@
     sizes="(min-width: 1024px) 50vw, 100vw"
     alt="{{ image.alt | escape }}"
     width="{{ width }}"
-    {% if height %}height="{{ height }}"{% endif %}
+    height="{{ height }}"
     loading="{{ loading_attr }}"
     fetchpriority="{{ fetch_attr }}"
     decoding="async"

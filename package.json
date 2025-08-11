@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --minify",
-    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
-    "lighthouse": "lighthouse"
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --watch",
+    "dev": "shopify theme dev --open --path src"
   },
   "keywords": [],
   "author": "",

@@ -187,7 +187,7 @@
 </header-dropdowns>
 
 {% stylesheet %}
-  {% # Use Tailwind classes for most styling, keeping minimal custom CSS %}
+  /* Use Tailwind classes for most styling, keeping minimal custom CSS */
   .header-top-bar {
     position: relative;
     z-index: 40;
@@ -198,17 +198,17 @@
     z-index: 30;
   }
   
-  {% # Dropdown menu transitions %}
+  /* Dropdown menu transitions */
   .group:hover .group-hover\:opacity-100 {
     transition-delay: 0s;
   }
   
-  {% # Search input styling %}
+  /* Search input styling */
   .header__search input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
   }
   
-  {% # Dropdown active state %}
+  /* Dropdown active state */
   [data-dropdown].active [data-dropdown-menu] {
     opacity: 1;
     visibility: visible;

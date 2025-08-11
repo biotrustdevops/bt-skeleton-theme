@@ -68,6 +68,7 @@ The theme follows Shopify's standard theme architecture:
 - Access settings via `{{ settings.setting_name }}`
 - Access section settings via `{{ section.settings.setting_name }}`
 - Access block settings via `{{ block.settings.setting_name }}`
+- NEVER use Liquid tags or comments inside `{% stylesheet %}` or `{% javascript %}` blocks - use CSS comments `/* */` or JS comments `//` instead
 
 #### Schema Configuration
 

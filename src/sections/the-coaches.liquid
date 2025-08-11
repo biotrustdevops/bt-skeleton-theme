@@ -1,0 +1,268 @@
+{% liquid
+  assign bg_gradient = section.settings.use_gradient
+  if bg_gradient
+    assign bg_style = 'background: linear-gradient(270deg, #0B4F9A 0%, #246FC2 97.52%);'
+  else
+    assign bg_style = 'background-color: ' | append: section.settings.bg_color | append: ';'
+  endif
+  
+  assign image_position = section.settings.image_position
+  assign reverse_mobile = section.settings.reverse_mobile
+%}
+
+<section class="the-coaches-section relative pt-[60px] sm:pt-[80px] lg:pt-[100px]" 
+         id="{{ section.id }}">
+  
+  <div class="relative">
+    {% comment %} Blue background container with overflow for decorative element only {% endcomment %}
+    <div class="absolute inset-0 overflow-hidden" style="{{ bg_style }}">
+      {% comment %} Optional decorative background element {% endcomment %}
+      {% if section.settings.decorative_icon != blank %}
+        <div class="absolute top-0 right-[10%] w-full max-w-[260px] lg:max-w-[260px] md:max-w-[150px] sm:max-w-[130px] pointer-events-none {% if section.settings.hide_decorative_mobile %}hidden sm:block{% endif %}">
+          {{ section.settings.decorative_icon | image_url: width: 520 | image_tag:
+            loading: 'lazy',
+            class: 'w-full h-auto opacity-50',
+            widths: '260,390,520',
+            sizes: '260px'
+          }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="container mx-auto px-5 pt-10 pb-0 lg:pt-16 lg:pb-0 relative">
+      <div class="flex flex-col {% if reverse_mobile %}sm:flex-row{% else %}sm:flex-row-reverse{% endif %} {% if image_position == 'right' %}lg:flex-row-reverse{% else %}lg:flex-row{% endif %} items-end gap-6 sm:gap-10 lg:gap-[60px] max-w-[1350px] mx-auto">
+        
+        {% comment %} Text content area {% endcomment %}
+        <div class="w-full sm:w-1/2 text-center flex flex-col gap-5 pb-10 lg:pb-16">
+          {% if section.settings.subheading != blank %}
+            <h4 class="text-lg text-white font-normal">
+              {{ section.settings.subheading }}
+            </h4>
+          {% endif %}
+          
+          {% if section.settings.heading != blank %}
+            <h2 class="text-[42px] sm:text-[54px] lg:text-[74px] leading-[120%] text-white"
+                style="font-family: 'League Gothic', sans-serif;">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          
+          {% if section.settings.content != blank %}
+            <div class="text-lg lg:text-xl text-white leading-[150%] [&_p]:mb-4 [&_p:last-child]:mb-0">
+              {{ section.settings.content }}
+            </div>
+          {% endif %}
+          
+          {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+            <div class="mt-5 text-center">
+              <a href="{{ section.settings.button_url }}" 
+                 class="inline-block px-6 py-4 text-xl font-bold uppercase text-white border border-white rounded-lg hover:bg-white hover:text-[#0A3B60] transition-colors duration-300">
+                {{ section.settings.button_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+        
+        {% comment %} Image area - extends above container {% endcomment %}
+        {% if section.settings.coach_image != blank %}
+          <div class="w-full sm:w-1/2 relative z-10">
+            <div class="max-w-[350px] mx-auto relative" style="margin-top: -120px;">
+              {{ section.settings.coach_image | image_url: width: 700 | image_tag:
+                loading: 'lazy',
+                class: 'w-full h-auto relative',
+                widths: '350,525,700',
+                sizes: '(min-width: 640px) 350px, 100vw'
+              }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+  
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+  }
+  
+  @media (min-width: 640px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ section.settings.desktop_margin_top }}px;
+      margin-bottom: {{ section.settings.desktop_margin_bottom }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "The Coaches",
+  "tag": "section",
+  "class": "the-coaches",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "MEET YOUR COACH"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Coach Name"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>With over 20 years of experience in health and fitness, our coach brings unparalleled expertise and dedication to help you achieve your wellness goals.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "coach_image",
+      "label": "Coach Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "decorative_icon",
+      "label": "Decorative Background Icon",
+      "info": "Optional background decoration"
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient",
+      "label": "Use gradient background",
+      "default": true,
+      "info": "Blue gradient background when checked"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0B4F9A",
+      "info": "Used when gradient is disabled"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position (Desktop)",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_mobile",
+      "label": "Image first on mobile",
+      "default": true,
+      "info": "Show image above text on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "offset_image",
+      "label": "Offset image vertically",
+      "default": true,
+      "info": "Adds visual depth with slight vertical offset"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_decorative_mobile",
+      "label": "Hide decorative icon on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_top",
+      "label": "Desktop Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_bottom",
+      "label": "Desktop Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "label": "Mobile Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_bottom",
+      "label": "Mobile Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Coaches",
+      "settings": {
+        "subheading": "MEET YOUR COACH",
+        "heading": "Transform Your Life",
+        "content": "<p>Our expert coaches combine cutting-edge science with personalized guidance to help you achieve lasting results. Whether you're looking to improve your fitness, nutrition, or overall wellness, we're here to support you every step of the way.</p>",
+        "button_text": "Learn More",
+        "use_gradient": true,
+        "image_position": "right",
+        "reverse_mobile": true,
+        "offset_image": true
+      }
+    }
+  ]
+}
+{% endschema %}

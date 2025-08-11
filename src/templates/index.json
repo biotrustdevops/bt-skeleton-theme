@@ -330,9 +330,31 @@
         "left_icon": "shopify://shop_images/hp-verified_reviews-icon-left.webp",
         "right_icon": "shopify://shop_images/hp-verified_reviews-icon-right.webp",
         "desktop_margin_top": 64,
-        "desktop_margin_bottom": 64,
+        "desktop_margin_bottom": 0,
         "mobile_margin_top": 40,
         "mobile_margin_bottom": 40
+      }
+    },
+    "the_coaches": {
+      "type": "the-coaches",
+      "settings": {
+        "subheading": "THE COACHES",
+        "heading": "Your Personal Healthy Guides",
+        "content": "<p>Our expert team of coaches is here to guide you on your journey toward healthy aging with personalized advice and support. Whether you have questions about nutrition, fitness, or supplements, they’ve for the experience to help you stay on track.</p>",
+        "button_text": "meet our coaches",
+        "button_url": "/pages/about",
+        "coach_image": "shopify://shop_images/hp-coaches-tim_skwiat-crossed_arms-transparent.png",
+        "decorative_icon": "shopify://shop_images/hp-coaches-hexagons-right.webp",
+        "use_gradient": true,
+        "bg_color": "#0b4f9a",
+        "image_position": "left",
+        "reverse_mobile": true,
+        "offset_image": true,
+        "hide_decorative_mobile": true,
+        "desktop_margin_top": 0,
+        "desktop_margin_bottom": 0,
+        "mobile_margin_top": 0,
+        "mobile_margin_bottom": 0
       }
     }
   },
@@ -343,6 +365,7 @@
     "our_mission",
     "product_slider",
     "solutions_by_science",
-    "testimonials_carousel"
+    "testimonials_carousel",
+    "the_coaches"
   ]
 }

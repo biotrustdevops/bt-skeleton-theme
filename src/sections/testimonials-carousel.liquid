@@ -1,0 +1,324 @@
+{% liquid
+  assign section_id = 'testimonials-' | append: section.id
+%}
+
+<section class="testimonials-carousel-section relative overflow-hidden" 
+         id="{{ section_id }}"
+         data-section-id="{{ section.id }}">
+  
+  {% comment %} Decorative background images {% endcomment %}
+  {% if section.settings.left_icon != blank %}
+    <div class="absolute left-0 bottom-[10%] w-full max-w-[200px] lg:max-w-[200px] md:max-w-[150px] sm:max-w-[130px] hidden sm:block pointer-events-none">
+      {{ section.settings.left_icon | image_url: width: 400 | image_tag:
+        loading: 'lazy',
+        class: 'w-full h-auto',
+        widths: '200,300,400',
+        sizes: '200px'
+      }}
+    </div>
+  {% endif %}
+  
+  {% if section.settings.right_icon != blank %}
+    <div class="absolute right-0 sm:right-[-50px] lg:right-0 top-[18%] w-full max-w-[260px] lg:max-w-[260px] md:max-w-[150px] sm:max-w-[130px] z-[1] pointer-events-none">
+      {{ section.settings.right_icon | image_url: width: 520 | image_tag:
+        loading: 'lazy',
+        class: 'w-full h-auto',
+        widths: '260,390,520',
+        sizes: '260px'
+      }}
+    </div>
+  {% endif %}
+  
+  <div class="container mx-auto px-5 py-10 lg:py-16">
+    <div class="max-w-[910px] mx-auto text-center">
+      
+      {% comment %} Section headings {% endcomment %}
+      {% if section.settings.subheading != blank %}
+        <h4 class="text-lg text-black font-normal mb-2.5">
+          {{ section.settings.subheading }}
+        </h4>
+      {% endif %}
+      
+      {% if section.settings.heading != blank %}
+        <h2 class="text-[54px] sm:text-[74px] leading-[100%] text-[#0A3B60] capitalize mb-[30px] sm:mb-[70px] max-w-[200px] sm:max-w-full mx-auto"
+            style="font-family: 'League Gothic', sans-serif;">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+      
+      {% comment %} Testimonials carousel {% endcomment %}
+      {% if section.blocks.size > 0 %}
+        <testimonials-carousel class="block relative">
+          <div class="testimonials-track flex transition-transform duration-500 ease-in-out" data-carousel-track>
+            {% for block in section.blocks %}
+              <div class="testimonial-slide w-full flex-shrink-0" 
+                   data-slide-index="{{ forloop.index0 }}"
+                   {{ block.shopify_attributes }}>
+                
+                {% comment %} Star rating {% endcomment %}
+                {% if block.settings.stars_image != blank %}
+                  <div class="max-w-[100px] mx-auto">
+                    {{ block.settings.stars_image | image_url: width: 200 | image_tag:
+                      loading: 'lazy',
+                      class: 'w-full h-auto',
+                      widths: '100,150,200',
+                      sizes: '100px'
+                    }}
+                  </div>
+                {% endif %}
+                
+                {% comment %} Testimonial content {% endcomment %}
+                {% if block.settings.content != blank %}
+                  <div class="max-w-[630px] mx-auto mt-[30px] text-center">
+                    <div class="text-2xl sm:text-[26px] leading-[150%] text-[#0A3B60]">
+                      {{ block.settings.content }}
+                    </div>
+                  </div>
+                {% endif %}
+                
+                {% comment %} Author block {% endcomment %}
+                {% if block.settings.author_image != blank or block.settings.author_name != blank %}
+                  <div class="flex items-center gap-5 justify-center mt-[30px]">
+                    {% if block.settings.author_image != blank %}
+                      <div class="max-w-[130px]">
+                        {{ block.settings.author_image | image_url: width: 260 | image_tag:
+                          loading: 'lazy',
+                          class: 'w-full h-auto rounded-full',
+                          widths: '130,195,260',
+                          sizes: '130px'
+                        }}
+                      </div>
+                    {% endif %}
+                    
+                    {% if block.settings.author_name != blank %}
+                      <div class="flex flex-col items-start gap-[5px]">
+                        <span class="text-lg font-semibold uppercase text-[#0A3B60]">
+                          {{ block.settings.author_name }}
+                        </span>
+                        {% if block.settings.publish_date != blank %}
+                          <span class="text-lg font-semibold uppercase text-[#0A3B60] opacity-50">
+                            {{ block.settings.publish_date }}
+                          </span>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+          
+          {% comment %} Navigation arrows (desktop only) {% endcomment %}
+          {% if section.blocks.size > 1 %}
+            <button type="button" 
+                    class="carousel-prev absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#1AC83E] rounded-full items-center justify-center z-10 hidden sm:flex disabled:opacity-25 transition-opacity"
+                    aria-label="{{ 'general.slider.previous_slide' | t }}"
+                    data-carousel-prev>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            
+            <button type="button" 
+                    class="carousel-next absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#1AC83E] rounded-full items-center justify-center z-10 hidden sm:flex disabled:opacity-25 transition-opacity"
+                    aria-label="{{ 'general.slider.next_slide' | t }}"
+                    data-carousel-next>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+            
+            {% comment %} Dot navigation (mobile only) {% endcomment %}
+            <div class="carousel-dots flex gap-2 justify-center mt-[30px] sm:hidden" data-carousel-dots>
+              {% for block in section.blocks %}
+                <button type="button" 
+                        class="w-[30px] h-2 rounded-[20px] bg-gray-300 transition-colors {% if forloop.first %}bg-[#0A3B60]{% endif %}"
+                        aria-label="{{ 'general.slider.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ section.blocks.size }}"
+                        data-slide-to="{{ forloop.index0 }}">
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </testimonials-carousel>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+  
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ section.settings.mobile_margin_top }}px;
+    margin-bottom: {{ section.settings.mobile_margin_bottom }}px;
+  }
+  
+  @media (min-width: 640px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ section.settings.desktop_margin_top }}px;
+      margin-bottom: {{ section.settings.desktop_margin_bottom }}px;
+    }
+  }
+</style>
+
+<script src="{{ 'testimonials-carousel.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Testimonials Carousel",
+  "tag": "section",
+  "class": "testimonials-carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "TESTIMONIALS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_icon",
+      "label": "Left Decorative Icon",
+      "info": "Optional background decoration"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_icon",
+      "label": "Right Decorative Icon",
+      "info": "Optional background decoration"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_top",
+      "label": "Desktop Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_margin_bottom",
+      "label": "Desktop Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_top",
+      "label": "Mobile Margin Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_margin_bottom",
+      "label": "Mobile Margin Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "stars_image",
+          "label": "Star Rating Image",
+          "info": "5-star rating image"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Testimonial Content",
+          "default": "<p>\"This product has completely transformed my daily routine. I can't imagine life without it!\"</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image",
+          "info": "Author profile picture"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Jane Doe"
+        },
+        {
+          "type": "text",
+          "id": "publish_date",
+          "label": "Date",
+          "default": "Verified Buyer",
+          "info": "Date or additional info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials Carousel",
+      "settings": {
+        "subheading": "TESTIMONIALS",
+        "heading": "What Our Customers Say"
+      },
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "content": "<p>\"I've been using this for 3 months and the results are incredible. My energy levels have never been better!\"</p>",
+            "author_name": "Sarah M.",
+            "publish_date": "Verified Buyer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "content": "<p>\"Finally found a product that actually delivers on its promises. Highly recommend to anyone looking for real results.\"</p>",
+            "author_name": "John D.",
+            "publish_date": "Verified Buyer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "content": "<p>\"The quality is outstanding and customer service is top-notch. This company truly cares about their customers.\"</p>",
+            "author_name": "Emily R.",
+            "publish_date": "Verified Buyer"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

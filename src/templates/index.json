@@ -284,6 +284,56 @@
         "mobile_margin_top": 40,
         "mobile_margin_bottom": 40
       }
+    },
+    "testimonials_carousel": {
+      "type": "testimonials-carousel",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "stars_image": "shopify://shop_images/hp-verified_reviews-5_gold_stars.png",
+            "content": "<p><strong>\"Everything about BioTrust is perfect, from the awesome support group to their amazing products. The products are so tasty and help keep all my cravings in check. I could not have lost over 50 lbs without them!”</strong></p>",
+            "author_image": "shopify://shop_images/hp-verified_reviews-author-Aleisha_H..jpg",
+            "author_name": "Aleisha H.",
+            "publish_date": "MEMBER SINCE 2012"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "stars_image": "shopify://shop_images/hp-verified_reviews-5_gold_stars.png",
+            "content": "<p><strong>“When it comes to getting rid of excess fat, BioTrust has been my best friend, especially the tasty Chocolate Ice Cream protein shakes, which I use as a meal replacement. What I thought was impossible became possible with BioTrust. I have lost – and maintained – over 30 pounds!”</strong></p>",
+            "author_image": "shopify://shop_images/hp-verified_reviews-author-Carol_B.png",
+            "author_name": "Carol B.",
+            "publish_date": "Member Since 2017"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "stars_image": "shopify://shop_images/hp-verified_reviews-5_gold_stars.png",
+            "content": "<p><strong>\"BioTrust has been an amazing part of my weight loss transformation. The quality of the products and the professionalism of the company are outstanding. The products are an integral part of my life and I look forward to using them everyday!”</strong></p>",
+            "author_image": "shopify://shop_images/hp-verified_reviews-author-David_D.jpg",
+            "author_name": "David D.",
+            "publish_date": "MEMBER SINCE 2012"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ],
+      "settings": {
+        "subheading": "VERIFIED REVIEWS",
+        "heading": "Real People, Real Results",
+        "left_icon": "shopify://shop_images/hp-verified_reviews-icon-left.webp",
+        "right_icon": "shopify://shop_images/hp-verified_reviews-icon-right.webp",
+        "desktop_margin_top": 64,
+        "desktop_margin_bottom": 64,
+        "mobile_margin_top": 40,
+        "mobile_margin_bottom": 40
+      }
     }
   },
   "order": [
@@ -292,6 +342,7 @@
     "healthy_aging",
     "our_mission",
     "product_slider",
-    "solutions_by_science"
+    "solutions_by_science",
+    "testimonials_carousel"
   ]
 }

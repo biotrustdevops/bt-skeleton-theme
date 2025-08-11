@@ -48,7 +48,7 @@
       
       {% comment %} Testimonials carousel {% endcomment %}
       {% if section.blocks.size > 0 %}
-        <testimonials-carousel class="block relative">
+        <testimonials-carousel class="block relative overflow-hidden">
           <div class="testimonials-track flex transition-transform duration-500 ease-in-out" data-carousel-track>
             {% for block in section.blocks %}
               <div class="testimonial-slide w-full flex-shrink-0" 

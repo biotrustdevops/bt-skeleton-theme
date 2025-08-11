@@ -9,4 +9,5 @@ jobs:
       - name: Theme Check
         uses: shopify/theme-check-action@v2
         with:
+          theme_root: "./src"
           token: ${{ github.token }}

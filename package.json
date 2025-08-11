@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --minify",
     "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --watch",
-    "dev": "shopify theme dev --open --path src --theme-editor-sync"
+    "dev": "shopify theme dev --open --path src --theme-editor-sync",
+    "check": "shopify theme check --path src --config .theme-check.yml"
   },
   "keywords": [],
   "author": "",

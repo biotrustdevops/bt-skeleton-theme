@@ -13,6 +13,8 @@
   @param {number} [width] - The highest resolution width of the image to be rendered
   @param {number} [height] - The highest resolution height of the image to be rendered
   @param {string} [crop] - The crop position of the image
+  @param {string} [loading] - The loading attribute for the image ('lazy' or 'eager', defaults to 'lazy')
+  @param {string} [fetchpriority] - The fetchpriority attribute for the image ('auto', 'high', or 'low', defaults to 'auto')
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -59,12 +61,8 @@
   assign srcset_values = srcset_values | replace: ',','' | replace: '  ',' '
 
   # Determine loading + fetchpriority
-  assign loading_attr = 'lazy'
-  assign fetch_attr = 'auto'
-  if section and section.id == 'hero'
-    assign loading_attr = 'eager'
-    assign fetch_attr = 'high'
-  endif
+  assign loading_attr = loading | default: 'lazy'
+  assign fetch_attr = fetchpriority | default: 'auto'
 %}
 
 <{{ wrapper }} class="image {{ class }}" {% if url %}href="{{ url }}"{% endif %}>

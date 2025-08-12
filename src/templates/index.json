@@ -53,7 +53,7 @@
         "logo_1": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-1-Forbes",
+            "logo_image": "shopify://shop_images/hp-featured_on-Forbes.png",
             "logo_svg": "",
             "logo_alt": "Forbes"
           }
@@ -61,7 +61,7 @@
         "logo_2": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-2-Hello",
+            "logo_image": "shopify://shop_images/hp-featured_on-Hello.png",
             "logo_svg": "",
             "logo_alt": "Hello!"
           }
@@ -69,7 +69,7 @@
         "logo_3": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-3-Bustle",
+            "logo_image": "shopify://shop_images/hp-featured_on-Bustle.png",
             "logo_svg": "",
             "logo_alt": "Bustle"
           }
@@ -77,7 +77,7 @@
         "logo_4": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-4-Womans_World",
+            "logo_image": "shopify://shop_images/hp-featured_on-Womans_World.png",
             "logo_svg": "",
             "logo_alt": "Woman's World"
           }
@@ -85,7 +85,7 @@
         "logo_5": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-5-GQ",
+            "logo_image": "shopify://shop_images/hp-featured_on-GQ.png",
             "logo_svg": "",
             "logo_alt": "GQ"
           }
@@ -93,7 +93,7 @@
         "logo_6": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-6-US_Weekly",
+            "logo_image": "shopify://shop_images/hp-featured_on-US_Weekly.png",
             "logo_svg": "",
             "logo_alt": "Us Weekly"
           }
@@ -101,7 +101,7 @@
         "logo_7": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-7-Elite_Daily",
+            "logo_image": "shopify://shop_images/hp-featured_on-Elite_Daily.png",
             "logo_svg": "",
             "logo_alt": "Elite Daily"
           }
@@ -109,7 +109,7 @@
         "logo_8": {
           "type": "logo",
           "settings": {
-            "default_logo": "featured_on-8-New_York_Post",
+            "logo_image": "shopify://shop_images/hp-featured_on-New_York_Post.png",
             "logo_svg": "",
             "logo_alt": "New York Post"
           }

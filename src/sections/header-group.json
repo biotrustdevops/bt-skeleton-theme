@@ -13,10 +13,16 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo": "shopify://shop_images/biotrust-age-well-nutrition-logo-2.png",
+        "logo_width": 300,
+        "menu": "main-menu",
+        "chat_link": "",
+        "help_center_link": ""
+      }
     }
   },
   "order": [
     "header"
-  ],
+  ]
 }

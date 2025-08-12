@@ -140,3 +140,5 @@ Before committing:
 - Use semantic HTML and native browser features where possible
 - All customizable elements should use schema settings, not hardcoded values
 - Reference .github\copilot-instructions.md when working with Liquid files
+
+- Whenever running any theme development commands, be sure to pass the "--path src" flag since the theme files have been moved there.

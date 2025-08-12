@@ -1,8 +1,8 @@
 <h1 align="center" style="position: relative;">
   <br>
-    <img src="./assets/shoppy-x-ray.svg" alt="logo" width="200">
+    <img src="./bt-logo.png" alt="logo" width="200">
   <br>
-  Shopify Skeleton Theme
+  BioTrust 2.0
 </h1>
 
 A minimal, carefully structured Shopify theme designed to help you quickly get started on BioTrust 2.0. Designed with modularity, maintainability, and Shopify's best practices in mind.

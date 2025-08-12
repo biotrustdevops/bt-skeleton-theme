@@ -356,6 +356,178 @@
         "mobile_margin_top": 0,
         "mobile_margin_bottom": 0
       }
+    },
+    "feature_icon_columns_GiPAPe": {
+      "type": "feature-icon-columns",
+      "blocks": {
+        "column_wUPtFH": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-daily_guidance-recipes.jpg",
+            "image_link": "",
+            "title": "Recipes",
+            "title_link": "",
+            "text": "<p>Discover delicious, nutrient-packed recipes that make healthy eating simple and enjoyable. Whether you're looking for high-protein meals, collagen-boosting drinks, or superfood snacks, we’ve got you covered.</p>",
+            "button_label": "View Receipes",
+            "button_link": "https://blog.biotrust.com/category/recipes/",
+            "hide_mobile": false
+          }
+        },
+        "column_fDcddA": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-daily_guidance-fitness.jpg",
+            "image_link": "",
+            "title": "Fitness",
+            "title_link": "",
+            "text": "<p>Stay active with expert-approved workout routines and fitness tips tailored for healthy aging. From strength training to balance exercises, find the right programs to build muscle, burn fat, and keep you strong as you age.</p>",
+            "button_label": "View Fitness",
+            "button_link": "https://blog.biotrust.com/category/fitness/",
+            "hide_mobile": false
+          }
+        },
+        "column_HBeMU3": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-daily_guidance-Youtube_Live.jpg",
+            "image_link": "https://www.youtube.com/@BioTrustNutrition/streams",
+            "title": "YouTube LIVE STREAMS",
+            "title_link": "https://www.youtube.com/@BioTrustNutrition/streams",
+            "text": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>",
+            "button_label": "VIEW YOUTUBE",
+            "button_link": "https://www.youtube.com/@BioTrustNutrition/streams",
+            "hide_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "column_wUPtFH",
+        "column_fDcddA",
+        "column_HBeMU3"
+      ],
+      "name": "Feature Icon Columns",
+      "settings": {
+        "heading": "Healthy Aging Daily Guidance",
+        "heading_highlight": "",
+        "subheading": "<p>Your journey to vibrant health doesn’t stop with products. Explore expert tips, fitness guides, and nutrition advice designed to help you stay active and confident as you age.</p>",
+        "heading_color": "#0a3b60",
+        "section_style": "default",
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "text_alignment": "left",
+        "hide_gutters": false,
+        "left_icon": "shopify://shop_images/hp-daily_guidance-icon-left.webp",
+        "right_icon": "shopify://shop_images/hp-daily_guidance-icon-right.webp",
+        "section_button_text": "",
+        "section_button_link": "",
+        "desktop_margin_top": 0,
+        "desktop_margin_bottom": 0,
+        "mobile_margin_top": 0,
+        "mobile_margin_bottom": 0
+      }
+    },
+    "feature_icon_columns_NBfKmT": {
+      "type": "feature-icon-columns",
+      "blocks": {
+        "column_KE6mBe": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-sns-icon-recurring_savings.png",
+            "image_link": "",
+            "title": "Recurring savings",
+            "title_link": "",
+            "text": "<p>Get up to 50% off every subscription order.</p>",
+            "button_label": "",
+            "button_link": "",
+            "hide_mobile": false
+          }
+        },
+        "column_rHV7Y3": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-sns-icon-free_shipping.png",
+            "image_link": "",
+            "title": "Free Shipping",
+            "title_link": "",
+            "text": "<p>Enjoy free shipping on all subscription deliveries.</p>",
+            "button_label": "",
+            "button_link": "",
+            "hide_mobile": false
+          }
+        },
+        "column_r8Y9DE": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-sns-icon-easy_management.png",
+            "image_link": "",
+            "title": "Easy Management",
+            "title_link": "",
+            "text": "<p>Easy cancel, pause or modify your subscription anytime.</p>",
+            "button_label": "",
+            "button_link": "",
+            "hide_mobile": false
+          }
+        },
+        "column_6pQGjC": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-sns-icon-exclusive_perks.png",
+            "image_link": "",
+            "title": "Exclusive Perks",
+            "title_link": "",
+            "text": "<p>Access giveaways and be the first to try new products.</p>",
+            "button_label": "",
+            "button_link": "",
+            "hide_mobile": false
+          }
+        },
+        "column_dARR4F": {
+          "type": "column",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/hp-sns-icon-white_glove_services.png",
+            "image_link": "",
+            "title": "White Glove Services",
+            "title_link": "",
+            "text": "<p>Receive priority access to our customer support team.</p>",
+            "button_label": "",
+            "button_link": "",
+            "hide_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "column_KE6mBe",
+        "column_rHV7Y3",
+        "column_r8Y9DE",
+        "column_6pQGjC",
+        "column_dARR4F"
+      ],
+      "name": "Feature Icon Columns",
+      "settings": {
+        "heading": "Subscribe For",
+        "heading_highlight": "Up To 50% Off",
+        "subheading": "<p>Unlock exclusive benefits with your BioTRUST subscription</p>",
+        "heading_color": "#0a3b60",
+        "section_style": "subscription",
+        "columns_desktop": "5",
+        "columns_mobile": "1",
+        "text_alignment": "center",
+        "hide_gutters": false,
+        "section_button_text": "LEARN MORE",
+        "section_button_link": "/pages/subscribe-save-faq",
+        "desktop_margin_top": 0,
+        "desktop_margin_bottom": 0,
+        "mobile_margin_top": 0,
+        "mobile_margin_bottom": 0
+      }
     }
   },
   "order": [
@@ -366,6 +538,8 @@
     "product_slider",
     "solutions_by_science",
     "testimonials_carousel",
-    "the_coaches"
+    "the_coaches",
+    "feature_icon_columns_GiPAPe",
+    "feature_icon_columns_NBfKmT"
   ]
 }

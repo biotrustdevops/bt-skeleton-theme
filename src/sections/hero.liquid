@@ -32,8 +32,8 @@
 
 {% if hero %}
 <section class="hero-section relative overflow-hidden" id="{{ section.id }}">
-  <div class="flex flex-col lg:flex-row">
-    {% comment %} Left blue section with text content {% endcomment %}
+  <div class="flex flex-col-reverse lg:flex-row">
+    {% comment %} Left blue section with text content - appears below image on mobile, left side on desktop {% endcomment %}
     <div class="w-full lg:w-1/2 relative" style="background-color: {{ hero.settings.background_color | default: '#0066cc' }};">
       <div class="px-6 lg:px-12 py-12 lg:py-16">
         <div class="max-w-xl">
@@ -139,7 +139,7 @@
       </div>
     </div>
     
-    {% comment %} Right section with citrus background filling entire area {% endcomment %}
+    {% comment %} Right section with citrus background - appears above text on mobile, right side on desktop {% endcomment %}
     <div class="w-full lg:w-1/2 relative h-[400px] lg:h-auto">
       {% comment %} Use the main_image as the citrus background that fills the entire area {% endcomment %}
       {% if hero.settings.main_image != blank %}

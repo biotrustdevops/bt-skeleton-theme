@@ -528,6 +528,80 @@
         "mobile_margin_top": 0,
         "mobile_margin_bottom": 0
       }
+    },
+    "our_community_zA6Mkf": {
+      "type": "our-community",
+      "blocks": {
+        "image_bgrjCm": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_1.webp",
+            "image_alt": "",
+            "caption": ""
+          }
+        },
+        "image_RPVqTw": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_2.webp",
+            "image_alt": "",
+            "caption": ""
+          }
+        },
+        "image_LCNipQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_3.webp",
+            "image_alt": "Healthy lifestyle products",
+            "caption": ""
+          }
+        },
+        "image_cL6cNN": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_4.webp",
+            "image_alt": "",
+            "caption": ""
+          }
+        },
+        "image_KUxW3r": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_5.webp",
+            "image_alt": "",
+            "caption": ""
+          }
+        },
+        "image_dbwaif": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/hp-community-image_6.webp",
+            "image_alt": "",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_bgrjCm",
+        "image_RPVqTw",
+        "image_LCNipQ",
+        "image_cL6cNN",
+        "image_KUxW3r",
+        "image_dbwaif"
+      ],
+      "name": "Our Community",
+      "settings": {
+        "subheading": "WE’RE BUILDING A WELLNESS FAMILY",
+        "heading": "JOIN OUR COMMUNITY",
+        "content": "<p>Become part of a thriving community dedicated to healthy aging. Connect with like-minded individuals, share your journey, and stay motivated with exclusive access to our social groups, quarterly challenges, and expert advice. Together, we’ll inspire each other to live vibrant, active lives—every step of the way.</p>",
+        "button_text": "Join Today",
+        "button_url": "https://www.facebook.com/groups/123754894883257",
+        "bg_gradient_start": "#0b4f9a",
+        "bg_gradient_end": "#246fc2",
+        "text_color": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
@@ -540,6 +614,7 @@
     "testimonials_carousel",
     "the_coaches",
     "feature_icon_columns_GiPAPe",
-    "feature_icon_columns_NBfKmT"
+    "feature_icon_columns_NBfKmT",
+    "our_community_zA6Mkf"
   ]
 }

@@ -136,61 +136,61 @@
         "category_1": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-1-Collagen-Protein",
+            "product_image": "shopify://shop_images/hp-health_againg_category-Collagen-Protein.png",
             "image_alt": "",
             "category_name": "COLLAGEN PROTEIN",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/collagen"
+            "button_link": "shopify://collections/collagen-protein-old"
           }
         },
         "category_2": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-2-Protein-Powder",
+            "product_image": "shopify://shop_images/hp-health_againg_category-Protein-Powder.png",
             "image_alt": "",
             "category_name": "PROTEIN POWDER",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/protein"
+            "button_link": "shopify://collections/protein-powder"
           }
         },
         "category_3": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-3-GLP-1-Support",
+            "product_image": "shopify://shop_images/hp-health_againg_category-GLP-1-Support.png",
             "image_alt": "",
             "category_name": "GLP-1 SUPPORT",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/glp-1"
+            "button_link": "shopify://collections/glp-1-support"
           }
         },
         "category_4": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-4-Muscle-and-Joint",
+            "product_image": "shopify://shop_images/hp-health_againg_category-Muscle-and-Joint.png",
             "image_alt": "",
             "category_name": "MUSCLE AND JOINT",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/muscle-joint"
+            "button_link": "shopify://collections/muscle-and-joint-health"
           }
         },
         "category_5": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-5-Weight-and-Metabolism",
+            "product_image": "shopify://shop_images/hp-health_againg_category-Weight-and-Metabolism.png",
             "image_alt": "",
             "category_name": "WEIGHT AND METABOLISM",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/weight-metabolism"
+            "button_link": "shopify://collections/weight-and-metabolism"
           }
         },
         "category_6": {
           "type": "category",
           "settings": {
-            "default_image": "health_aging_category-6-Cognititve-Health",
+            "product_image": "shopify://shop_images/hp-health_againg_category-Cognititve-Health.png",
             "image_alt": "",
             "category_name": "COGNITIVE HEALTH",
             "button_text": "SHOP NOW",
-            "button_link": "/collections/cognitive"
+            "button_link": "shopify://collections/cognitive-health"
           }
         }
       },

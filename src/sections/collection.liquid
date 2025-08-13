@@ -1,47 +1,133 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Collection page template matching the BioTRUST design reference
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+{% liquid
+  assign products_per_page = section.settings.products_per_page | default: 20
+  assign collection_title = collection.title | default: 'All Products'
+%}
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
+<div class="collection-page">
+  <!-- Collection Header -->
+  <div class="collection-header bg-[#005eb8] text-white py-6">
+    <div class="container mx-auto px-4">
+      <h1 class="text-3xl lg:text-4xl font-bold">{{ collection_title }}</h1>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="container mx-auto px-4 py-8">
+    {% paginate collection.products by products_per_page %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% for product in collection.products %}
+          <div class="bg-[#E5E5E5] rounded-lg border border-[#E5E5E5] flex flex-col h-full relative">
+
+            <!-- Product Image -->
+            {% if product.featured_image %}
+              <div class="flex-none mb-1.5 flex justify-center py-6 h-[270px]">
+                <a href="{{ product.url }}">
+                  {% render 'image',
+                    image: product.featured_image,
+                    width: 240,
+                    height: 240,
+                    loading: 'lazy',
+                    class: 'w-auto h-24 object-contain'
+                  %}
+                </a>
+              </div>
+            {% endif %}
+
+            <div class="grow flex flex-col justify-between bg-white rounded-b-lg p-2">
+              <div>
+                <!-- Product Title -->
+                <h3 class="text-[#0D4F9A] font-black text-base mb-2 uppercase leading-tight">
+                  <a href="{{ product.url }}" class="hover:text-[#004a94] transition-colors">
+                    {{ product.title | escape }}
+                  </a>
+                </h3>
+
+                <!-- Star Rating -->
+                <div class="mb-3 flex items-center">
+                  <div class="flex mr-2">
+                    {% for i in (1..5) %}
+                      <svg class="w-3 h-3 text-[#2BB34D] fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>           
+                      </svg>
+                    {% endfor %}
+                  </div>
+                  <span class="text-xs text-gray-600 font-medium">Based On 3562 Reviews</span>
+                </div>
+              </div>
+
+              <!-- Product Sub-Heading -->
+              {% if product.metafields["global"]["Sub-Heading"] != blank %}
+                <p class="text-xs text-[#2E74B5] capitalize font-semibold p-1 mb-2 bg-[#F2F2F2] rounded-sm">
+                  {{ product.metafields["global"]["Sub-Heading"] | downcase | strip_html | truncate: 120 }}
+                </p>
+              {% endif %}
+
+              <!-- Action Buttons -->
+              <div class="flex">
+                <a href="{{ product.url }}" class="flex-1 bg-[#2BB34D] text-white text-center py-3 px-2 rounded-sm font-black text-sm uppercase tracking-wide hover:bg-[#004a94] transition-colors block">
+                  LEARN MORE
+                </a>
+              </div>
+            </div>            
+          </div>
+        {% endfor %}
       </div>
-    {% endfor %}
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
+      <!-- Pagination -->
+      {% if paginate.pages > 1 %}
+        <div class="pagination-wrapper mt-12">
+          {{ paginate | default_pagination }}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
 </div>
 
-{% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+<script>
+  function addToCart(variantId) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: [{
+          id: variantId,
+          quantity: 1
+        }]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Show success message or update cart icon
+      console.log('Added to cart:', data);
+      // You can add a toast notification here
+      alert('Product added to cart!');
+    })
+    .catch(error => {
+      console.error('Error adding to cart:', error);
+      alert('Error adding product to cart');
+    });
   }
-{% endstylesheet %}
+</script>
 
 {% schema %}
 {
-  "name": "t:general.collection",
-  "settings": []
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 20
+    }
+  ]
 }
 {% endschema %}

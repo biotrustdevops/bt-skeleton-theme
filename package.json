@@ -1,13 +1,13 @@
 {
   "name": "bt-skeleton",
   "version": "1.0.0",
-  "description": "<h1 align=\"center\" style=\"position: relative;\">\r   <br>\r     <img src=\"./assets/shoppy-x-ray.svg\" alt=\"logo\" width=\"200\">\r   <br>\r   Shopify Skeleton Theme\r </h1>",
+  "description": "BioTRUST 2.0 Skeleton Theme",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --minify",
-    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --watch",
-    "dev": "shopify theme dev --open --path src --theme-editor-sync",
+    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/assets/tailwind.css --watch --poll",
+    "dev": "shopify theme dev --path src --theme-editor-sync",
     "check": "shopify theme check --path src --config .theme-check.yml"
   },
   "keywords": [],

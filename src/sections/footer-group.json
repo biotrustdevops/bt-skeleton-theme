@@ -11,6 +11,59 @@
   "type": "footer",
   "name": "t:general.footer",
   "sections": {
+    "trust_icons_RmNL77": {
+      "type": "trust-icons",
+      "blocks": {
+        "trust_icon_3FMqhG": {
+          "type": "trust_icon",
+          "settings": {
+            "icon_image": "shopify://shop_images/footer-piggybank.png",
+            "icon_svg": "",
+            "icon_alt": "",
+            "text": "Up to 50% Savings and Free Shipping On All Subscriptions"
+          }
+        },
+        "trust_icon_ULAbPH": {
+          "type": "trust_icon",
+          "settings": {
+            "icon_image": "shopify://shop_images/footer-guarantee.png",
+            "icon_svg": "",
+            "icon_alt": "",
+            "text": "60-Day Money Back Guarantee On All Purchases"
+          }
+        },
+        "trust_icon_P64Max": {
+          "type": "trust_icon",
+          "settings": {
+            "icon_image": "shopify://shop_images/footer-kids.png",
+            "icon_svg": "",
+            "icon_alt": "",
+            "text": "Our support helps kids access healthy meals"
+          }
+        },
+        "trust_icon_wmBJRV": {
+          "type": "trust_icon",
+          "settings": {
+            "icon_image": "shopify://shop_images/footer-security.png",
+            "icon_svg": "",
+            "icon_alt": "",
+            "text": "Protected by 100% secured SSL encrypted connection"
+          }
+        }
+      },
+      "block_order": [
+        "trust_icon_3FMqhG",
+        "trust_icon_ULAbPH",
+        "trust_icon_P64Max",
+        "trust_icon_wmBJRV"
+      ],
+      "name": "Trust Icons",
+      "settings": {
+        "background_color": "#f5f5f5",
+        "text_color": "#333333",
+        "icon_size": 80
+      }
+    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
@@ -31,6 +84,7 @@
     }
   },
   "order": [
+    "trust_icons_RmNL77",
     "newsletter",
     "footer"
   ]

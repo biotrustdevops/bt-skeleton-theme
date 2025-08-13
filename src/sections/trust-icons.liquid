@@ -1,0 +1,146 @@
+{% liquid
+  assign bg_color = section.settings.background_color | default: '#f5f5f5'
+  assign text_color = section.settings.text_color | default: '#333333'
+  assign icon_size = section.settings.icon_size | default: 48
+%}
+
+<section class="py-8 md:py-12" style="background-color: {{ bg_color }};" data-section-id="{{ section.id }}">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'trust_icon' %}
+            <div class="flex flex-col items-center text-center" {{ block.shopify_attributes }}>
+              {% if block.settings.icon_image != blank %}
+                <img 
+                  src="{{ block.settings.icon_image | image_url: width: 120 }}"
+                  srcset="{{ block.settings.icon_image | image_url: width: 60 }} 60w,
+                          {{ block.settings.icon_image | image_url: width: 90 }} 90w,
+                          {{ block.settings.icon_image | image_url: width: 120 }} 120w"
+                  sizes="(max-width: 640px) 60px, {{ icon_size }}px"
+                  alt="{{ block.settings.icon_alt | default: block.settings.text }}"
+                  width="{{ block.settings.icon_image.width }}"
+                  height="{{ block.settings.icon_image.height }}"
+                  loading="lazy"
+                  class="mb-3"
+                  style="width: {{ icon_size }}px; height: {{ icon_size }}px; object-fit: contain;"
+                >
+              {% elsif block.settings.icon_svg != blank %}
+                <div class="mb-3" style="width: {{ icon_size }}px; height: {{ icon_size }}px;">
+                  {{ block.settings.icon_svg }}
+                </div>
+              {% endif %}
+              
+              {% if block.settings.text != blank %}
+                <p class="text-sm md:text-base font-medium leading-tight" style="color: {{ text_color }};">
+                  {{ block.settings.text }}
+                </p>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust Icons",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "min": 32,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_icon",
+      "name": "Trust Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image",
+          "info": "Upload an icon image (PNG, JPG, or SVG)"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code",
+          "info": "Alternative to image. Paste SVG code directly."
+        },
+        {
+          "type": "text",
+          "id": "icon_alt",
+          "label": "Icon Alt Text",
+          "info": "Describe the icon for accessibility"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Trust Feature"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Icons",
+      "blocks": [
+        {
+          "type": "trust_icon",
+          "settings": {
+            "text": "60-Day Money Back Guarantee",
+            "icon_alt": "Money back guarantee"
+          }
+        },
+        {
+          "type": "trust_icon",
+          "settings": {
+            "text": "Backed by Science",
+            "icon_alt": "Science backed"
+          }
+        },
+        {
+          "type": "trust_icon",
+          "settings": {
+            "text": "Helping Feed the Hungry",
+            "icon_alt": "Charitable giving"
+          }
+        },
+        {
+          "type": "trust_icon",
+          "settings": {
+            "text": "Secure Shopping",
+            "icon_alt": "Secure shopping"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

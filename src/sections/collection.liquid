@@ -20,7 +20,7 @@
     {% paginate collection.products by products_per_page %}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {% for product in collection.products %}
-          <div class="bg-[#E5E5E5] rounded-lg border border-[#E5E5E5] flex flex-col h-full relative">
+          <div class="bg-[#E5E5E5] rounded-lg border border-[#E5E5E5] shadow-sm flex flex-col h-full relative">
 
             <!-- Product Image -->
             {% if product.featured_image %}

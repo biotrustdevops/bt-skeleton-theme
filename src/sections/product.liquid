@@ -1,45 +1,308 @@
-{% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'product-form-' | append: section.id
+%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
-{% endcomment %}
+{% stylesheet %}
+  /* Custom styles for specific needs */
+  .star-half {
+    position: relative;
+    color: #e5e7eb;
+  }
+  
+  .star-half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #fbbf24;
+  }
+  
+  .product-container {
+    max-width: 1493px;
+  }
+  
+  .main-image-container {
+    width: 575px;
+    height: 575px;
+  }
+  
+  .thumbnail-size {
+    width: 94px;
+    height: 94px;
+  }
+  
+  .community-image-size {
+    width: 172px;
+    height: 172px;
+  }
+{% endstylesheet %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    // Thumbnail gallery
+    const thumbnails = document.querySelectorAll('[data-thumbnail]');
+    const mainImage = document.querySelector('[data-main-image]');
+    
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        thumbnails.forEach(t => {
+          t.classList.remove('border-blue-600');
+          t.classList.add('border-transparent');
+        });
+        this.classList.remove('border-transparent');
+        this.classList.add('border-blue-600');
+        const imageUrl = this.dataset.image;
+        if (mainImage) {
+          mainImage.src = imageUrl;
+        }
+      });
+    });
+
+    // Purchase type toggle
+    const purchaseTabs = document.querySelectorAll('[data-purchase-tab]');
+    purchaseTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        purchaseTabs.forEach(t => {
+          t.classList.remove('bg-blue-600', 'text-white');
+          t.classList.add('bg-white', 'text-gray-700');
+        });
+        this.classList.remove('bg-white', 'text-gray-700');
+        this.classList.add('bg-blue-600', 'text-white');
+      });
+    });
+
+    // Community slider
+    const communitySlider = document.querySelector('[data-community-slider]');
+    const prevBtn = document.querySelector('[data-slider-prev]');
+    const nextBtn = document.querySelector('[data-slider-next]');
+    let currentSlide = 0;
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        currentSlide++;
+        updateSlider();
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        currentSlide--;
+        updateSlider();
+      });
+    }
+
+    function updateSlider() {
+      if (communitySlider) {
+        const slideWidth = 183;
+        const maxSlides = Math.max(0, communitySlider.children.length - 7);
+        currentSlide = Math.max(0, Math.min(currentSlide, maxSlides));
+        communitySlider.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+      }
+    }
+  });
+{% endjavascript %}
+
+<div class="product-container mx-auto">
+  <!-- Breadcrumb -->
+  <div class="px-5 py-3">
+    <a href="{{ routes.root_url }}" class="text-[11px] uppercase font-semibold text-blue-600 tracking-wider">HOME</a>
+  </div>
+
+  <!-- Main Product Section -->
+  <div class="flex gap-10 px-5">
+    
+    <!-- Left Side: Thumbnails and Main Image -->
+    <div class="flex gap-3.5" style="width: 690px;">
+      <!-- Thumbnails -->
+      <div class="flex flex-col gap-2 w-24">
+        {% for image in product.images limit: 5 %}
+          <button 
+            data-thumbnail
+            data-image="{{ image | image_url: width: 700 }}"
+            class="thumbnail-size border-2 {% if forloop.first %}border-blue-600{% else %}border-transparent{% endif %} cursor-pointer overflow-hidden bg-white transition-colors hover:border-gray-400 p-[7px]"
+          >
+            {{ image | image_url: width: 80 | image_tag: class: 'w-full h-full object-contain' }}
+          </button>
+        {% endfor %}
+      </div>
+      
+      <!-- Main Image -->
+      <div class="main-image-container flex justify-center items-center bg-white">
+        {% if product.featured_image %}
+          {{ product.featured_image | image_url: width: 550 | image_tag: class: 'object-contain max-w-[490px] max-h-[490px]', data-main-image: true }}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right Side: Product Info -->
+    <div class="flex-1 pt-0.5">
+      
+      <!-- Title -->
+      <h1 class="text-[27px] font-bold uppercase text-blue-600 leading-[1.15] mb-3 tracking-tight">
+        AGELESS MUSCLE — REBUILD & PRESERVE MUSCLE
+      </h1>
+      
+      <!-- Rating -->
+      <div class="flex items-center gap-1.5 mb-7">
+        <div class="flex gap-px">
+          <span class="text-yellow-400 text-base">★</span>
+          <span class="text-yellow-400 text-base">★</span>
+          <span class="text-yellow-400 text-base">★</span>
+          <span class="text-yellow-400 text-base">★</span>
+          <span class="star-half text-base">★</span>
+        </div>
+        <span class="text-blue-600 text-[13px] ml-0.5">217 Reviews</span>
+      </div>
+
+      <!-- Package Selector -->
+      <div class="bg-gray-50 border border-gray-300 rounded px-6 py-5">
+        <h2 class="text-[21px] font-bold text-center text-blue-600 mb-1.5">Choose Your Package</h2>
+        <p class="text-center text-gray-700 text-sm mb-4">Select your money-saving option below:</p>
+        
+        <!-- Purchase Type Toggle -->
+        <div class="flex gap-0 border-2 border-blue-600 rounded overflow-hidden mb-5">
+          <button 
+            data-purchase-tab
+            class="flex-1 bg-blue-600 text-white font-semibold text-[15px] py-2.5 px-4 transition-colors cursor-pointer"
+          >
+            One-Time Purchase
+          </button>
+          <button 
+            data-purchase-tab
+            class="flex-1 bg-white text-gray-700 hover:bg-gray-50 font-semibold text-[15px] py-2.5 px-4 transition-colors cursor-pointer"
+          >
+            Subscribe & Save Up To 50%
+          </button>
+        </div>
+
+        <!-- Package Options -->
+        <div class="grid grid-cols-3 gap-4">
+          <!-- 1 Jar -->
+          <div class="border-2 border-gray-300 rounded text-center bg-white transition-all px-3.5 py-4">
+            <div class="text-[32px] font-bold text-blue-600 mb-1.5">1 Jar</div>
+            <div class="text-[38px] font-bold text-gray-800 leading-none my-2.5 mb-4">
+              <span class="text-[26px] align-top relative top-0.5">$</span>49
+            </div>
+            <button 
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-4 text-sm"
+              data-open-flavor-selector
+              data-quantity="1"
+              data-product='{{ product | json | escape }}'
+            >
+              CHOOSE FLAVOR
+            </button>
+          </div>
+
+          <!-- 3 Jars (Most Popular) -->
+          <div class="border-2 border-blue-600 rounded text-center bg-white transition-all relative scale-[1.03] shadow-md px-3.5 py-4">
+            <div class="absolute -top-[11px] left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-0.5 rounded-full text-[13px] font-bold">
+              Most Popular
+            </div>
+            <div class="text-[32px] font-bold text-blue-600 mb-1.5 mt-0.5">3 Jars</div>
+            <div class="text-[38px] font-bold text-green-600 leading-none my-2.5">
+              <span class="text-[26px] align-top relative top-0.5">$</span>44
+            </div>
+            <div class="text-[17px] text-gray-600">Per Jar</div>
+            <div class="text-[15px] text-red-600 font-semibold mb-3">(Save 10%)</div>
+            <button 
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-4 text-sm"
+              data-open-flavor-selector
+              data-quantity="3"
+              data-product='{{ product | json | escape }}'
+            >
+              CHOOSE FLAVORS
+            </button>
+          </div>
+
+          <!-- 6 Jars -->
+          <div class="border-2 border-gray-300 rounded text-center bg-white transition-all px-3.5 py-4">
+            <div class="text-[32px] font-bold text-blue-600 mb-1.5">6 Jars</div>
+            <div class="text-[38px] font-bold text-gray-800 leading-none my-2.5">
+              <span class="text-[26px] align-top relative top-0.5">$</span>39
+            </div>
+            <div class="text-[17px] text-gray-600">Per Jar</div>
+            <div class="text-[15px] text-red-600 font-semibold mb-3">(Save 20%)</div>
+            <button 
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-4 text-sm"
+              data-open-flavor-selector
+              data-quantity="6"
+              data-product='{{ product | json | escape }}'
+            >
+              CHOOSE FLAVORS
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- eBook Banner -->
+      <div class="flex items-center bg-green-50 border-2 border-green-500 rounded px-4 py-3.5 mt-5 gap-3.5">
+        <div class="w-[70px] h-[52px] flex-shrink-0">
+          <svg viewBox="0 0 80 60" class="w-full h-full">
+            <rect x="8" y="8" width="28" height="38" fill="#4caf50" rx="2"/>
+            <rect x="12" y="12" width="20" height="2" fill="white"/>
+            <rect x="12" y="16" width="20" height="2" fill="white"/>
+            <rect x="12" y="20" width="16" height="2" fill="white"/>
+            
+            <rect x="42" y="12" width="28" height="38" fill="#4caf50" rx="2"/>
+            <rect x="46" y="16" width="20" height="2" fill="white"/>
+            <rect x="46" y="20" width="20" height="2" fill="white"/>
+            <rect x="46" y="24" width="16" height="2" fill="white"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <div class="text-[17px] font-bold text-gray-800 mb-0.5">Two Free eBooks</div>
+          <div class="text-[13px] text-gray-600 leading-tight">"The 3 Week Diet" & "53 Fat Burning Smoothies & Milkshakes"</div>
+        </div>
+        <div class="bg-green-500 text-white px-3.5 py-1.5 rounded font-bold text-[15px] whitespace-nowrap">
+          A $50 Value
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Section -->
+  <div class="mt-12 pt-8 border-t border-gray-300">
+    <h3 class="text-center text-base font-bold text-blue-600 uppercase mb-5 tracking-wide">
+      PHOTOS FROM THE #biotrust COMMUNITY
+    </h3>
+    
+    <div class="relative overflow-hidden px-7">
+      <!-- Previous Button -->
+      <button 
+        data-slider-prev
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white border-2 border-gray-300 hover:border-blue-600 rounded-full w-[34px] h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-blue-600 text-base"
+      >
+        ‹
+      </button>
+      
+      <!-- Next Button -->
+      <button 
+        data-slider-next
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white border-2 border-gray-300 hover:border-blue-600 rounded-full w-[34px] h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-blue-600 text-base"
+      >
+        ›
+      </button>
+      
+      <!-- Images Container -->
+      <div class="flex gap-[11px] transition-transform duration-300" data-community-slider>
+        {% for i in (1..10) %}
+          <div class="community-image-size flex-shrink-0 overflow-hidden rounded border border-gray-300">
+            {% if product.images[i] %}
+              {{ product.images[i] | image_url: width: 200 | image_tag: class: 'w-full h-full object-cover' }}
+            {% else %}
+              <div class="bg-gray-100 w-full h-full"></div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
-
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
-
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
-
-    <input type="text" name="quantity" min="1" value="1">
-
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+<!-- Include Flavor Selector Modal -->
+{% render 'flavor-selector', product: product %}
 
 {% schema %}
 {

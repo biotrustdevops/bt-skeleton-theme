@@ -29,7 +29,7 @@
             "check_text_3": "Preserve and build lean muscle",
             "check_text_4": "Boost strength and recovery",
             "button_text": "SHOP NOW",
-            "button_url": "/collections/all",
+            "button_url": "shopify://products/ageless-muscle-support-supplement",
             "money_back_text": "60-DAY MONEY BACK GUARANTEE",
             "main_image": "shopify://shop_images/hero-citrus-splash.jpg"
           }

@@ -1,0 +1,428 @@
+{% comment %}
+  Flavor Selector Modal
+  Usage: {% render 'flavor-selector', product: product %}
+{% endcomment %}
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+</style>
+
+<!-- Modal Overlay -->
+<div 
+  id="flavor-selector-modal" 
+  class="fixed inset-0 z-[9999] hidden"
+  data-flavor-modal
+>
+  <!-- Background overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-50" data-modal-backdrop></div>
+  
+  <!-- Modal Content -->
+  <div class="relative flex items-center justify-center min-h-screen p-4">
+    <div class="relative bg-white max-w-6xl w-full" style="max-height: 85vh;">
+      
+      <!-- Close Button -->
+      <button 
+        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-4xl leading-none z-10 w-10 h-10 flex items-center justify-center"
+        data-modal-close
+        aria-label="Close modal"
+      >
+        ×
+      </button>
+      
+      <!-- Header -->
+      <div class="bg-[#0066cc] text-white text-center py-5 px-4">
+        <h2 class="text-[32px] font-bold uppercase tracking-tight mb-0.5" data-modal-title>SELECT A FLAVOR</h2>
+        <p class="text-[18px] font-normal" data-modal-subtitle>Choose from 3 Flavors</p>
+      </div>
+      
+      <!-- Flavor Content Area -->
+      <div class="bg-white" style="min-height: 400px; max-height: calc(85vh - 200px); overflow-y: auto;">
+        <!-- Single Selection Grid -->
+        <div class="p-10 hidden" data-single-grid>
+          <div class="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {% for variant in product.variants %}
+              {% if forloop.index <= 3 %}
+                <div class="text-center cursor-pointer group" data-variant-id="{{ variant.id }}" data-single-flavor>
+                  <div class="border-2 border-gray-300 hover:border-[#0066cc] transition-all duration-200 p-6 rounded-sm group-hover:shadow-lg">
+                    <div class="aspect-square bg-white mb-4 flex items-center justify-center p-4">
+                      {% if variant.image %}
+                        {{ variant.image | image_url: width: 280 | image_tag: class: 'w-full h-full object-contain' }}
+                      {% elsif product.featured_image %}
+                        {{ product.featured_image | image_url: width: 280 | image_tag: class: 'w-full h-full object-contain' }}
+                      {% else %}
+                        <div class="w-40 h-40 bg-gray-200 rounded"></div>
+                      {% endif %}
+                    </div>
+                    <h3 class="text-[#0066cc] font-bold text-xl">{{ variant.title }}</h3>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Multi Selection Grid -->
+        <div class="p-10 hidden" data-multi-grid>
+          <div class="grid grid-cols-2 gap-x-16 gap-y-8 max-w-4xl mx-auto">
+            {% for variant in product.variants %}
+              {% if forloop.index <= 3 %}
+                <div class="flex items-start gap-6" data-variant-id="{{ variant.id }}">
+                  <div class="w-36">
+                    <div class="aspect-square bg-white flex items-center justify-center p-2 mb-2">
+                      {% if variant.image %}
+                        {{ variant.image | image_url: width: 200 | image_tag: class: 'w-full h-full object-contain' }}
+                      {% elsif product.featured_image %}
+                        {{ product.featured_image | image_url: width: 200 | image_tag: class: 'w-full h-full object-contain' }}
+                      {% else %}
+                        <div class="w-32 h-32 bg-gray-200 rounded"></div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="flex-1 text-center">
+                    <h3 class="text-[#0066cc] font-bold text-xl mb-4">{{ variant.title }}</h3>
+                    <div class="flex items-center justify-center gap-4">
+                      <button 
+                        class="w-12 h-12 rounded-full bg-gray-300 hover:bg-gray-400 text-white font-bold text-2xl flex items-center justify-center transition-colors leading-none pb-1"
+                        data-decrease="{{ variant.id }}"
+                      >
+                        −
+                      </button>
+                      <div class="w-20 text-center">
+                        <div class="text-3xl font-bold text-gray-900" data-quantity="{{ variant.id }}">0</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider">Quantity</div>
+                      </div>
+                      <button 
+                        class="w-12 h-12 rounded-full bg-gray-300 hover:bg-gray-400 text-white font-bold text-2xl flex items-center justify-center transition-colors leading-none pb-0.5"
+                        data-increase="{{ variant.id }}"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer (for multi-quantity mode) -->
+      <div class="bg-[#0066cc] text-white px-10 py-5 flex items-center justify-between hidden" data-modal-footer>
+        <div class="text-xl">
+          <span class="font-bold">60-DAY</span> <span class="font-normal text-lg">MONEY-BACK</span><br>
+          <span class="font-normal text-base uppercase tracking-wide">Guarantee</span>
+        </div>
+        
+        <button 
+          class="bg-gray-500 text-white px-10 py-3.5 rounded font-bold text-lg uppercase tracking-wider transition-all duration-200 min-w-[200px]"
+          data-add-to-cart
+          disabled
+        >
+          CHOOSE FLAVORS
+        </button>
+        
+        <div class="text-right">
+          <div class="text-4xl font-bold">
+            <span data-selected-count>0</span> / <span data-total-count>6</span>
+          </div>
+          <div class="text-base font-normal">Selected</div>
+        </div>
+      </div>
+      
+      <!-- Validation Alert -->
+      <div 
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white px-8 py-6 rounded-lg shadow-2xl hidden z-20 max-w-md"
+        data-validation-alert
+      >
+        <h3 class="text-xl font-bold mb-3 uppercase">Maximum Quantity Reached</h3>
+        <p class="text-base leading-relaxed">Decrease another flavor's quantity to add this flavor to your order.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class FlavorSelector {
+    constructor() {
+      this.modal = document.querySelector('[data-flavor-modal]');
+      this.backdrop = document.querySelector('[data-modal-backdrop]');
+      this.closeBtn = document.querySelector('[data-modal-close]');
+      this.singleGrid = document.querySelector('[data-single-grid]');
+      this.multiGrid = document.querySelector('[data-multi-grid]');
+      this.footer = document.querySelector('[data-modal-footer]');
+      this.addToCartBtn = document.querySelector('[data-add-to-cart]');
+      this.selectedCountEl = document.querySelector('[data-selected-count]');
+      this.totalCountEl = document.querySelector('[data-total-count]');
+      this.validationAlert = document.querySelector('[data-validation-alert]');
+      this.titleEl = document.querySelector('[data-modal-title]');
+      this.subtitleEl = document.querySelector('[data-modal-subtitle]');
+      
+      this.mode = 'single';
+      this.maxQuantity = 1;
+      this.selections = {};
+      
+      this.init();
+    }
+    
+    init() {
+      // Close modal handlers
+      this.closeBtn?.addEventListener('click', () => this.close());
+      this.backdrop?.addEventListener('click', () => this.close());
+      
+      // ESC key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+          this.close();
+        }
+      });
+      
+      // Listen for open events from product page buttons
+      document.addEventListener('click', (e) => {
+        const flavorBtn = e.target.closest('[data-open-flavor-selector]');
+        if (flavorBtn) {
+          e.preventDefault();
+          const quantity = parseInt(flavorBtn.dataset.quantity || '1');
+          this.open(quantity);
+        }
+      });
+      
+      // Single flavor selection
+      document.querySelectorAll('[data-single-flavor]').forEach(el => {
+        el.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const variantId = el.dataset.variantId;
+          this.selections = { [variantId]: 1 };
+          
+          // Add visual feedback for selection
+          el.querySelector('div').classList.add('border-blue-600', 'shadow-lg');
+          
+          // Small delay for visual feedback
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          // Add to cart
+          await this.addToCart();
+        });
+      });
+      
+      // Multi flavor quantity controls
+      document.querySelectorAll('[data-decrease]').forEach(btn => {
+        btn.addEventListener('click', () => this.decreaseQuantity(btn.dataset.decrease));
+      });
+      
+      document.querySelectorAll('[data-increase]').forEach(btn => {
+        btn.addEventListener('click', () => this.increaseQuantity(btn.dataset.increase));
+      });
+      
+      // Add to cart handler
+      this.addToCartBtn?.addEventListener('click', () => this.addToCart());
+    }
+    
+    open(quantity = 1) {
+      this.maxQuantity = quantity;
+      this.mode = quantity === 1 ? 'single' : 'multi';
+      this.selections = {};
+      
+      // Update UI based on mode
+      if (this.mode === 'single') {
+        this.titleEl.textContent = 'SELECT A FLAVOR';
+        this.subtitleEl.textContent = 'Choose from 3 Flavors';
+        this.singleGrid.classList.remove('hidden');
+        this.multiGrid.classList.add('hidden');
+        this.footer.classList.add('hidden');
+      } else {
+        this.titleEl.textContent = 'SELECT FLAVOR QUANTITIES';
+        this.subtitleEl.textContent = 'Mix and Match Up To 3 Flavors';
+        this.singleGrid.classList.add('hidden');
+        this.multiGrid.classList.remove('hidden');
+        this.footer.classList.remove('hidden');
+        this.totalCountEl.textContent = quantity;
+        this.resetQuantities();
+        this.updateCounter();
+      }
+      
+      // Show modal
+      this.modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    close() {
+      this.modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      this.hideValidationAlert();
+    }
+    
+    resetQuantities() {
+      document.querySelectorAll('[data-quantity]').forEach(el => {
+        el.textContent = '0';
+      });
+    }
+    
+    decreaseQuantity(variantId) {
+      const current = this.selections[variantId] || 0;
+      if (current > 0) {
+        this.selections[variantId] = current - 1;
+        if (this.selections[variantId] === 0) {
+          delete this.selections[variantId];
+        }
+        document.querySelector(`[data-quantity="${variantId}"]`).textContent = this.selections[variantId] || 0;
+        this.updateCounter();
+      }
+    }
+    
+    increaseQuantity(variantId) {
+      const current = this.selections[variantId] || 0;
+      const total = Object.values(this.selections).reduce((sum, val) => sum + val, 0);
+      
+      if (total < this.maxQuantity) {
+        this.selections[variantId] = current + 1;
+        document.querySelector(`[data-quantity="${variantId}"]`).textContent = this.selections[variantId];
+        this.updateCounter();
+      } else {
+        this.showValidationAlert();
+      }
+    }
+    
+    updateCounter() {
+      const total = Object.values(this.selections).reduce((sum, val) => sum + val, 0);
+      this.selectedCountEl.textContent = total;
+      
+      // Update button state
+      if (total === this.maxQuantity) {
+        this.addToCartBtn.disabled = false;
+        this.addToCartBtn.classList.remove('bg-gray-500');
+        this.addToCartBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+        this.addToCartBtn.textContent = 'ADD TO CART';
+      } else {
+        this.addToCartBtn.disabled = true;
+        this.addToCartBtn.classList.add('bg-gray-500');
+        this.addToCartBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+        this.addToCartBtn.textContent = 'CHOOSE FLAVORS';
+      }
+    }
+    
+    showValidationAlert() {
+      this.validationAlert.classList.remove('hidden');
+      setTimeout(() => {
+        this.hideValidationAlert();
+      }, 3000);
+    }
+    
+    hideValidationAlert() {
+      this.validationAlert.classList.add('hidden');
+    }
+    
+    async addToCart() {
+      // Show loading state
+      this.setLoadingState(true);
+      
+      try {
+        // Prepare items for cart
+        const items = Object.entries(this.selections)
+          .filter(([variantId, quantity]) => quantity > 0)
+          .map(([variantId, quantity]) => ({
+            id: parseInt(variantId),
+            quantity: quantity
+          }));
+        
+        if (items.length === 0) {
+          console.error('No items selected');
+          this.setLoadingState(false);
+          return;
+        }
+        
+        // Add items to cart using Shopify Cart API
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ items })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to add items to cart');
+        }
+        
+        const result = await response.json();
+        console.log('Successfully added to cart:', result);
+        
+        // Dispatch custom event with selections
+        const event = new CustomEvent('flavors-selected', {
+          detail: {
+            selections: this.selections,
+            quantity: this.maxQuantity,
+            items: items
+          }
+        });
+        document.dispatchEvent(event);
+        
+        // Close modal
+        this.close();
+        
+        // Redirect to cart page
+        window.location.href = '/cart';
+        
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        this.showErrorMessage('Failed to add items to cart. Please try again.');
+        this.setLoadingState(false);
+      }
+    }
+    
+    setLoadingState(isLoading) {
+      if (this.addToCartBtn) {
+        if (isLoading) {
+          this.addToCartBtn.disabled = true;
+          this.addToCartBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⟳</span> ADDING...';
+          this.addToCartBtn.classList.add('opacity-75', 'cursor-wait');
+        } else {
+          this.addToCartBtn.disabled = false;
+          this.addToCartBtn.innerHTML = 'ADD TO CART';
+          this.addToCartBtn.classList.remove('opacity-75', 'cursor-wait');
+        }
+      }
+      
+      // Also disable close button during loading
+      if (this.closeBtn) {
+        this.closeBtn.disabled = isLoading;
+      }
+    }
+    
+    showErrorMessage(message) {
+      // Create or update error message element
+      let errorEl = document.querySelector('[data-error-message]');
+      if (!errorEl) {
+        errorEl = document.createElement('div');
+        errorEl.setAttribute('data-error-message', '');
+        errorEl.className = 'bg-red-600 text-white px-6 py-3 text-center font-semibold';
+        const footer = this.modal.querySelector('[data-modal-footer]');
+        if (footer) {
+          footer.parentNode.insertBefore(errorEl, footer);
+        }
+      }
+      
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+      
+      // Hide error after 5 seconds
+      setTimeout(() => {
+        errorEl.classList.add('hidden');
+      }, 5000);
+    }
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new FlavorSelector();
+    });
+  } else {
+    new FlavorSelector();
+  }
+</script>

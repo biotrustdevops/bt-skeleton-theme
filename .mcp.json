@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "puppeteer": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
-      "description": "Puppeteer MCP server for browser automation and screenshot capture"
-    }
-  }
-}

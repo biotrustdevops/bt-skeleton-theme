@@ -113,7 +113,11 @@
 </div>
 
 {% # Main Header %}
-<header class="bg-white shadow-sm py-3 md:py-4">
+{% liquid
+  assign default_bg_image = 'https://cdn.shopify.com/s/files/1/2451/8571/files/bg_a71a657f-2566-4a98-a55e-e76b5555861c.webp?v=1730922299'
+  assign header_bg_image = section.settings.header_background_image | default: default_bg_image
+%}
+<header class="bg-white shadow-sm py-3 md:py-4 relative" style="background-image: url('{{ header_bg_image }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
   <div class="max-w-7xl mx-auto px-3 md:px-5 flex items-center justify-between gap-4 md:gap-8">
       {% # Mobile Menu Button %}
       <button class="lg:hidden flex items-center p-2 -ml-2" data-mobile-menu-toggle>
@@ -332,6 +336,12 @@
       "type": "url",
       "id": "help_center_link",
       "label": "Help Center Link"
+    },
+    {
+      "type": "url",
+      "id": "header_background_image",
+      "label": "Header Background Image URL",
+      "info": "Enter a URL for the background image behind the main menu and logo row. Leave empty for default."
     }
   ]
 }

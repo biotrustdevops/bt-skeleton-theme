@@ -1,0 +1,32 @@
+{
+  "name": "shopify-split-test-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for server-side A/B testing with Shopify",
+  "main": "worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "node test.js",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "tail": "wrangler tail",
+    "tail:staging": "wrangler tail --env staging",
+    "tail:production": "wrangler tail --env production",
+    "kv:create": "wrangler kv:namespace create SPLIT_TESTS",
+    "kv:list": "wrangler kv:namespace list"
+  },
+  "keywords": [
+    "cloudflare",
+    "worker",
+    "shopify",
+    "split-testing",
+    "ab-testing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

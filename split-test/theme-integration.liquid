@@ -1,0 +1,169 @@
+{% comment %}
+  Split Test Integration for Shopify Theme
+  Add this to your layout/theme.liquid file at the very top of the <body> tag
+{% endcomment %}
+
+{% liquid
+  # Initialize split test variables
+  assign ab_variant = 'control'
+  assign ab_test = ''
+  assign ab_variants = ''
+  
+  # Method 1: Check URL parameters (set by Cloudflare Worker)
+  for parameter in request.host
+    if parameter contains 'variant='
+      assign param_parts = parameter | split: '='
+      if param_parts[0] == 'variant'
+        assign ab_variant = param_parts[1]
+      endif
+    endif
+    
+    if parameter contains 'variant_test='
+      assign param_parts = parameter | split: '='
+      if param_parts[0] == 'variant_test'
+        assign ab_test = param_parts[1]
+      endif
+    endif
+  endfor
+  
+  # Method 2: Check custom headers (if accessible)
+  # Note: This depends on Shopify exposing custom headers, which may not always work
+  # assign ab_variant_header = request.headers['X-AB-Variant'] | default: 'control'
+  # assign ab_test_header = request.headers['X-AB-Variant-Test'] | default: ''
+  
+  # Store in global variable for use throughout theme
+  assign split_test_data = ab_variant | append: ':' | append: ab_test
+%}
+
+{% comment %} Debug output (remove in production) {% endcomment %}
+{% if settings.enable_split_test_debug %}
+  <script>
+    console.log('Split Test Debug:', {
+      variant: '{{ ab_variant }}',
+      test: '{{ ab_test }}',
+      path: '{{ request.path }}',
+      params: {{ request.url | json }}
+    });
+  </script>
+{% endif %}
+
+{% comment %} Add variant data to page for analytics {% endcomment %}
+<script>
+  window.splitTestData = {
+    variant: '{{ ab_variant }}',
+    test: '{{ ab_test }}',
+    timestamp: Date.now()
+  };
+  
+  // Add to Shopify Analytics meta
+  window.ShopifyAnalytics = window.ShopifyAnalytics || {};
+  window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
+  window.ShopifyAnalytics.meta.ab_variant = '{{ ab_variant }}';
+  window.ShopifyAnalytics.meta.ab_test = '{{ ab_test }}';
+  
+  // Track in Google Analytics (if available)
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'split_test_pageview', {
+      'test_id': '{{ ab_test }}',
+      'variant_id': '{{ ab_variant }}',
+      'page_path': '{{ request.path }}',
+      'page_title': '{{ page_title }}'
+    });
+  }
+  
+  // Track in Segment (if available)
+  if (typeof analytics !== 'undefined') {
+    analytics.track('Split Test Viewed', {
+      test: '{{ ab_test }}',
+      variant: '{{ ab_variant }}',
+      path: '{{ request.path }}'
+    });
+  }
+  
+  // Custom tracking function for conversion events
+  window.trackSplitTestConversion = function(eventName, eventData) {
+    const data = {
+      ...eventData,
+      test: '{{ ab_test }}',
+      variant: '{{ ab_variant }}'
+    };
+    
+    // Google Analytics
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'split_test_conversion', {
+        'event_name': eventName,
+        'test_id': '{{ ab_test }}',
+        'variant_id': '{{ ab_variant }}',
+        ...eventData
+      });
+    }
+    
+    // Segment
+    if (typeof analytics !== 'undefined') {
+      analytics.track('Split Test Conversion', {
+        eventName: eventName,
+        ...data
+      });
+    }
+    
+    // Custom endpoint (if configured)
+    if (window.splitTestEndpoint) {
+      fetch(window.splitTestEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'conversion',
+          name: eventName,
+          ...data
+        })
+      });
+    }
+  };
+</script>
+
+{% comment %}
+  Example Usage in Sections:
+  
+  1. Hero Section Variant:
+  {% if ab_variant == 'variant-a' %}
+    {% section 'hero-variant-a' %}
+  {% elsif ab_variant == 'variant-b' %}
+    {% section 'hero-variant-b' %}
+  {% else %}
+    {% section 'hero-control' %}
+  {% endif %}
+  
+  2. Product Page Layout:
+  {% case ab_variant %}
+    {% when 'variant-a' %}
+      {% render 'product-layout-grid' %}
+    {% when 'variant-b' %}
+      {% render 'product-layout-single' %}
+    {% else %}
+      {% render 'product-layout-default' %}
+  {% endcase %}
+  
+  3. Button Text Variant:
+  <button data-variant="{{ ab_variant }}">
+    {% if ab_variant == 'variant-a' %}
+      Buy Now & Save
+    {% elsif ab_variant == 'variant-b' %}
+      Add to Cart - Free Shipping
+    {% else %}
+      Add to Cart
+    {% endif %}
+  </button>
+  
+  4. Conditional CSS:
+  {% if ab_variant == 'variant-a' %}
+    <style>
+      .hero { background-color: var(--color-primary); }
+      .cta-button { font-size: 1.2em; }
+    </style>
+  {% endif %}
+  
+  5. Track Conversions:
+  <button onclick="trackSplitTestConversion('add_to_cart', { product_id: '{{ product.id }}', price: {{ product.price | money_without_currency }} })">
+    Add to Cart
+  </button>
+{% endcomment %}

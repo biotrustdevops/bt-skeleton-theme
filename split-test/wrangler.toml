@@ -1,0 +1,47 @@
+name = "shopify-split-test"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Your Cloudflare account ID
+account_id = "YOUR_ACCOUNT_ID"
+
+# Environment configuration
+[env.production]
+name = "shopify-split-test-production"
+route = "YOUR_STORE_DOMAIN.com/*"
+zone_id = "YOUR_ZONE_ID"
+
+[env.staging]
+name = "shopify-split-test-staging"
+route = "staging.YOUR_STORE_DOMAIN.com/*"
+zone_id = "YOUR_ZONE_ID"
+
+# KV Namespace bindings (optional - for persistent variant assignments)
+# First create the namespace: wrangler kv:namespace create "SPLIT_TESTS"
+# [[kv_namespaces]]
+# binding = "SPLIT_TESTS"
+# id = "YOUR_KV_NAMESPACE_ID"
+
+# Durable Objects (optional - for more complex state management)
+# [durable_objects]
+# bindings = [
+#   { name = "SPLIT_TEST_STATE", class_name = "SplitTestState" }
+# ]
+
+# Environment variables
+[vars]
+ANALYTICS_ENDPOINT = ""
+DEBUG_MODE = "false"
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Performance settings
+[limits]
+cpu_ms = 50
+
+# Compatibility flags
+[compatibility_flags]
+nodejs_compat = true

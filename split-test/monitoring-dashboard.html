@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Test Monitoring Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        .variant-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .control {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .variant-a {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .variant-b {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e1e8ed;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status.active {
+            background: #28a745;
+            color: white;
+        }
+        
+        .status.paused {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .status.completed {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .chart-container {
+            height: 200px;
+            margin-top: 1rem;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e1e8ed;
+            color: #5a6c7d;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d8dd;
+        }
+        
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .alert-icon {
+            font-size: 1.5rem;
+        }
+        
+        .winner {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #28a745;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .confidence-meter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .confidence-label {
+            font-size: 0.9rem;
+            color: #5a6c7d;
+            min-width: 100px;
+        }
+        
+        .confidence-bar {
+            flex: 1;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f39c12, #e74c3c, #27ae60);
+            transition: width 0.5s ease;
+        }
+        
+        .confidence-value {
+            font-weight: 600;
+            min-width: 50px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Split Test Monitoring Dashboard</h1>
+        
+        <div class="alert">
+            <span class="alert-icon">⚠️</span>
+            <div>
+                <strong>Active Test:</strong> Homepage Hero Variations
+                <br>
+                <small>Running for 3 days, 14 hours</small>
+            </div>
+            <div style="margin-left: auto;">
+                <span class="live-indicator">
+                    <span class="live-dot"></span>
+                    LIVE
+                </span>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <!-- Overview Card -->
+            <div class="card">
+                <h2>Test Overview</h2>
+                <div class="metric">
+                    <span class="metric-label">Test Name</span>
+                    <span class="metric-value">Homepage Hero</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Status</span>
+                    <span class="status active">Active</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Visitors</span>
+                    <span class="metric-value">24,586</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Conversions</span>
+                    <span class="metric-value">1,842</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Overall CVR</span>
+                    <span class="metric-value">7.49%</span>
+                </div>
+            </div>
+            
+            <!-- Control Variant -->
+            <div class="card variant-card control">
+                <h2>Control</h2>
+                <div class="metric">
+                    <span class="metric-label">Visitors</span>
+                    <span class="metric-value">12,293</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversions</span>
+                    <span class="metric-value">856</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversion Rate</span>
+                    <span class="metric-value">6.97%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 69.7%">6.97%</div>
+                </div>
+                <div class="confidence-meter">
+                    <span class="confidence-label">Confidence</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: 45%"></div>
+                    </div>
+                    <span class="confidence-value">45%</span>
+                </div>
+            </div>
+            
+            <!-- Variant A -->
+            <div class="card variant-card variant-a winner">
+                <h2>Variant A ⭐</h2>
+                <div class="metric">
+                    <span class="metric-label">Visitors</span>
+                    <span class="metric-value">6,147</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversions</span>
+                    <span class="metric-value">542</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversion Rate</span>
+                    <span class="metric-value">8.82%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 88.2%; background: linear-gradient(90deg, #28a745, #20c997)">8.82% ↑26.5%</div>
+                </div>
+                <div class="confidence-meter">
+                    <span class="confidence-label">Confidence</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: 94%"></div>
+                    </div>
+                    <span class="confidence-value">94%</span>
+                </div>
+            </div>
+            
+            <!-- Variant B -->
+            <div class="card variant-card variant-b">
+                <h2>Variant B</h2>
+                <div class="metric">
+                    <span class="metric-label">Visitors</span>
+                    <span class="metric-value">6,146</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversions</span>
+                    <span class="metric-value">444</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversion Rate</span>
+                    <span class="metric-value">7.23%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 72.3%">7.23%</div>
+                </div>
+                <div class="confidence-meter">
+                    <span class="confidence-label">Confidence</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: 62%"></div>
+                    </div>
+                    <span class="confidence-value">62%</span>
+                </div>
+            </div>
+            
+            <!-- Performance Metrics -->
+            <div class="card">
+                <h2>Performance Metrics</h2>
+                <div class="metric">
+                    <span class="metric-label">Avg. Page Load</span>
+                    <span class="metric-value">1.2s</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Worker Latency</span>
+                    <span class="metric-value">32ms</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Cache Hit Rate</span>
+                    <span class="metric-value">87%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Error Rate</span>
+                    <span class="metric-value">0.02%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Edge Locations</span>
+                    <span class="metric-value">42</span>
+                </div>
+            </div>
+            
+            <!-- Revenue Impact -->
+            <div class="card">
+                <h2>Revenue Impact</h2>
+                <div class="metric">
+                    <span class="metric-label">Control Revenue</span>
+                    <span class="metric-value">$42,800</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Variant A Revenue</span>
+                    <span class="metric-value" style="color: #28a745">$54,200 ↑</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Variant B Revenue</span>
+                    <span class="metric-value">$44,400</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Projected Uplift</span>
+                    <span class="metric-value" style="color: #28a745">+$342,000/year</span>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="card" style="grid-column: span 2;">
+                <h2>Test Controls</h2>
+                <div class="actions">
+                    <button class="btn-primary" onclick="declareWinner()">
+                        🏆 Declare Winner (Variant A)
+                    </button>
+                    <button class="btn-secondary" onclick="pauseTest()">
+                        ⏸️ Pause Test
+                    </button>
+                    <button class="btn-secondary" onclick="exportData()">
+                        📊 Export Data
+                    </button>
+                    <button class="btn-secondary" onclick="refreshData()">
+                        🔄 Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulated functions for demo
+        function declareWinner() {
+            if (confirm('Are you sure you want to declare Variant A as the winner and end this test?')) {
+                alert('Variant A has been set as the winner. All traffic will now see this variant.');
+            }
+        }
+        
+        function pauseTest() {
+            alert('Test has been paused. All visitors will see the control variant.');
+        }
+        
+        function exportData() {
+            alert('Downloading test data as CSV...');
+        }
+        
+        function refreshData() {
+            location.reload();
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            console.log('Fetching latest data...');
+            // In production, this would fetch real data from your API
+        }, 30000);
+        
+        // Simulate live updates
+        setInterval(() => {
+            const visitors = document.querySelectorAll('.metric-value');
+            visitors.forEach(el => {
+                if (el.textContent.match(/^\d+,\d+$/)) {
+                    const current = parseInt(el.textContent.replace(',', ''));
+                    el.textContent = (current + Math.floor(Math.random() * 5)).toLocaleString();
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

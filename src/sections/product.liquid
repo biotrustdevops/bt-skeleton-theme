@@ -13,28 +13,140 @@
     overflow: hidden;
     color: #fbbf24;
   }
+
+  /* Thumbnail Swiper Custom Styles */
+  .thumbnail-swiper {
+    width: 102px; /* Increased width to account for borders */
+    padding: 0 4px; /* Add padding for border visibility */
+  }
+  
+  .thumbnail-swiper .swiper-wrapper {
+    padding: 0 2px; /* Ensure borders aren't clipped */
+  }
+  
+  .thumbnail-swiper .swiper-slide {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .thumbnail-swiper .swiper-slide.loaded {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Loading skeleton animation */
+  .thumbnail-loading {
+    width: 94px;
+    height: 94px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Stagger animation for thumbnails */
+  .thumbnail-swiper .swiper-slide:nth-child(1) { transition-delay: 0.1s; }
+  .thumbnail-swiper .swiper-slide:nth-child(2) { transition-delay: 0.2s; }
+  .thumbnail-swiper .swiper-slide:nth-child(3) { transition-delay: 0.3s; }
+  .thumbnail-swiper .swiper-slide:nth-child(4) { transition-delay: 0.4s; }
+  .thumbnail-swiper .swiper-slide:nth-child(5) { transition-delay: 0.5s; }
+
+  .swiper-thumb-prev,
+  .swiper-thumb-next {
+    cursor: pointer;
+  }
+
+  .swiper-thumb-prev.swiper-button-disabled,
+  .swiper-thumb-next.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
 {% endstylesheet %}
 
 {% javascript %}
   document.addEventListener('DOMContentLoaded', function() {
-    // Thumbnail gallery
+    // Initialize Swiper for thumbnails
+    const thumbSwiper = new Swiper('.thumbnail-swiper', {
+      direction: 'vertical',
+      slidesPerGroup: 5,
+      slidesPerView: 5,
+      spaceBetween: 0,
+      centeredSlides: false,
+      slideToClickedSlide: true,
+      navigation: {
+        nextEl: '.swiper-thumb-next',
+        prevEl: '.swiper-thumb-prev',
+      },
+      watchSlidesProgress: true,
+      observer: true,
+      observeParents: true,
+    });
+
+    // Animate thumbnails when images load
+    const thumbnailSlides = document.querySelectorAll('.thumbnail-swiper .swiper-slide');
+    thumbnailSlides.forEach((slide) => {
+      const img = slide.querySelector('img');
+      const loadingPlaceholder = slide.querySelector('.thumbnail-loading');
+      
+      if (img) {
+        // Hide loading placeholder and show image with animation
+        const showImage = () => {
+          if (loadingPlaceholder) {
+            loadingPlaceholder.style.display = 'none';
+          }
+          slide.classList.add('loaded');
+        };
+        
+        // Check if image is already loaded (cached)
+        if (img.complete) {
+          setTimeout(showImage, 50);
+        } else {
+          // Add loaded class when image loads
+          img.addEventListener('load', showImage);
+        }
+      }
+    });
+
+    // Thumbnail gallery click handling
     const thumbnails = document.querySelectorAll('[data-thumbnail]');
-    const mainImage = document.querySelector('[data-main-image]');
+    const mainImages = document.querySelectorAll('[data-main-image]'); // Select ALL main images
     const dots = document.querySelectorAll('[data-carousel-dot]');
     let currentImageIndex = 0;
     
     thumbnails.forEach((thumb, index) => {
       thumb.addEventListener('click', function() {
+        // Remove active state from all thumbnails
         thumbnails.forEach(t => {
           t.classList.remove('border-[#0d4f9a]');
           t.classList.add('border-transparent');
         });
+        // Add active state to clicked thumbnail
         this.classList.remove('border-transparent');
         this.classList.add('border-[#0d4f9a]');
+        // Swap ALL main images (mobile and desktop)
         const imageUrl = this.dataset.image;
-        if (mainImage) {
-          mainImage.src = imageUrl;
-        }
+        mainImages.forEach(img => {
+          if (img) {
+            // Remove srcset to ensure src takes priority
+            img.removeAttribute('srcset');
+            img.removeAttribute('sizes');
+            img.src = imageUrl;
+          }
+        });
+        // Update mobile dots if present
         updateDots(index);
       });
     });
@@ -56,9 +168,15 @@
     dots.forEach((dot, index) => {
       dot.addEventListener('click', function() {
         const imageUrl = this.dataset.image;
-        if (mainImage) {
-          mainImage.src = imageUrl;
-        }
+        // Update ALL main images
+        mainImages.forEach(img => {
+          if (img) {
+            // Remove srcset to ensure src takes priority
+            img.removeAttribute('srcset');
+            img.removeAttribute('sizes');
+            img.src = imageUrl;
+          }
+        });
         updateDots(index);
         // Also update thumbnail selection
         if (thumbnails[index]) {
@@ -84,37 +202,6 @@
         this.classList.add('bg-[#0d4f9a]', 'text-white');
       });
     });
-
-    // Community slider
-    const communitySlider = document.querySelector('[data-community-slider]');
-    const prevBtn = document.querySelector('[data-slider-prev]');
-    const nextBtn = document.querySelector('[data-slider-next]');
-    let currentSlide = 0;
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        currentSlide++;
-        updateSlider();
-      });
-    }
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        currentSlide--;
-        updateSlider();
-      });
-    }
-
-    function updateSlider() {
-      if (communitySlider) {
-        const isMobile = window.innerWidth < 768;
-        const slideWidth = isMobile ? 120 : 183;
-        const visibleSlides = isMobile ? 2 : 3;
-        const maxSlides = Math.max(0, communitySlider.children.length - visibleSlides);
-        currentSlide = Math.max(0, Math.min(currentSlide, maxSlides));
-        communitySlider.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
-      }
-    }
   });
 {% endjavascript %}
 
@@ -175,58 +262,88 @@
 
 <!-- Main Product Section -->
 <div class="flex">
-    
+
     <!-- Left Side: Thumbnails, Main Image, and eBook Banner (Desktop only) -->
     <div class="hidden md:flex md:flex-col md:w-1/2">
-      <div class="flex gap-3.5">
-        <!-- Thumbnails -->
-        <div class="flex flex-col gap-2 w-24">
-          {% for image in product.images limit: 5 %}
-            <button 
-              data-thumbnail
-              data-image="{{ image | image_url: width: 700 }}"
-              class="w-[94px] h-[94px] border-2 {% if forloop.first %}border-[#0d4f9a]{% else %}border-transparent{% endif %} cursor-pointer overflow-hidden bg-white transition-colors hover:border-gray-400 p-[7px]"
-            >
-              {{ image | image_url: width: 80 | image_tag: class: 'w-full h-full object-contain' }}
+
+      <div class="flex flex-col">
+
+        <div class="flex justify-evenly">
+          <!-- Thumbnails with Swiper -->
+          <div class="flex flex-col justify-center gap-2 w-[110px]">
+            <!-- Up Arrow -->
+            <button class="swiper-thumb-prev w-full h-8 bg-white border border-gray-300 rounded flex items-center justify-center hover:border-[#0d4f9a] hover:bg-gray-50 transition-colors cursor-pointer">
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
             </button>
-          {% endfor %}
-        </div>
-        
-        <!-- Main Image -->
-        <div class="flex flex-col justify-center items-center flex-1">
-          <!-- Title (Desktop only) -->
-          <h1 class="text-2xl font-bold uppercase text-[#0d4f9a]">
-            {{ product.title }}
-          </h1>
-          
-          <!-- Rating (Desktop only) -->
-          <div class="flex items-center">
-            <div class="flex gap-px">
-              <span class="text-yellow-400 text-base">★</span>
-              <span class="text-yellow-400 text-base">★</span>
-              <span class="text-yellow-400 text-base">★</span>
-              <span class="text-yellow-400 text-base">★</span>
-              <span class="star-half text-base">★</span>
+            
+            <!-- Swiper Container -->
+            <div class="thumbnail-swiper h-[480px] overflow-hidden">
+              <div class="swiper-wrapper">
+                {% for image in product.images %}
+                  <div class="swiper-slide">
+                    <button 
+                      data-thumbnail
+                      data-image="{{ image | image_url: width: 700 }}"
+                      class="w-[94px] h-[94px] border-2 {% if forloop.first %}border-[#0d4f9a]{% else %}border-transparent{% endif %} cursor-pointer bg-white transition-colors hover:border-gray-400 p-[7px] flex items-center justify-center relative"
+                    >
+                      <div class="thumbnail-loading absolute inset-[7px]"></div>
+                      {{ image | image_url: width: 80 | image_tag: class: 'w-auto h-auto max-w-full max-h-full object-contain relative z-10', loading: 'eager' }}
+                    </button>
+                  </div>
+                {% endfor %}
+              </div>
             </div>
-            <span class="text-[#0d4f9a] text-[13px] ml-0.5">217 Reviews</span>
+            
+            <!-- Down Arrow -->
+            <button class="swiper-thumb-next w-full h-8 bg-white border border-gray-300 rounded flex items-center justify-center hover:border-[#0d4f9a] hover:bg-gray-50 transition-colors cursor-pointer">
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </div>
 
-          {% if product.featured_image %}
-            {{ product.featured_image | image_url: width: 550 | image_tag: class: 'object-contain max-w-[490px] max-h-[490px]', data-main-image: true }}
-          {% endif %}
+          <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center">
+              <!-- Title and Rating above both thumbnails and image -->
+              <h1 class="text-2xl text-center font-bold uppercase text-[#0d4f9a]">
+                {{ product.title }}
+              </h1>
+
+              <!-- Rating (Desktop only) -->
+              <div class="flex items-center justify-center">
+                <div class="flex gap-px">
+                  <span class="text-yellow-400 text-base">★</span>
+                  <span class="text-yellow-400 text-base">★</span>
+                  <span class="text-yellow-400 text-base">★</span>
+                  <span class="text-yellow-400 text-base">★</span>
+                  <span class="star-half text-base">★</span>
+                </div>
+                <span class="text-[#0d4f9a] text-[13px] ml-0.5">217 Reviews</span>
+              </div>
+            </div>
+
+            <!-- Main Image -->
+            {% if product.featured_image %}
+              <div>
+                {{ product.featured_image | image_url: width: 550 | image_tag: class: 'object-contain max-w-[490px] max-h-[490px]', data-main-image: true }}
+              </div>
+            {% endif %}
+
+            <!-- eBook Banner (Desktop) -->
+            {% if product.metafields["global"]["Free-Ebook-Image"] != blank %}
+              <div class="mt-4">
+                <img src='{{ product.metafields["global"]["Free-Ebook-Image"] }}'
+                    class="free-ebook-img w-full max-w-[490px]"
+                    width="600"
+                    height="200"
+                    alt="Receive two free e-books with your order. 'The 3 Week Diet' and '53 Fat Burning Smoothies & Milkshakes' are yours free, a $50 value." />
+              </div>
+            {% endif %}
+          </div>
         </div>
       </div>
-      
-      <!-- eBook Banner (Desktop) -->
-      {% if product.metafields["global"]["Free-Ebook-Image"] != blank %}
-        <div class="mt-5 ml-[110px] flex justify-center">
-          <img src="{{ product.metafields["global"]["Free-Ebook-Image"] }}"
-              class="free-ebook-img w-full max-w-[490px]"
-              width="600"
-              height="200"
-              alt="Receive two free e-books with your order. 'The 3 Week Diet' and '53 Fat Burning Smoothies & Milkshakes' are yours free, a $50 value." />
-        </div>
-      {% endif %}
     </div>
 
     <!-- Right Side: Product Info -->
@@ -341,44 +458,9 @@
         </div>
       </div>
 
-      <!-- Community Section -->
       <div class="mt-3 md:mt-6 overflow-hidden">
-        <h3 class="text-center text-sm md:text-base font-bold text-[#0d4f9a] uppercase mb-4 md:mb-5 tracking-wide px-4 md:px-0">
-          PHOTOS FROM THE #biotrust COMMUNITY
-        </h3>
-        
-        <div class="relative overflow-hidden max-w-full mx-4">
-          <!-- Previous Button -->
-          <button 
-            data-slider-prev
-            class="absolute left-0 md:left-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-[#0d4f9a] rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-[#0d4f9a] text-lg md:text-base"
-          >
-            ‹
-          </button>
-          
-          <!-- Next Button -->
-          <button 
-            data-slider-next
-            class="absolute right-0 md:right-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-[#0d4f9a] rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-[#0d4f9a] text-lg md:text-base"
-          >
-            ›
-          </button>
-          
-          <!-- Images Container -->
-          <div class="flex gap-2 md:gap-[11px] transition-transform duration-300" data-community-slider>
-            {% for i in (1..10) %}
-              <div class="w-28 h-28 md:w-[172px] md:h-[172px] flex-shrink-0 overflow-hidden rounded border border-gray-300">
-                {% if product.images[i] %}
-                  {{ product.images[i] | image_url: width: 200 | image_tag: class: 'w-full h-full object-cover' }}
-                {% else %}
-                  <div class="bg-gray-100 w-full h-full"></div>
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
+        {% render 'yotpo-product-ugc' %}
       </div>
-
     </div>
 </div>
 
@@ -414,6 +496,10 @@
 
 <!-- Include Flavor Selector Modal -->
 {% render 'flavor-selector', product: product %}
+
+<!-- Swiper CSS and JS -->
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

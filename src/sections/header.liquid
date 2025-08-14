@@ -8,8 +8,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
         </svg>
         <span class="hidden md:inline font-medium">{{ 'header.customer_support' | t | default: 'CUSTOMER SUPPORT' }}</span>
-        <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7 10l5 5 5-5z"></path>
         </svg>
       </button>
       
@@ -66,8 +66,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
           </svg>
           <span class="hidden md:inline font-medium">{{ 'header.my_account' | t | default: 'MY ACCOUNT' }}</span>
-          <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5z"></path>
           </svg>
         </button>
         
@@ -144,18 +144,22 @@
       <nav class="header__menu hidden lg:flex items-center gap-1 xl:gap-3 flex-shrink-0">
         {% for link in section.settings.menu.links %}
           {% if link.links != blank %}
-            <div class="relative group">
-              <button class="flex items-center gap-1 px-2 xl:px-4 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors whitespace-nowrap">
-                {% if forloop.first %}
-                  <span class="bg-blue-600 text-white px-3 xl:px-4 py-1.5 rounded uppercase text-xs xl:text-sm font-bold">{{ link.title }}</span>
-                  <svg class="w-3 h-3 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                {% else %}
-                  <span class="uppercase text-xs xl:text-sm font-medium">{{ link.title }}</span>
-                {% endif %}
-              </button>
-              <div class="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div class="relative group" data-nav-dropdown>
+              {% if forloop.first %}
+                <button class="flex items-center gap-1 px-2 xl:px-4 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors whitespace-nowrap" data-nav-toggle>
+                  <span class="bg-blue-600 text-white px-3 xl:px-4 py-1.5 rounded uppercase text-xs xl:text-sm font-bold inline-flex items-center">
+                    {{ link.title }}
+                    <svg class="w-3 h-3 xl:w-3.5 xl:h-3.5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                  </span>
+                </button>
+              {% else %}
+                <a href="{{ link.url }}" class="block px-2 xl:px-4 py-2 text-gray-700 hover:text-blue-600 font-medium uppercase text-xs xl:text-sm transition-colors whitespace-nowrap group-hover:text-blue-600">
+                  {{ link.title }}
+                </a>
+              {% endif %}
+              <div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" data-nav-menu>
                 {% for child_link in link.links %}
                   <a href="{{ child_link.url }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
                     {{ child_link.title }}
@@ -338,6 +342,7 @@
     constructor() {
       super();
       this.dropdowns = this.querySelectorAll('[data-dropdown]');
+      this.navDropdowns = this.querySelectorAll('[data-nav-dropdown]');
       this.mobileMenuToggle = this.querySelector('[data-mobile-menu-toggle]');
       this.mobileMenu = document.querySelector('[data-mobile-menu]');
       this.mobileMenuPanel = document.querySelector('[data-mobile-menu-panel]');
@@ -350,7 +355,7 @@
     }
     
     init() {
-      // Initialize dropdowns
+      // Initialize top bar dropdowns
       this.dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector('[data-dropdown-toggle]');
         const menu = dropdown.querySelector('[data-dropdown-menu]');
@@ -359,6 +364,7 @@
         
         // Toggle dropdown on click
         toggle.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
           this.toggleDropdown(dropdown);
         });
@@ -376,6 +382,33 @@
             this.closeDropdown(dropdown);
           }
         });
+      });
+      
+      // Initialize navigation dropdowns (SHOP menu)
+      this.navDropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('[data-nav-toggle]');
+        const menu = dropdown.querySelector('[data-nav-menu]');
+        
+        if (toggle && menu) {
+          // Toggle on click for SHOP button
+          toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('group-hover:opacity-100');
+            menu.classList.toggle('opacity-0');
+            menu.classList.toggle('invisible');
+            menu.classList.toggle('opacity-100');
+            menu.classList.toggle('visible');
+          });
+          
+          // Close when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+              menu.classList.remove('opacity-100', 'visible');
+              menu.classList.add('opacity-0', 'invisible');
+            }
+          });
+        }
       });
       
       // Initialize mobile menu

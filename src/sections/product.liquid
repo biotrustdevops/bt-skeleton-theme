@@ -31,11 +31,11 @@
     thumbnails.forEach((thumb, index) => {
       thumb.addEventListener('click', function() {
         thumbnails.forEach(t => {
-          t.classList.remove('border-blue-600');
+          t.classList.remove('border-[#0d4f9a]');
           t.classList.add('border-transparent');
         });
         this.classList.remove('border-transparent');
-        this.classList.add('border-blue-600');
+        this.classList.add('border-[#0d4f9a]');
         const imageUrl = this.dataset.image;
         if (mainImage) {
           mainImage.src = imageUrl;
@@ -49,10 +49,10 @@
       currentImageIndex = index;
       dots.forEach((dot, i) => {
         if (i === index) {
-          dot.classList.add('bg-blue-600');
+          dot.classList.add('bg-[#0d4f9a]');
           dot.classList.remove('bg-gray-300');
         } else {
-          dot.classList.remove('bg-blue-600');
+          dot.classList.remove('bg-[#0d4f9a]');
           dot.classList.add('bg-gray-300');
         }
       });
@@ -68,11 +68,11 @@
         // Also update thumbnail selection
         if (thumbnails[index]) {
           thumbnails.forEach(t => {
-            t.classList.remove('border-blue-600');
+            t.classList.remove('border-[#0d4f9a]');
             t.classList.add('border-transparent');
           });
           thumbnails[index].classList.remove('border-transparent');
-          thumbnails[index].classList.add('border-blue-600');
+          thumbnails[index].classList.add('border-[#0d4f9a]');
         }
       });
     });
@@ -82,11 +82,11 @@
     purchaseTabs.forEach(tab => {
       tab.addEventListener('click', function() {
         purchaseTabs.forEach(t => {
-          t.classList.remove('bg-blue-600', 'text-white');
+          t.classList.remove('bg-[#0d4f9a]', 'text-white');
           t.classList.add('bg-white', 'text-gray-700');
         });
         this.classList.remove('bg-white', 'text-gray-700');
-        this.classList.add('bg-blue-600', 'text-white');
+        this.classList.add('bg-[#0d4f9a]', 'text-white');
       });
     });
 
@@ -124,7 +124,7 @@
 <div class="max-w-[1494px] mx-auto">
   <!-- Breadcrumb -->
   <div class="px-5 py-3 hidden md:block">
-    <a href="{{ routes.root_url }}" class="text-[11px] uppercase font-semibold text-blue-600 tracking-wider">HOME</a>
+    <a href="{{ routes.root_url }}" class="text-[11px] uppercase font-semibold text-[#0d4f9a] tracking-wider">HOME</a>
   </div>
 
   <!-- Mobile: Product Images First -->
@@ -142,14 +142,14 @@
         <button 
           data-carousel-dot
           data-image="{{ image | image_url: width: 700 }}"
-          class="w-2 h-2 rounded-full {% if forloop.first %}bg-blue-600{% else %}bg-gray-300{% endif %} cursor-pointer transition-colors"
+          class="w-2 h-2 rounded-full {% if forloop.first %}bg-[#0d4f9a]{% else %}bg-gray-300{% endif %} cursor-pointer transition-colors"
         ></button>
       {% endfor %}
     </div>
 
     <!-- Mobile Product Title and Rating -->
     <div class="px-5">
-      <h1 class="text-xl font-bold uppercase text-blue-600 leading-tight mb-2">{{ product.title }}</h1>
+      <h1 class="text-xl font-bold uppercase text-[#0d4f9a] leading-tight mb-2">{{ product.title }}</h1>
       <div class="flex items-center gap-1.5 mb-4">
         <div class="flex gap-px">
           <span class="text-yellow-400 text-base">★</span>
@@ -158,7 +158,7 @@
           <span class="text-yellow-400 text-base">★</span>
           <span class="star-half text-base">★</span>
         </div>
-        <span class="text-blue-600 text-[13px] ml-0.5">217 Reviews</span>
+        <span class="text-[#0d4f9a] text-[13px] ml-0.5">217 Reviews</span>
       </div>
     </div>
 
@@ -199,7 +199,7 @@
           <button 
             data-thumbnail
             data-image="{{ image | image_url: width: 700 }}"
-            class="w-[94px] h-[94px] border-2 {% if forloop.first %}border-blue-600{% else %}border-transparent{% endif %} cursor-pointer overflow-hidden bg-white transition-colors hover:border-gray-400 p-[7px]"
+            class="w-[94px] h-[94px] border-2 {% if forloop.first %}border-[#0d4f9a]{% else %}border-transparent{% endif %} cursor-pointer overflow-hidden bg-white transition-colors hover:border-gray-400 p-[7px]"
           >
             {{ image | image_url: width: 80 | image_tag: class: 'w-full h-full object-contain' }}
           </button>
@@ -218,7 +218,7 @@
     <div class="flex-1 pt-0.5 md:pt-0.5">
       
       <!-- Title (Desktop only) -->
-      <h1 class="hidden md:block text-[27px] font-bold uppercase text-blue-600 leading-[1.15] mb-3 tracking-tight">
+      <h1 class="hidden md:block text-[27px] font-bold uppercase text-[#0d4f9a] leading-[1.15] mb-3 tracking-tight">
         {{ product.title }}
       </h1>
       
@@ -231,25 +231,25 @@
           <span class="text-yellow-400 text-base">★</span>
           <span class="star-half text-base">★</span>
         </div>
-        <span class="text-blue-600 text-[13px] ml-0.5">217 Reviews</span>
+        <span class="text-[#0d4f9a] text-[13px] ml-0.5">217 Reviews</span>
       </div>
 
       <!-- Package Selector -->
-      <div class="bg-gray-50 md:border md:border-gray-300 md:rounded md:px-6 md:py-5 px-5 py-4">
-        <h2 class="text-lg md:text-[21px] font-bold text-center text-blue-600 mb-1.5">Choose Your Package</h2>
+      <div class="md:px-6 md:py-5 px-5 py-4">
+        <h2 class="text-lg md:text-[21px] font-bold text-center text-[#0d4f9a] mb-1.5">Choose Your Package</h2>
         <p class="text-center text-gray-700 text-xs md:text-sm mb-4">Select your money-saving option below:</p>
         
         <!-- Purchase Type Toggle -->
-        <div class="flex gap-0 border-2 border-blue-600 rounded overflow-hidden mb-5">
+        <div class="flex gap-2 mb-14">
           <button 
             data-purchase-tab
-            class="flex-1 bg-blue-600 text-white font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 transition-colors cursor-pointer"
+            class="flex-1 border-2 border-[#0d4f9a] bg-[#0d4f9a] text-white font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 rounded transition-colors cursor-pointer"
           >
             One-Time Purchase
           </button>
           <button 
             data-purchase-tab
-            class="flex-1 bg-white text-gray-700 hover:bg-gray-50 font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 transition-colors cursor-pointer leading-tight"
+            class="flex-1 border-2 border-[#0d4f9a] bg-white text-[#0d4f9a] hover:bg-gray-50 font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 rounded transition-colors cursor-pointer leading-tight"
           >
             Subscribe & Save<br class="md:hidden"><span class="md:hidden text-[11px]">Up To 50%</span><span class="hidden md:inline"> Up To 50%</span>
           </button>
@@ -267,7 +267,7 @@
                 {% endif %}
               </div>
               <div class="flex-1 md:w-full">
-                <div class="text-xl md:text-[32px] font-bold text-blue-600 md:mb-1.5">1 Jar</div>
+                <div class="text-xl md:text-[32px] font-bold text-[#0d4f9a] md:mb-1.5">1 Jar</div>
                 <div class="text-2xl md:text-[38px] font-bold text-gray-800 leading-none md:my-2.5 md:mb-4">
                   <span class="text-lg md:text-[26px] align-top relative top-0.5">$</span>49
                 </div>
@@ -284,8 +284,8 @@
           </div>
 
           <!-- 3 Jars (Most Popular) -->
-          <div class="border-2 border-green-600 md:border-blue-600 rounded bg-white transition-all relative md:scale-[1.1] md:shadow-md p-3 md:px-3.5 md:py-4 md:text-center">
-            <div class="hidden md:block absolute -top-[11px] left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-0.5 text-sm font-bold whitespace-nowrap">
+          <div class="border-2 border-green-600 md:border-[#0d4f9a] bg-white transition-all relative md:scale-[1.1] md:shadow-md p-3 md:px-3.5 md:py-4 md:text-center">
+            <div class="hidden md:block absolute -top-[26px] -left-1 -right-1 bg-[#0d4f9a] text-white px-4 py-0.5 text-sm font-bold whitespace-nowrap">
               Most Popular
             </div>
             <div class="flex md:block items-center gap-3">
@@ -296,12 +296,12 @@
                 {% endif %}
               </div>
               <div class="flex-1 md:w-full">
-                <div class="text-xl md:text-[32px] font-bold text-blue-600 md:mb-1.5 md:mt-0.5">3 Jars</div>
+                <div class="text-xl md:text-[32px] font-bold text-[#0d4f9a] md:mb-1.5 md:mt-0.5">3 Jars</div>
                 <div class="text-xl md:text-[38px] font-bold text-green-600 leading-none md:my-2.5">
                   <span class="text-base md:text-[26px] align-top relative top-0.5">$</span>44<span class="text-sm md:text-[17px] text-gray-600 ml-1 md:ml-0 md:block">Per Jar</span>
                 </div>
                 <div class="text-sm md:text-[15px] text-red-600 font-semibold md:mb-3">(Save 10%)</div>
-                <div class="md:hidden text-sm text-blue-600 font-semibold italic">Most Popular!</div>
+                <div class="md:hidden text-sm text-[#0d4f9a] font-semibold italic">Most Popular!</div>
               </div>
               <button 
                 class="bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-6 md:px-4 text-xs md:text-sm md:w-full"
@@ -324,7 +324,7 @@
                 {% endif %}
               </div>
               <div class="flex-1 md:w-full">
-                <div class="text-xl md:text-[32px] font-bold text-blue-600 md:mb-1.5">6 Jars</div>
+                <div class="text-xl md:text-[32px] font-bold text-[#0d4f9a] md:mb-1.5">6 Jars</div>
                 <div class="text-xl md:text-[38px] font-bold text-gray-800 leading-none md:my-2.5">
                   <span class="text-base md:text-[26px] align-top relative top-0.5">$</span>39<span class="text-sm md:text-[17px] text-gray-600 ml-1 md:ml-0 md:block">Per Jar</span>
                 </div>
@@ -371,7 +371,7 @@
 
   <!-- Community Section -->
   <div class="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-300">
-    <h3 class="text-center text-sm md:text-base font-bold text-blue-600 uppercase mb-4 md:mb-5 tracking-wide">
+    <h3 class="text-center text-sm md:text-base font-bold text-[#0d4f9a] uppercase mb-4 md:mb-5 tracking-wide">
       PHOTOS FROM THE #biotrust COMMUNITY
     </h3>
     
@@ -379,7 +379,7 @@
       <!-- Previous Button -->
       <button 
         data-slider-prev
-        class="absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-blue-600 rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-blue-600 text-lg md:text-base"
+        class="absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-[#0d4f9a] rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-[#0d4f9a] text-lg md:text-base"
       >
         ‹
       </button>
@@ -387,7 +387,7 @@
       <!-- Next Button -->
       <button 
         data-slider-next
-        class="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-blue-600 rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-blue-600 text-lg md:text-base"
+        class="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 bg-white/90 md:bg-white border border-gray-400 md:border-2 md:border-gray-300 hover:border-[#0d4f9a] rounded-full w-8 h-8 md:w-[34px] md:h-[34px] flex items-center justify-center cursor-pointer z-10 transition-colors text-gray-600 hover:text-[#0d4f9a] text-lg md:text-base"
       >
         ›
       </button>

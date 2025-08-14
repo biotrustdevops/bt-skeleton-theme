@@ -39,6 +39,14 @@
   "collections": {
     "title": "Collections"
   },
+  "general": {
+    "slider": {
+      "previous_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "load_slide": "Load slide",
+      "of": "of"
+    }
+  },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
     "card": "Gift card",

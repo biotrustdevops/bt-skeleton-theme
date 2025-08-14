@@ -35,8 +35,8 @@
   <div class="flex flex-col-reverse lg:flex-row">
     {% comment %} Left blue section with text content - appears below image on mobile, left side on desktop {% endcomment %}
     <div class="w-full lg:w-1/2 relative" style="background-color: {{ hero.settings.background_color | default: '#0066cc' }};">
-      <div class="px-6 lg:px-12 py-12 lg:py-16">
-        <div class="max-w-xl">
+      <div class="px-4 md:px-6 lg:px-12 py-12 lg:py-16">
+        <div class="md:max-w-xl">
           {% comment %} Rating stars and subtitle {% endcomment %}
           {% if hero.settings.show_stars or hero.settings.subtitle != blank %}
             <div class="flex items-center gap-2 mb-4">

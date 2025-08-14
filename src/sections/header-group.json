@@ -18,7 +18,8 @@
         "logo_width": 300,
         "menu": "main-menu-v2",
         "chat_link": "",
-        "help_center_link": ""
+        "help_center_link": "",
+        "header_background_image": "shopify://shop_images/bg_a71a657f-2566-4a98-a55e-e76b5555861c.png"
       }
     }
   },

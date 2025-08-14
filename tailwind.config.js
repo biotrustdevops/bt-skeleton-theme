@@ -12,19 +12,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blue: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#0D4F9A',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        },
+        'bt-blue': '#0057B7',
+        'bt-green': '#00AA13',
+        'bt-magenta': '#A72062',
+        'bt-teal': '#008B87',
+        'bt-yellow': '#EFB141',
+        'bt-cyan': '#16B4DE',
       },
       animation: {
         marquee: "marquee var(--tw-animate-duration, 30s) linear infinite",

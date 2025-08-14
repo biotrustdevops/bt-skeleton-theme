@@ -9,6 +9,9 @@ ehthumbs.db
 Thumbs.db
 node_modules/
 
+# Generated CSS files
+src/assets/tailwind.css
+
 # Shopify CLI files
 .shopify/
 

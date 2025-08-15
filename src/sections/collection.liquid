@@ -24,7 +24,18 @@
 
             <!-- Product Image -->
             {% if product.featured_image %}
-              <div class="flex-none mb-1.5 flex justify-center py-6 h-[270px]">
+              <div class="flex-none mb-1.5 flex justify-center py-6 h-[270px] relative">
+                {% comment %} SAVE X% Badge {% endcomment %}
+                {% if product.compare_at_price > product.price %}
+                  {% liquid
+                    assign savings = product.compare_at_price | minus: product.price
+                    assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round
+                  %}
+                  <div class="absolute top-2 left-2 bg-bt-magenta text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                    SAVE {{ savings_percentage }}%
+                  </div>
+                {% endif %}
+                
                 <a href="{{ product.url }}">
                   {% render 'image',
                     image: product.featured_image,

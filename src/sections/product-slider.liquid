@@ -24,7 +24,18 @@
               <div class="bg-gray-50 rounded-lg p-6 h-full flex flex-col">
                 {% comment %} Product Image {% endcomment %}
                 {% if product.featured_image %}
-                  <div class="mb-4 flex justify-center">
+                  <div class="mb-4 flex justify-center relative">
+                    {% comment %} SAVE X% Badge {% endcomment %}
+                    {% if product.compare_at_price > product.price %}
+                      {% liquid
+                        assign savings = product.compare_at_price | minus: product.price
+                        assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round
+                      %}
+                      <div class="absolute top-0 left-0 bg-bt-magenta text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                        SAVE {{ savings_percentage }}%
+                      </div>
+                    {% endif %}
+                    
                     <img 
                       src="{{ product.featured_image | image_url: width: 400 }}"
                       srcset="{{ product.featured_image | image_url: width: 200 }} 200w,

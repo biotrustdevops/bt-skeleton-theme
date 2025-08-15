@@ -24,16 +24,20 @@
     <div class="flex-1 md:w-1/2 min-w-0">
 
       <!-- Buy Box with Package Selector -->
-      {% render 'buy-box-v1', product: product %}
+      <div class="px-1">
+        {% render 'buy-box-v1' %}
+      </div>
 
-      <div class="mt-3 md:mt-6 overflow-hidden">
+      <div class="px-1.5 mt-4">
         {% render 'yotpo-product-ugc' %}
       </div>
     </div>
 </div>
 
 <!-- Product Description -->
-{% render 'product-description', product: product, section: section %}
+<div class="mt-2">
+  {% render 'product-description', product: product, section: section %}
+</div>
 
 {% comment %} <!-- Product Featured Review -->
 {% render 'product-featured-review', product: product %} {% endcomment %}

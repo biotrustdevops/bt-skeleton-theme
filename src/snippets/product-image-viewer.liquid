@@ -29,6 +29,17 @@
     color: #fbbf24;
   }
 
+  /* Smooth image transitions on mobile */
+  @media (max-width: 767px) {
+    .zoom-wrap img {
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    .zoom-wrap img.transitioning {
+      opacity: 0.7;
+    }
+  }
+
   /* Image zoom on hover with pan */
   .zoom-wrap {
     position: relative;
@@ -183,12 +194,19 @@
       });
     }
 
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', function() {
-        const imageUrl = this.dataset.image;
+    function updateMainImage(index) {
+      if (dots[index]) {
+        const imageUrl = dots[index].dataset.image;
         // Update ALL main images
         mainImages.forEach(img => {
           if (img) {
+            // Add transition class for smooth effect on mobile
+            if (window.innerWidth < 768) {
+              img.classList.add('transitioning');
+              setTimeout(() => {
+                img.classList.remove('transitioning');
+              }, 300);
+            }
             // Remove srcset to ensure src takes priority
             img.removeAttribute('srcset');
             img.removeAttribute('sizes');
@@ -205,42 +223,93 @@
           thumbnails[index].classList.remove('border-transparent');
           thumbnails[index].classList.add('border-[#0d4f9a]');
         }
+      }
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', function() {
+        updateMainImage(index);
       });
     });
 
-    // Zoom with pan functionality
-    const zoomWraps = document.querySelectorAll('.zoom-wrap');
-    
-    zoomWraps.forEach(wrap => {
-      const img = wrap.querySelector('img');
-      
-      if (img) {
-        wrap.addEventListener('mouseenter', function() {
-          // Add transition for smooth zoom in
-          img.classList.add('zoom-transition');
-        });
+    // Add touch/swipe support for mobile
+    const mobileImageContainer = document.querySelector('.zoom-wrap');
+    if (mobileImageContainer && window.innerWidth < 768) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      let touchStartY = 0;
+      let touchEndY = 0;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+
+      mobileImageContainer.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      mobileImageContainer.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+      }, { passive: true });
+
+      function handleSwipe() {
+        const swipeDistanceX = touchEndX - touchStartX;
+        const swipeDistanceY = Math.abs(touchEndY - touchStartY);
         
-        wrap.addEventListener('mousemove', function(e) {
-          const rect = wrap.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          // Calculate percentage position
-          const xPercent = (x / rect.width) * 100;
-          const yPercent = (y / rect.height) * 100;
-          
-          // Set transform origin based on mouse position
-          img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-        });
-        
-        wrap.addEventListener('mouseleave', function() {
-          // Remove transition for instant zoom out
-          img.classList.remove('zoom-transition');
-          // Reset to center when mouse leaves
-          img.style.transformOrigin = 'center center';
-        });
+        // Only process horizontal swipes (ignore vertical scrolling)
+        if (Math.abs(swipeDistanceX) > minSwipeDistance && Math.abs(swipeDistanceX) > swipeDistanceY) {
+          if (swipeDistanceX > 0) {
+            // Swipe right - go to previous image
+            if (currentImageIndex > 0) {
+              currentImageIndex--;
+              updateMainImage(currentImageIndex);
+            }
+          } else {
+            // Swipe left - go to next image
+            if (currentImageIndex < dots.length - 1) {
+              currentImageIndex++;
+              updateMainImage(currentImageIndex);
+            }
+          }
+        }
       }
-    });
+    }
+
+    // Zoom with pan functionality (desktop only)
+    if (window.innerWidth >= 768) {
+      const zoomWraps = document.querySelectorAll('.zoom-wrap');
+      
+      zoomWraps.forEach(wrap => {
+        const img = wrap.querySelector('img');
+        
+        if (img) {
+          wrap.addEventListener('mouseenter', function() {
+            // Add transition for smooth zoom in
+            img.classList.add('zoom-transition');
+          });
+          
+          wrap.addEventListener('mousemove', function(e) {
+            const rect = wrap.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate percentage position
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
+            
+            // Set transform origin based on mouse position
+            img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+          });
+          
+          wrap.addEventListener('mouseleave', function() {
+            // Remove transition for instant zoom out
+            img.classList.remove('zoom-transition');
+            // Reset to center when mouse leaves
+            img.style.transformOrigin = 'center center';
+          });
+        }
+      });
+    }
 
   });
 {% endjavascript %}
@@ -249,18 +318,18 @@
 <!-- Mobile: Product Images First -->
 <div>
     <!-- Mobile Product Title and Rating -->
-    <div class="mx-2 text-center">
+    <div class="m-2 mt-4 mb-0 text-center">
       {% render 'variant-servings', product: product %}
-      <h1 class="text-md font-bold uppercase text-[#0d4f9a] leading-tight">{{ product.title }}</h1>
-      <div class="flex flex-col items-center">
+      <h1 class="text-xl font-bold uppercase text-[#0d4f9a] leading-tight">{{ product.title }}</h1>
+      <div class="flex justify-center items-baseline">
         <div class="flex">
-          <span class="text-yellow-400 text-base">★</span>
-          <span class="text-yellow-400 text-base">★</span>
-          <span class="text-yellow-400 text-base">★</span>
-          <span class="text-yellow-400 text-base">★</span>
-          <span class="star-half text-base">★</span>
+          <span class="text-yellow-400 text-lg">★</span>
+          <span class="text-yellow-400 text-lg">★</span>
+          <span class="text-yellow-400 text-lg">★</span>
+          <span class="text-yellow-400 text-lg">★</span>
+          <span class="star-half text-lg">★</span>
         </div>
-        <span class="text-[#0d4f9a] text-[13px]">217 Reviews</span>
+        <span class="text-[#0d4f9a] text-sm ml-1">217 Reviews</span>
       </div>
     </div>
 
@@ -274,14 +343,19 @@
     </div>
     
     <!-- Mobile Carousel Dots -->
-    <div class="flex justify-center gap-2 pb-4">
-      {% for image in product.images limit: 8 %}
-        <button 
-          data-carousel-dot
-          data-image="{{ image | image_url: width: 700 }}"
-          class="w-2 h-2 rounded-full {% if forloop.first %}bg-[#0d4f9a]{% else %}bg-gray-300{% endif %} cursor-pointer transition-colors"
-        ></button>
-      {% endfor %}
+    <div class="flex flex-col items-center pb-4">
+      <div class="flex justify-center gap-2">
+        {% for image in product.images limit: 8 %}
+          <button 
+            data-carousel-dot
+            data-image="{{ image | image_url: width: 700 }}"
+            class="w-2 h-2 rounded-full {% if forloop.first %}bg-[#0d4f9a]{% else %}bg-gray-300{% endif %} cursor-pointer transition-colors"
+          ></button>
+        {% endfor %}
+      </div>
+      {% if product.images.size > 1 %}
+        <p class="text-xs text-gray-500 mt-2">Swipe to view more images</p>
+      {% endif %}
     </div>
 </div>
 

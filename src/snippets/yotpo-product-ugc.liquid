@@ -1,18 +1,28 @@
-<div id="productpage-ugc">
-  <div class="yotpo yotpo-pictures-widget"
-    data-product-id="{{ product.id }}"
-    data-layout="carousel"
-    data-auto-slide="0"
-    data-title="1"
-    data-title-text="PHOTOS FROM THE #biotrust COMMUNITY"
-    data-title-color="#0D4F9A"
-    data-title-alignment="center"
-    data-title-font-size="16"
-    data-title-font-weight="bold"
-    data-title-mobile-font-size="14"
-    data-hover-color="#ffffff"
-    data-hover-opacity="0.8"
-    data-hover-icon="true"
-    data-upload-button="0">
-  </div>
-</div>
+{% comment %} LIVE Yotpo Widget ID {% endcomment %}
+{% assign yotpo_widget_id = '3K2SShe8FNCWby39ocJrHbbGHnkcyAby9i3fFZEn' %}
+
+{% comment %} STAGING Yotpo Widget ID {% endcomment %}
+{% if shop.name != 'BioTRUST'  %}
+  {% assign yotpo_widget_id = 'LghR0v050oAsWuIYy5lpTUXgZpqn0bIVVeZi6vgQ' %}
+{% endif %}
+
+{% assign yotpo_widget_js = "//staticw2.yotpo.com/" | append: yotpo_widget_id | append: "/widget.js" %}
+
+<script src="{{ yotpo_widget_js }}" defer></script>
+
+{% comment %} Override Yotpo h3 header font-size {% endcomment %}
+<style>
+  .yotpo-vugc-header {
+    font-size: 16px !important;
+  }  
+
+  .yotpo-vugc-media-gallery-widget {
+    width: auto !important;
+  }
+
+  .yotpo-vugc-header-text {
+    text-align: center !important;
+  }
+</style>
+
+<div class="yotpo yotpo-pictures-widget" data-gallery-id="64d2796a9f84433915c1f81f" data-product-id="{{ product.id }}"></div>

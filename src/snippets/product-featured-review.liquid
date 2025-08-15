@@ -1,0 +1,12 @@
+{% if product.metafields["global"]["Featured-Review"] != blank %}
+<div class="grid gap-0">
+	<div id="featured-review-div" class="w-full md:w-2/6">
+      <h3>FEATURED CUSTOMER REVIEW</h3>
+      <a id="featured-review-link">Read more reviews</a>
+    </div>
+	<div class="w-full md:w-4/6">
+        {{ 'featured_review_stars.png' | asset_img_url | img_tag }}
+        {{ product.metafields["global"]["Featured-Review"] }}
+	</div>
+</div>
+{%endif%}

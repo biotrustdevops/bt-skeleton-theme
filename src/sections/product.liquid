@@ -32,32 +32,20 @@
     </div>
 </div>
 
-<!-- Product Description Section (Mobile) -->
-<div class="md:hidden px-5 py-8 border-t border-gray-300">
-    <h2 class="text-xl font-bold text-gray-800 mb-4">The Muscle-Support Supplement with Clinically-Backed Ingredients</h2>
-    
-    <p class="text-gray-700 mb-4">
-      With the proven benefits of HMB, creatine, and more, Ageless Muscle provides support to:
-    </p>
-    
-    <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
-      <li>Combat age-related muscle loss and strength loss</li>
-      <li>Increase, preserve, and support healthy muscle function – even WITHOUT exercising</li>
-      <li>Help maintain your independence and freedom of movement as you age</li>
-      <li>Promote muscular endurance</li>
-      <li>Improve athletic performance, including strength, endurance, and power</li>
-      <li>Promote hydration of your body</li>
-      <li>Help reduce muscle soreness and promote post-exercise recovery</li>
-      <li>Get and stay lean and fit as you age to look your amazing best!</li>
-    </ul>
+<!-- Product Description -->
+{% render 'product-description', product: product, section: section %}
 
-    <p class="text-gray-700 mb-4">Ageless Muscle provides you with:</p>
-    
-    <ul class="list-disc list-inside text-gray-700 space-y-2">
-      <li><strong>myHMB</strong>, backed by over 50 human studies. HMB helps increase muscle building while decreasing muscle breakdown.</li>
-      <li><strong>Premium creatine</strong> at the optimal dose for non-bodybuilder healthy aging. Creatine helps increase muscle size and strength and overall performance.</li>
-    </ul>
-</div>
+{% comment %} <!-- Product Featured Review -->
+{% render 'product-featured-review', product: product %} {% endcomment %}
+
+<!-- Product Frequently Bought Together -->
+<div id="cbb-frequently-bought-box"></div>
+
+{% comment %} <!-- Product Info Area -->
+{% render 'product-info-area', product: product %} {% endcomment %}
+
+<!-- Product Also Bought Together -->
+<div id="cbb-also-bought-box"></div>
 
 </div>
 <!-- End container wrapper -->
@@ -72,7 +60,14 @@
 {% schema %}
 {
   "name": "t:general.product",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "nutroinfo_text",
+      "label": "Nutrition Info Heading",
+      "default": "Nutrition Information"
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }

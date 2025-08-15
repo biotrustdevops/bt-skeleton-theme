@@ -1,0 +1,91 @@
+<div>
+    <div>
+        <div itemprop="description">
+            <div>
+                <div>
+                    <ul>
+                        {%- if product.metafields["global"]["Health-Info"] != blank %}
+                        <li><a href="#tab-1">HEALTH BENEFITS</a></li>
+                        {%- endif %}
+                        {%- if product.metafields["global"]["Nutritional-Ingredients"] != blank %}
+                            <li><a href="#tab-2">NUTRITION & INGREDIENTS</a></li>
+                        {%- endif %}
+                        {%- if product.metafields["global"]["Product-FAQ"] != blank %}
+                            <li><a href="#tab-3">FAQs</a></li>
+                        {%- endif %}
+                        <li><a href="#tab-4" id="reviews" aria-label="Reviews for this product">REVIEWS</a></li>
+                        {%- if product.metafields["global"]["Recipes"] != blank %}
+                            <li><a href="#tab-5">RECIPES</a></li>
+                        {%- endif %}
+                    </ul>
+                </div>
+                {% if product.metafields["global"]["Health-Info"] != blank %}
+                    <div id="tab-1">
+                        {{ product.metafields["global"]["Health-Info"] }}
+                    </div>
+                {% endif %}
+                {% if product.metafields["global"]["Nutritional-Ingredients"] != blank %}
+                    <div id="tab-2">
+                        {{ product.metafields["global"]["Nutritional-Ingredients"] }}
+                        {% render 'product-prop-65' %}
+                    </div>
+                {% endif %}
+                {% if product.metafields["global"]["Product-FAQ"] != blank %}
+                    <div id="tab-3">
+                        {{ product.metafields["global"]["Product-FAQ"] }}
+                    </div>
+                {% endif %}
+                <div id="tab-4">
+                </div>
+                {% if product.metafields["global"]["Recipes"] != blank %}
+                    <div id="tab-5">
+                        {{ product.metafields["global"]["Recipes"] }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            {% if product.metafields["global"]["Health-Info"] != blank %}
+                <button {% if product.metafields["global"]["Health-Info"] == blank %}style="display:none;"{% endif %}>HEALTH
+                    BENEFITS
+                </button>
+                <div>
+                    {{ product.metafields["global"]["Health-Info"] }}
+                </div>
+            {% endif %}
+            {% if product.metafields["global"]["Nutritional-Ingredients"] != blank %}
+                <button {% if product.metafields["global"]["Nutritional-Ingredients"] == blank %}style="display:none;"{% endif %}>
+                    NUTRITION & INGREDIENTS
+                </button>
+                <div>
+                    {{ product.metafields["global"]["Nutritional-Ingredients"] }}
+                    {% render 'product-prop-65', id_suffix: '-mobile' %}
+                </div>
+            {% endif %}
+            {% if product.metafields["global"]["Product-FAQ"] != blank %}
+                <button {% if product.metafields["global"]["Product-FAQ"] == blank %}style="display:none;"{% endif %}>FAQs
+                </button>
+                <div>
+                    {{ product.metafields["global"]["Product-FAQ"] }}
+                </div>
+            {% endif %}
+            <button id="reviews-mobile">REVIEWS</button>
+            <div>
+            </div>
+            {% if product.metafields["global"]["Recipes"] != blank %}
+                <button {% if product.metafields["global"]["Recipes"] == blank %}style="display:none;"{% endif %}>RECIPES
+                </button>
+                <div>
+                    {{ product.metafields["global"]["Recipes"] }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div style="display: none" aria-hidden="true">
+        {% include 'yotpo-product-review-widget' %}
+    </div>
+    {{ product.metafields["global"]["Screen-Reader-Text-Alternative"] }}
+</div>

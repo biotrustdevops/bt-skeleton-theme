@@ -2,7 +2,7 @@
   assign heading_text = section.settings.heading_text | default: 'Shop by Healthy Aging Category'
 %}
 
-<section class="py-12 md:py-16 bg-gray-50" data-section-id="{{ section.id }}">
+<section class="py-12 md:py-16 bg-white" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-3 md:px-4">
     {% if heading_text != blank %}
       <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">{{ heading_text }}</h2>

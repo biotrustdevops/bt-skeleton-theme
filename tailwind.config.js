@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'bt-blue': '#0057B7',
+        'bt-blue': '#0d4f9a',
         'bt-green': '#00AA13',
         'bt-magenta': '#A72062',
         'bt-teal': '#008B87',

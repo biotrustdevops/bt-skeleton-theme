@@ -1,4 +1,4 @@
-<header-dropdowns>
+<header-dropdowns data-scroll-behavior="{{ section.settings.header_scroll_behavior | default: 'default' }}">
 {% # Top Bar %}
 <div class="header-top-bar bg-bt-blue text-white py-2 text-sm">
   <div class="flex items-center justify-end gap-3 md:gap-6 px-3 md:px-5 md:max-w-7xl md:mx-auto">
@@ -8,7 +8,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
         </svg>
         <span class="hidden md:inline font-medium">{{ 'header.customer_support' | t | default: 'CUSTOMER SUPPORT' }}</span>
-        <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 transition-transform ml-0.5" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
           <path d="M7 10l5 5 5-5z"></path>
         </svg>
       </button>
@@ -66,7 +66,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
           </svg>
           <span class="hidden md:inline font-medium">{{ 'header.my_account' | t | default: 'MY ACCOUNT' }}</span>
-          <svg class="w-3 h-3 transition-transform ml-1" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 transition-transform ml-0.5" data-dropdown-arrow fill="currentColor" viewBox="0 0 24 24">
             <path d="M7 10l5 5 5-5z"></path>
           </svg>
         </button>
@@ -119,7 +119,7 @@
   {% else %}
     style="background-image: url('https://cdn.shopify.com/s/files/1/2451/8571/files/bg_a71a657f-2566-4a98-a55e-e76b5555861c.webp?v=1730922299'); background-repeat: repeat; background-position: top left;"
   {% endif %}>
-  <div class="max-w-7xl mx-auto px-3 md:px-5 flex items-center justify-between gap-4 md:gap-8">
+  <div class="max-w-7xl mx-auto px-3 md:px-5 flex items-center justify-between gap-2 md:gap-4">
       {% # Mobile Menu Button %}
       <button class="lg:hidden flex items-center p-2 -ml-2" data-mobile-menu-toggle>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,25 +146,25 @@
       </div>
 
       {% # Main Navigation - Hidden on Mobile %}
-      <nav class="header__menu hidden lg:flex items-center gap-1 xl:gap-3 flex-shrink-0">
+      <nav class="header__menu hidden lg:flex items-center flex-1">
         {% for link in section.settings.menu.links %}
           {% if link.links != blank %}
-            <div class="relative group" data-nav-dropdown>
+            <div class="relative group" data-nav-dropdown="{{ link.title | handleize }}">
               {% if forloop.first %}
-                <button class="flex items-center gap-1 px-2 xl:px-4 py-2 text-gray-700 hover:text-bt-blue font-medium transition-colors whitespace-nowrap" data-nav-toggle>
-                  <span class="bg-bt-blue text-white px-3 xl:px-4 py-1.5 rounded uppercase text-xs xl:text-sm font-bold inline-flex items-center">
+                <button class="flex items-center mx-2.5 py-2 text-gray-700 hover:text-bt-blue font-semibold transition-colors whitespace-nowrap" style="font-size: 15px; line-height: 22.5px;" data-nav-toggle>
+                  <span class="bg-bt-blue text-white px-2.5 py-1.5 rounded uppercase font-bold inline-flex items-center whitespace-nowrap" style="font-size: 15px; line-height: 22.5px;">
                     {{ link.title }}
-                    <svg class="w-3 h-3 xl:w-3.5 xl:h-3.5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M7 10l5 5 5-5z"></path>
                     </svg>
                   </span>
                 </button>
               {% else %}
-                <button class="block px-2 xl:px-4 py-2 text-gray-700 hover:text-bt-blue font-medium uppercase text-xs xl:text-sm transition-colors whitespace-nowrap">
+                <button class="block mx-2.5 py-2 text-gray-700 hover:text-bt-blue font-semibold uppercase transition-colors whitespace-nowrap" style="font-size: 15px; line-height: 22.5px;" data-nav-toggle>
                   {{ link.title }}
                 </button>
               {% endif %}
-              <div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50" data-nav-menu>
+              <div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg hidden z-[9999]" data-nav-menu>
                 {% for child_link in link.links %}
                   <a href="{{ child_link.url }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-bt-blue transition-colors">
                     {{ child_link.title }}
@@ -173,7 +173,7 @@
               </div>
             </div>
           {% else %}
-            <a href="{{ link.url }}" class="px-2 xl:px-4 py-2 text-gray-700 hover:text-bt-blue font-medium uppercase text-xs xl:text-sm transition-colors whitespace-nowrap">
+            <a href="{{ link.url }}" class="mx-2.5 py-2 text-gray-700 hover:text-bt-blue font-semibold uppercase transition-colors whitespace-nowrap" style="font-size: 15px; line-height: 22.5px;">
               {{ link.title }}
             </a>
           {% endif %}
@@ -181,13 +181,14 @@
       </nav>
 
       {% # Search - Desktop Bar, Mobile Icon %}
-      <div class="header__search flex-1 max-w-2xl hidden lg:block ml-4">
+      <div class="header__search flex-shrink hidden lg:block ml-auto mr-2" style="width: 350px;">
         <form action="{{ routes.search_url }}" class="relative">
           <input 
             type="search" 
             name="q" 
             placeholder="{{ 'header.search_placeholder' | t | default: 'Search all products...' }}"
             class="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-bt-blue focus:border-transparent"
+            style="width: 350px;"
           >
           <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,6 +271,12 @@
     display: contents; /* Make wrapper element not interfere with grid */
   }
   
+  /* When scroll behavior is enabled, header-dropdowns becomes block */
+  header-dropdowns[data-scroll-behavior="show_on_scroll_up"] {
+    display: block;
+    will-change: transform;
+  }
+  
   .header-top-bar {
     position: relative;
     z-index: 40;
@@ -280,6 +287,38 @@
     position: relative;
     z-index: 30;
     /* Center column by default */
+  }
+  
+  /* Navigation dropdown hover states */
+  [data-nav-dropdown]:hover [data-nav-menu] {
+    display: block !important;
+  }
+  
+  /* Active state for click-opened dropdowns */
+  [data-nav-dropdown].nav-open [data-nav-menu] {
+    display: block !important;
+  }
+  
+  /* Ensure dropdowns are above other content */
+  [data-nav-menu] {
+    z-index: 9999 !important;
+  }
+  
+  /* Ensure nav doesn't constrain text */
+  .header__menu {
+    overflow: visible !important;
+  }
+  
+  /* Ensure dropdowns are properly positioned */
+  [data-nav-dropdown] {
+    position: relative !important;
+  }
+  
+  /* Ensure dropdowns are hidden when header is scrolled */
+  header-dropdowns[data-scroll-behavior="show_on_scroll_up"][style*="translateY(-100%)"] [data-dropdown-menu],
+  header-dropdowns[data-scroll-behavior="show_on_scroll_up"][style*="translateY(-100%)"] [data-nav-menu] {
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
   
   /* Dropdown menu transitions */
@@ -343,6 +382,23 @@
       "id": "header_background_image",
       "label": "Header Background Image",
       "info": "Background image behind the main menu and logo row. If not set, a default pattern will be used."
+    },
+    {
+      "type": "select",
+      "id": "header_scroll_behavior",
+      "label": "Header Scroll Behavior",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default (Always Visible)"
+        },
+        {
+          "value": "show_on_scroll_up",
+          "label": "Show on Scroll Up"
+        }
+      ],
+      "default": "default",
+      "info": "Controls how the header behaves when scrolling. 'Show on Scroll Up' hides the header when scrolling down and shows it when scrolling up."
     }
   ]
 }
@@ -362,11 +418,28 @@
       this.searchToggle = this.querySelector('[data-search-toggle]');
       this.mobileSearchContainer = this.querySelector('[data-mobile-search]');
       this.mobileSearchInput = this.querySelector('[data-mobile-search-input]');
+      
+      // Scroll behavior properties
+      this.scrollBehavior = this.dataset.scrollBehavior || 'default';
+      this.lastScrollTop = 0;
+      this.scrollThreshold = 5; // Minimum scroll distance to trigger
+      this.headerHeight = this.offsetHeight;
+      this.isHeaderHidden = false;
+      
       this.init();
     }
     
     init() {
+      console.log('HeaderDropdowns init started');
+      console.log('Found nav dropdowns:', this.navDropdowns.length);
+      
+      // Initialize scroll behavior
+      if (this.scrollBehavior === 'show_on_scroll_up') {
+        this.initScrollBehavior();
+      }
+      
       // Initialize top bar dropdowns
+      console.log('Initializing top bar dropdowns:', this.dropdowns.length);
       this.dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector('[data-dropdown-toggle]');
         const menu = dropdown.querySelector('[data-dropdown-menu]');
@@ -395,30 +468,66 @@
         });
       });
       
-      // Initialize navigation dropdowns (SHOP menu)
-      this.navDropdowns.forEach(dropdown => {
+      // Initialize navigation dropdowns (all menu items with submenus)
+      console.log('Initializing navigation dropdowns');
+      this.navDropdowns.forEach((dropdown, index) => {
         const toggle = dropdown.querySelector('[data-nav-toggle]');
         const menu = dropdown.querySelector('[data-nav-menu]');
+        const dropdownName = dropdown.dataset.navDropdown || `dropdown-${index}`;
+        
+        console.log(`Processing dropdown "${dropdownName}":`, {
+          hasToggle: !!toggle,
+          hasMenu: !!menu,
+          dropdown: dropdown
+        });
         
         if (toggle && menu) {
-          // Toggle on click for SHOP button
+          console.log(`Setting up events for "${dropdownName}"`);
+          
+          // Toggle on click for menu buttons
           toggle.addEventListener('click', (e) => {
+            console.log(`Click on "${dropdownName}" toggle`);
             e.preventDefault();
             e.stopPropagation();
-            dropdown.classList.toggle('group-hover:opacity-100');
-            menu.classList.toggle('opacity-0');
-            menu.classList.toggle('invisible');
-            menu.classList.toggle('opacity-100');
-            menu.classList.toggle('visible');
+            
+            // Close other nav dropdowns
+            this.navDropdowns.forEach(otherDropdown => {
+              if (otherDropdown !== dropdown) {
+                otherDropdown.classList.remove('nav-open');
+                const otherMenu = otherDropdown.querySelector('[data-nav-menu]');
+                if (otherMenu) {
+                  console.log(`Closing dropdown: ${otherDropdown.dataset.navDropdown}`);
+                  otherMenu.classList.add('hidden');
+                }
+              }
+            });
+            
+            // Toggle current dropdown using a class on the parent
+            dropdown.classList.toggle('nav-open');
+            const isOpen = dropdown.classList.contains('nav-open');
+            console.log(`Dropdown "${dropdownName}" is now: ${isOpen ? 'OPEN' : 'CLOSED'}`);
+            
+            if (isOpen) {
+              menu.classList.remove('hidden');
+              console.log(`Menu for "${dropdownName}" should be visible now`);
+              // Debug: Check computed styles
+              const computedStyle = window.getComputedStyle(menu);
+              console.log(`Menu display: ${computedStyle.display}, visibility: ${computedStyle.visibility}, z-index: ${computedStyle.zIndex}`);
+              console.log(`Menu position:`, menu.getBoundingClientRect());
+            } else {
+              menu.classList.add('hidden');
+            }
           });
           
           // Close when clicking outside
           document.addEventListener('click', (e) => {
             if (!dropdown.contains(e.target)) {
-              menu.classList.remove('opacity-100', 'visible');
-              menu.classList.add('opacity-0', 'invisible');
+              dropdown.classList.remove('nav-open');
+              menu.classList.add('hidden');
             }
           });
+        } else {
+          console.log(`WARNING: Dropdown "${dropdownName}" missing toggle or menu`);
         }
       });
       
@@ -502,6 +611,84 @@
           this.mobileSearchInput.focus();
         }
       }
+    }
+    
+    initScrollBehavior() {
+      // Set initial styles for header
+      this.style.position = 'fixed';
+      this.style.top = '0';
+      this.style.left = '0';
+      this.style.right = '0';
+      this.style.zIndex = '1000';
+      this.style.transition = 'transform 0.3s ease-in-out';
+      
+      // Add a spacer to prevent content jump
+      const spacer = document.createElement('div');
+      spacer.style.height = this.headerHeight + 'px';
+      spacer.className = 'header-spacer';
+      this.insertAdjacentElement('afterend', spacer);
+      
+      // Add scroll event listener
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            this.handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      
+      // Update header height on resize
+      window.addEventListener('resize', () => {
+        this.headerHeight = this.offsetHeight;
+        const existingSpacer = document.querySelector('.header-spacer');
+        if (existingSpacer) {
+          existingSpacer.style.height = this.headerHeight + 'px';
+        }
+      });
+    }
+    
+    handleScroll() {
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollDistance = Math.abs(currentScrollTop - this.lastScrollTop);
+      
+      // Only trigger if scrolled more than threshold
+      if (scrollDistance < this.scrollThreshold) {
+        return;
+      }
+      
+      if (currentScrollTop > this.lastScrollTop && currentScrollTop > this.headerHeight) {
+        // Scrolling down - hide header
+        if (!this.isHeaderHidden) {
+          this.style.transform = 'translateY(-100%)';
+          this.isHeaderHidden = true;
+          
+          // Close any open dropdowns
+          this.dropdowns.forEach(dropdown => {
+            this.closeDropdown(dropdown);
+          });
+          
+          // Close nav dropdowns
+          this.navDropdowns.forEach(dropdown => {
+            dropdown.classList.remove('nav-open');
+            const menu = dropdown.querySelector('[data-nav-menu]');
+            if (menu) {
+              menu.classList.add('hidden');
+            }
+          });
+        }
+      } else if (currentScrollTop < this.lastScrollTop) {
+        // Scrolling up - show header
+        if (this.isHeaderHidden) {
+          this.style.transform = 'translateY(0)';
+          this.isHeaderHidden = false;
+        }
+      }
+      
+      // Update last scroll position
+      this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
     }
   }
   

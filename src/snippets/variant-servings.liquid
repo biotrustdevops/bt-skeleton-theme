@@ -1,0 +1,20 @@
+{% comment %}
+  Displays variant servings metafield above product title.
+  
+  Usage:
+  {% render 'variant-servings', product: product %}
+  
+  Parameters:
+  - product: Product object (required)
+  - class: Additional CSS classes (optional)
+{% endcomment %}
+
+{% for variant in product.variants %}
+  {% if variant.metafields["global"]["Servings"] != blank %}
+    <div class="text-[11px] font-bold text-[#8b8b8b] tracking-[1px] uppercase mb-1 {{ class }}"
+        {% if product.selected_or_first_available_variant.id != variant.id %}style="display:none"{% endif %}
+        data-id="{{ variant.id }}">
+      {{ variant.metafields["global"]["Servings"] }}
+    </div>
+  {% endif %}
+{% endfor %}

@@ -29,13 +29,11 @@
     display: flex;
     justify-content: center;
     opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.4s ease;
   }
 
   .thumbnail-swiper .swiper-slide.loaded {
     opacity: 1;
-    transform: translateX(0);
   }
 
   /* Loading skeleton animation */
@@ -44,25 +42,8 @@
     height: 94px;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
-    animation: loading 1.5s infinite;
     border-radius: 4px;
   }
-
-  @keyframes loading {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
-  /* Stagger animation for thumbnails */
-  .thumbnail-swiper .swiper-slide:nth-child(1) { transition-delay: 0.1s; }
-  .thumbnail-swiper .swiper-slide:nth-child(2) { transition-delay: 0.2s; }
-  .thumbnail-swiper .swiper-slide:nth-child(3) { transition-delay: 0.3s; }
-  .thumbnail-swiper .swiper-slide:nth-child(4) { transition-delay: 0.4s; }
-  .thumbnail-swiper .swiper-slide:nth-child(5) { transition-delay: 0.5s; }
 
   .swiper-thumb-prev,
   .swiper-thumb-next {
@@ -209,14 +190,15 @@
 <div class="md:container md:mx-auto md:max-w-[1440px]">
 
 <!-- Breadcrumb -->
-<div class="py-3 hidden md:block">
-    <a href="{{ routes.root_url }}" class="text-[11px] uppercase font-semibold text-[#0d4f9a] tracking-wider">HOME</a>
+<div class="p-3 hidden md:block">
+    <a href="{{ routes.root_url }}" class="text-lg font-medium text-bt-blue">Home</a>
 </div>
 
 <!-- Mobile: Product Images First -->
 <div class="md:hidden">
     <!-- Mobile Product Title and Rating -->
     <div class="mx-2 text-center">
+      {% render 'variant-servings', product: product %}
       <h1 class="text-md font-bold uppercase text-[#0d4f9a] leading-tight">{{ product.title }}</h1>
       <div class="flex flex-col items-center">
         <div class="flex">
@@ -288,7 +270,7 @@
                       data-image="{{ image | image_url: width: 700 }}"
                       class="w-[94px] h-[94px] border-2 {% if forloop.first %}border-[#0d4f9a]{% else %}border-transparent{% endif %} cursor-pointer bg-white transition-colors hover:border-gray-400 p-[7px] flex items-center justify-center relative"
                     >
-                      <div class="thumbnail-loading absolute inset-[7px]"></div>
+                      <div class="thumbnail-loading absolute inset-[7px] animate-pulse"></div>
                       {{ image | image_url: width: 80 | image_tag: class: 'w-auto h-auto max-w-full max-h-full object-contain relative z-10', loading: 'eager' }}
                     </button>
                   </div>
@@ -305,7 +287,9 @@
           </div>
 
           <div class="flex flex-col items-center">
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center mb-2">
+              {% render 'variant-servings', product: product %}
+
               <!-- Title and Rating above both thumbnails and image -->
               <h1 class="text-2xl text-center font-bold uppercase text-[#0d4f9a]">
                 {{ product.title }}

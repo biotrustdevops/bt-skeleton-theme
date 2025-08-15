@@ -5,7 +5,7 @@
 <section class="py-12 md:py-16 bg-gray-50" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-3 md:px-4">
     {% if heading_text != blank %}
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#005eb8] text-center mb-10 md:mb-14">{{ heading_text }}</h2>
+      <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">{{ heading_text }}</h2>
     {% endif %}
     
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
@@ -13,7 +13,22 @@
         {% case block.type %}
           {% when 'category' %}
             <div class="flex flex-col items-center" {{ block.shopify_attributes }}>
-              {% if block.settings.product_image != blank %}
+              {% if block.settings.product_image != blank and block.settings.button_link %}
+                <a href="{{ block.settings.button_link }}" class="w-full aspect-square mb-4 block">
+                  <img 
+                    src="{{ block.settings.product_image | image_url: width: 400 }}"
+                    srcset="{{ block.settings.product_image | image_url: width: 200 }} 200w,
+                            {{ block.settings.product_image | image_url: width: 300 }} 300w,
+                            {{ block.settings.product_image | image_url: width: 400 }} 400w"
+                    sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 200px"
+                    alt="{{ block.settings.image_alt | default: block.settings.category_name }}"
+                    width="{{ block.settings.product_image.width }}"
+                    height="{{ block.settings.product_image.height }}"
+                    loading="lazy"
+                    class="w-full h-full object-contain hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+                  >
+                </a>
+              {% elsif block.settings.product_image != blank %}
                 <div class="w-full aspect-square mb-4">
                   <img 
                     src="{{ block.settings.product_image | image_url: width: 400 }}"

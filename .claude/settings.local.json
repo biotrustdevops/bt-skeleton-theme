@@ -1,6 +1,13 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git add:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "puppeteer"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

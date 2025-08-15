@@ -104,11 +104,11 @@
     </div>
   {% endif %}
   
-  <div class="md:container md:mx-auto px-0 md:px-5 py-10 lg:py-16 relative">
+  <div class="md:container md:mx-auto px-5 md:px-5 pt-5 pb-10 lg:pt-8 lg:pb-14 relative">
     {% comment %} Section header {% endcomment %}
     {% if section.settings.heading != blank %}
-      <div class="text-center mb-10">
-        <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14"
+      <div class="text-center mb-0">
+        <h2 class="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-0"
             style="font-family: 'League Gothic', sans-serif; color: {{ section.settings.heading_color }};">
           {{ section.settings.heading }}
           {% if section.settings.section_style == 'subscription' and section.settings.heading_highlight != blank %}
@@ -117,7 +117,7 @@
         </h2>
         
         {% if section.settings.subheading != blank %}
-          <div class="text-[#0D4F9A] text-lg sm:text-[22px] leading-[150%] max-w-[920px] mx-auto">
+          <div class="text-[#0D4F9A] text-lg sm:text-[22px] leading-[150%] max-w-[920px] mx-auto mt-4 mb-10 px-4">
             {{ section.settings.subheading }}
           </div>
         {% endif %}
@@ -130,7 +130,7 @@
         {% for block in section.blocks %}
           <div class="{% if block.settings.hide_mobile %}hidden sm:block{% endif %} {% if text_align == 'center' %}text-center{% endif %}"
                {{ block.shopify_attributes }}>
-            <div class="{{ card_bg }} {{ card_rounded }} h-full {% if section.settings.section_style == 'guidance' %}lg:h-[340px]{% endif %}">
+            <div class="{% if section.settings.section_style == 'guidance' %}bg-[#E3E7EB] rounded-lg overflow-hidden{% else %}{{ card_bg }} {{ card_rounded }}{% endif %} h-full flex flex-col">
               
               {% comment %} Image/Icon {% endcomment %}
               {% if block.settings.enable_image and block.settings.image != blank %}
@@ -165,30 +165,43 @@
               {% endif %}
               
               {% comment %} Content {% endcomment %}
-              <div class="{% if section.settings.section_style == 'guidance' %}p-5{% elsif section.settings.section_style == 'subscription' %}pt-6{% else %}p-4{% endif %}">
-                {% if block.settings.title != blank %}
-                  <h3 class="{% if section.settings.section_style == 'guidance' or section.settings.section_style == 'subscription' %}text-[#0A3B60] uppercase text-xl mb-2.5{% else %}text-2xl mb-4{% endif %}">
-                    {% if block.settings.title_link != blank %}
-                      <a href="{{ block.settings.title_link }}">{{ block.settings.title | escape }}</a>
-                    {% else %}
-                      {{ block.settings.title | escape }}
-                    {% endif %}
-                  </h3>
-                {% endif %}
+              <div class="{% if section.settings.section_style == 'guidance' %}p-5 bg-[#E3E7EB] flex-1 flex flex-col{% elsif section.settings.section_style == 'subscription' %}pt-6{% else %}p-4{% endif %}">
+                <div class="flex-1">
+                  {% if block.settings.title != blank %}
+                    <h3 class="{% if section.settings.section_style == 'guidance' %}text-bt-blue uppercase text-lg font-bold mb-3{% elsif section.settings.section_style == 'subscription' %}text-[#0A3B60] uppercase text-xl font-bold mb-2.5{% else %}text-2xl font-bold mb-4{% endif %}">
+                      {% if block.settings.title_link != blank %}
+                        <a href="{{ block.settings.title_link }}">{{ block.settings.title | escape | upcase }}</a>
+                      {% else %}
+                        {{ block.settings.title | escape | upcase }}
+                      {% endif %}
+                    </h3>
+                  {% endif %}
+                  
+                  {% if block.settings.text != blank %}
+                    <div class="{% if section.settings.section_style == 'guidance' %}text-[#333333] text-base leading-[150%]{% elsif section.settings.section_style == 'subscription' %}text-[#0A3B60] text-lg leading-[150%]{% else %}text-base{% endif %} [&_p]:mb-4 [&_p:last-child]:mb-0">
+                      {{ block.settings.text }}
+                    </div>
+                  {% endif %}
+                </div>
                 
-                {% if block.settings.text != blank %}
-                  <div class="{% if section.settings.section_style == 'guidance' or section.settings.section_style == 'subscription' %}text-[#0A3B60] text-lg leading-[150%]{% else %}text-base{% endif %} [&_p]:mb-4 [&_p:last-child]:mb-0">
-                    {{ block.settings.text }}
-                  </div>
-                {% endif %}
-                
-                {% if block.settings.button_label != blank and block.settings.button_link != blank %}
-                  <div class="mt-5">
-                    <a href="{{ block.settings.button_link }}" 
-                       class="inline-block px-6 py-4 bg-gradient-to-b from-[#E7EBEF] to-[#F6F7F9] text-[#0B4F9A] font-bold rounded-lg hover:opacity-80 transition-opacity">
-                      {{ block.settings.button_label | escape }}
-                    </a>
-                  </div>
+                {% if section.settings.section_style == 'guidance' %}
+                  {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+                    <div class="mt-6 text-center">
+                      <a href="{{ block.settings.button_link }}" 
+                         class="inline-block px-10 py-5 bg-gradient-to-b from-[#E7EBEF] to-[#F6F7F9] text-bt-blue font-bold text-base uppercase rounded-lg hover:opacity-80 transition-opacity">
+                        {{ block.settings.button_label | escape | upcase }}
+                      </a>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+                    <div class="mt-5">
+                      <a href="{{ block.settings.button_link }}" 
+                         class="inline-block px-6 py-4 bg-gradient-to-b from-[#E7EBEF] to-[#F6F7F9] text-[#0B4F9A] font-bold rounded-lg hover:opacity-80 transition-opacity">
+                        {{ block.settings.button_label | escape }}
+                      </a>
+                    </div>
+                  {% endif %}
                 {% endif %}
               </div>
             </div>

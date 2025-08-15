@@ -19,7 +19,7 @@
   {% endif %}
   
   {% if section.settings.right_icon != blank %}
-    <div class="absolute right-0 sm:right-[-50px] lg:right-0 top-[18%] w-full max-w-[260px] lg:max-w-[260px] md:max-w-[150px] sm:max-w-[130px] z-[1] pointer-events-none">
+    <div class="absolute right-0 sm:right-[-50px] lg:right-0 top-[18%] w-full max-w-[260px] lg:max-w-[260px] md:max-w-[150px] sm:max-w-[130px] hidden sm:block z-[1] pointer-events-none">
       {{ section.settings.right_icon | image_url: width: 520 | image_tag:
         loading: 'lazy',
         class: 'w-full h-auto',
@@ -29,7 +29,7 @@
     </div>
   {% endif %}
   
-  <div class="container mx-auto px-5 py-10 lg:py-16">
+  <div class="container mx-auto px-5 py-0">
     <div class="max-w-[910px] mx-auto text-center">
       
       {% comment %} Section headings {% endcomment %}
@@ -40,7 +40,7 @@
       {% endif %}
       
       {% if section.settings.heading != blank %}
-        <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">
+        <h2 class="text-[48px] md:text-[60px] lg:text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">
           {{ section.settings.heading }}
         </h2>
       {% endif %}

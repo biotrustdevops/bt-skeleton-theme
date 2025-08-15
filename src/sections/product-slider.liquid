@@ -9,10 +9,10 @@
   assign show_rating = section.settings.show_rating
 %}
 
-<section class="py-12 md:py-16 lg:py-20 bg-white" data-section-id="{{ section.id }}">
+<section class="py-0 bg-white" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-0 md:px-4">
     {% if heading_text != blank %}
-      <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">{{ heading_text }}</h2>
+      <h2 class="text-[48px] md:text-[60px] lg:text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">{{ heading_text }}</h2>
     {% endif %}
     
     {% comment %} Swiper Container {% endcomment %}
@@ -51,11 +51,6 @@
 </section>
 
 <style>
-  /* Hide fallback stars when Yotpo loads */
-  .yotpo.yotpo-stars-rating ~ .yotpo-fallback {
-    display: none;
-  }
-  
   /* Ensure consistent card heights */
   .product-slider-{{ section.id }} .swiper-slide {
     height: auto;
@@ -64,7 +59,114 @@
   .product-slider-{{ section.id }} .swiper-slide > div {
     height: 100%;
   }
+  
+  /* Force Yotpo text size and weight to match collection page */
+  .yotpo-rating-container .yotpo-sr-bottom-line-summary,
+  .yotpo-rating-container .yotpo-sr-bottom-line-summary *,
+  .yotpo-rating-container .yotpo-sr-bottom-line-text-button,
+  .yotpo-rating-container .yotpo-sr-bottom-line-text-button *,
+  .yotpo-rating-container button[aria-label*="Rated"],
+  .yotpo-rating-container button[aria-label*="Rated"] span,
+  .yotpo-rating-container .yotpo.bottomLine span {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+    font-weight: normal !important; /* Remove bold */
+  }
+  
+  /* Force star container to be smaller with no gaps */
+  .yotpo-rating-container .yotpo-sr-bottom-line-score {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+  
+  .yotpo-rating-container .yotpo-sr-bottom-line-score span[style*="display: flex"] {
+    gap: 0 !important;
+  }
+  
+  .yotpo-rating-container .yotpo-sr-bottom-line-score svg,
+  .yotpo-rating-container span[style*="display: flex"] svg {
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 1px !important; /* Minimal spacing between stars */
+  }
+  
+  .yotpo-rating-container .yotpo-sr-bottom-line-score svg:last-child {
+    margin-right: 4px !important; /* Small gap before text */
+  }
+  
+  /* Ensure consistent height for alignment */
+  .yotpo-rating-container {
+    min-height: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Reserve space for rating even when empty */
+  .yotpo-rating-container:empty::before,
+  .yotpo-rating-container .yotpo:empty::before {
+    content: '\00a0';
+    display: block;
+    height: 20px;
+  }
 </style>
+
+
+<script>
+  /* Force Yotpo to match collection page size after dynamic load */
+  document.addEventListener('DOMContentLoaded', function() {
+    function fixYotpoSize() {
+      /* Fix text size and weight */
+      document.querySelectorAll('.yotpo-rating-container .yotpo-sr-bottom-line-summary, .yotpo-rating-container .yotpo-sr-bottom-line-text-button').forEach(function(el) {
+        el.style.setProperty('font-size', '12px', 'important');
+        el.style.setProperty('line-height', '16px', 'important');
+        el.style.setProperty('font-weight', 'normal', 'important');
+      });
+      
+      /* Fix all spans inside Yotpo - including font weight */
+      document.querySelectorAll('.yotpo-rating-container .yotpo span').forEach(function(span) {
+        span.style.setProperty('font-size', '12px', 'important');
+        span.style.setProperty('line-height', '16px', 'important');
+        span.style.setProperty('font-weight', 'normal', 'important');
+      });
+      
+      /* Fix star size and spacing */
+      document.querySelectorAll('.yotpo-rating-container svg').forEach(function(svg, index, allSvgs) {
+        svg.style.setProperty('width', '12px', 'important');
+        svg.style.setProperty('height', '12px', 'important');
+        svg.style.setProperty('margin-right', '1px', 'important');
+        
+        /* Add slightly more space after the last star */
+        if (index === allSvgs.length - 1) {
+          svg.style.setProperty('margin-right', '4px', 'important');
+        }
+      });
+      
+      /* Fix flex gaps - set to 0 for tight star spacing */
+      document.querySelectorAll('.yotpo-rating-container span[style*="display: flex"]').forEach(function(flex) {
+        flex.style.setProperty('gap', '0', 'important');
+      });
+      
+      /* Fix the star container specifically */
+      document.querySelectorAll('.yotpo-rating-container .yotpo-sr-bottom-line-score').forEach(function(score) {
+        score.style.setProperty('gap', '0', 'important');
+      });
+    }
+    
+    /* Run immediately and after delays to catch async loading */
+    fixYotpoSize();
+    setTimeout(fixYotpoSize, 500);
+    setTimeout(fixYotpoSize, 1000);
+    setTimeout(fixYotpoSize, 2000);
+    
+    /* Also observe for changes */
+    const observer = new MutationObserver(fixYotpoSize);
+    document.querySelectorAll('.yotpo-rating-container').forEach(function(container) {
+      observer.observe(container, { childList: true, subtree: true });
+    });
+  });
+</script>
 
 {% comment %} Swiper CSS {% endcomment %}
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}

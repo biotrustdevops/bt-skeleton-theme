@@ -6,11 +6,11 @@
 
 <section class="py-8 md:py-12" style="background-color: {{ bg_color }};" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-3 md:px-4">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'trust_icon' %}
-            <div class="flex flex-col items-center text-center" {{ block.shopify_attributes }}>
+            <div class="flex flex-row md:flex-col items-center md:text-center gap-4 md:gap-0" {{ block.shopify_attributes }}>
               {% if block.settings.icon_image != blank %}
                 <img 
                   src="{{ block.settings.icon_image | image_url: width: 120 }}"
@@ -22,17 +22,17 @@
                   width="{{ block.settings.icon_image.width }}"
                   height="{{ block.settings.icon_image.height }}"
                   loading="lazy"
-                  class="mb-3"
+                  class="md:mb-3 flex-shrink-0"
                   style="width: {{ icon_size }}px; height: {{ icon_size }}px; object-fit: contain;"
                 >
               {% elsif block.settings.icon_svg != blank %}
-                <div class="mb-3" style="width: {{ icon_size }}px; height: {{ icon_size }}px;">
+                <div class="md:mb-3 flex-shrink-0" style="width: {{ icon_size }}px; height: {{ icon_size }}px;">
                   {{ block.settings.icon_svg }}
                 </div>
               {% endif %}
               
               {% if block.settings.text != blank %}
-                <p class="text-sm md:text-base font-medium leading-tight" style="color: {{ text_color }};">
+                <p class="text-sm md:text-base font-medium leading-tight text-left md:text-center" style="color: {{ text_color }};">
                   {{ block.settings.text }}
                 </p>
               {% endif %}

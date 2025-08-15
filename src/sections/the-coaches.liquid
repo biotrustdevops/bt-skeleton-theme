@@ -10,7 +10,7 @@
   assign reverse_mobile = section.settings.reverse_mobile
 %}
 
-<section class="the-coaches-section relative pt-[60px] sm:pt-[80px] lg:pt-[100px]" 
+<section class="the-coaches-section relative pt-0" 
          id="{{ section.id }}">
   
   <div class="relative">
@@ -30,10 +30,24 @@
     </div>
     
     <div class="container mx-auto px-5 pt-10 pb-0 lg:pt-16 lg:pb-0 relative">
-      <div class="flex flex-col {% if reverse_mobile %}sm:flex-row{% else %}sm:flex-row-reverse{% endif %} {% if image_position == 'right' %}lg:flex-row-reverse{% else %}lg:flex-row{% endif %} items-end gap-6 sm:gap-10 lg:gap-[60px] max-w-[1350px] mx-auto">
+      <div class="flex flex-col {% if image_position == 'right' %}sm:flex-row{% else %}sm:flex-row-reverse{% endif %} items-end gap-6 sm:gap-10 lg:gap-[60px] max-w-[1350px] mx-auto">
+        
+        {% comment %} Image area - extends above container {% endcomment %}
+        {% if section.settings.coach_image != blank %}
+          <div class="w-full sm:w-1/2 relative z-10 order-1 sm:order-2 {% if image_position == 'right' %}lg:order-2{% else %}lg:order-1{% endif %}">
+            <div class="max-w-[350px] mx-auto relative mt-8 sm:-mt-[120px]">
+              {{ section.settings.coach_image | image_url: width: 700 | image_tag:
+                loading: 'lazy',
+                class: 'w-full h-auto relative',
+                widths: '350,525,700',
+                sizes: '(min-width: 640px) 350px, 100vw'
+              }}
+            </div>
+          </div>
+        {% endif %}
         
         {% comment %} Text content area {% endcomment %}
-        <div class="w-full sm:w-1/2 text-center flex flex-col gap-5 pb-10 lg:pb-16">
+        <div class="w-full sm:w-1/2 text-center flex flex-col gap-5 pb-10 lg:pb-16 order-2 sm:order-1">
           {% if section.settings.subheading != blank %}
             <h4 class="text-lg text-white font-normal">
               {{ section.settings.subheading }}
@@ -62,20 +76,6 @@
             </div>
           {% endif %}
         </div>
-        
-        {% comment %} Image area - extends above container {% endcomment %}
-        {% if section.settings.coach_image != blank %}
-          <div class="w-full sm:w-1/2 relative z-10">
-            <div class="max-w-[350px] mx-auto relative" style="margin-top: -120px;">
-              {{ section.settings.coach_image | image_url: width: 700 | image_tag:
-                loading: 'lazy',
-                class: 'w-full h-auto relative',
-                widths: '350,525,700',
-                sizes: '(min-width: 640px) 350px, 100vw'
-              }}
-            </div>
-          </div>
-        {% endif %}
       </div>
     </div>
   </div>

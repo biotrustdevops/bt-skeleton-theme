@@ -9,13 +9,13 @@
       
       <div class="newsletter__offer">
         <div class="newsletter__book-image">
-          <div class="newsletter__book-badge">{{ 'newsletter.free_badge' | t }}</div>
-          <div class="newsletter__book-cover">
-            <div class="newsletter__book-title">
-              <span class="newsletter__book-number">7</span>
-              <span class="newsletter__book-text">{{ 'newsletter.book_title_best' | t }}</span>
-              <span class="newsletter__book-subtitle">{{ 'newsletter.book_title_snacks' | t }}</span>
-            </div>
+          <div class="newsletter__book-circle">
+            <img src="https://bio-img.biotrust.com/Shopify/footer/ebook.png" 
+                 alt="7 Best Snacks for a Flat Belly" 
+                 class="newsletter__ebook-image"
+                 loading="lazy"
+                 width="200"
+                 height="260">
           </div>
         </div>
         
@@ -68,7 +68,11 @@
 {% stylesheet %}
   .newsletter-section {
     background: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
-    padding: 3rem 1rem;
+    background-image: url('https://staging.biotrust.com/cdn/shop/t/52/assets/honeycomb-5.png'), linear-gradient(135deg, #0066cc 0%, #004d99 100%);
+    background-repeat: repeat;
+    background-position: top left;
+    background-blend-mode: overlay;
+    padding: 0 1rem 1.5rem 1rem;
     position: relative;
     overflow: hidden;
   }
@@ -110,76 +114,28 @@
 
   .newsletter__book-image {
     position: relative;
-    width: 200px;
-    height: 260px;
+    width: 220px;
+    height: 220px;
     flex-shrink: 0;
   }
 
-  .newsletter__book-badge {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    color: #0066cc;
-    padding: 0.5rem 1.5rem;
-    border-radius: 25px;
-    font-weight: 700;
-    font-size: 1.125rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-  }
-
-  .newsletter__book-cover {
-    background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
-    border-radius: 8px;
-    padding: 2rem 1rem;
-    height: 100%;
+  .newsletter__book-circle {
+    width: 220px;
+    height: 220px;
+    border: 8px solid #00cc66;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
+    background: transparent;
+    padding: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
 
-  .newsletter__book-cover::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  }
-
-  .newsletter__book-title {
-    text-align: center;
-    color: white;
-    position: relative;
-    z-index: 1;
-  }
-
-  .newsletter__book-number {
-    display: block;
-    font-size: 4rem;
-    font-weight: 900;
-    line-height: 1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .newsletter__book-text {
-    display: block;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0.5rem 0;
-    text-transform: uppercase;
-  }
-
-  .newsletter__book-subtitle {
-    display: block;
-    font-size: 1rem;
-    font-style: italic;
+  .newsletter__ebook-image {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
   }
 
   .newsletter__form-wrapper {
@@ -312,16 +268,19 @@
     }
 
     .newsletter__book-image {
-      width: 160px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
     }
 
-    .newsletter__book-number {
-      font-size: 3rem;
+    .newsletter__book-circle {
+      width: 180px;
+      height: 180px;
+      border-width: 6px;
+      padding: 4px;
     }
 
-    .newsletter__book-text {
-      font-size: 1rem;
+    .newsletter__ebook-image {
+      width: 150px;
     }
 
     .newsletter__description {

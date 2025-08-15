@@ -1,12 +1,17 @@
 {% liquid
   assign heading_text = section.settings.heading_text | default: 'FEATURED ON'
-  assign animation_speed = section.settings.animation_speed | default: 30
+  assign animation_speed = section.settings.animation_speed | default: 20
 %}
 
 <section class="py-2 md:py-3 overflow-hidden bg-white" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-0 md:px-4">
+    {% comment %} Heading - above logos on mobile, inline on desktop {% endcomment %}
+    {% if heading_text != blank %}
+      <h2 class="text-center text-sm font-semibold text-[#003d78] mb-3 md:hidden">{{ heading_text }}</h2>
+    {% endif %}
+    
     <div class="md:flex md:items-center md:justify-between md:gap-8">
-      {% comment %} Heading - hidden on mobile, shown inline on desktop {% endcomment %}
+      {% comment %} Heading for desktop {% endcomment %}
       {% if heading_text != blank %}
         <h2 class="hidden md:block text-sm md:text-base font-semibold text-[#003d78] flex-shrink-0">{{ heading_text }}</h2>
       {% endif %}

@@ -171,18 +171,6 @@
       });
     });
 
-    // Purchase type toggle
-    const purchaseTabs = document.querySelectorAll('[data-purchase-tab]');
-    purchaseTabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        purchaseTabs.forEach(t => {
-          t.classList.remove('bg-[#0d4f9a]', 'text-white');
-          t.classList.add('bg-white', 'text-gray-700');
-        });
-        this.classList.remove('bg-white', 'text-gray-700');
-        this.classList.add('bg-[#0d4f9a]', 'text-white');
-      });
-    });
   });
 {% endjavascript %}
 
@@ -311,7 +299,7 @@
             <!-- Main Image -->
             {% if product.featured_image %}
               <div>
-                {{ product.featured_image | image_url: width: 550 | image_tag: class: 'object-contain max-w-[490px] max-h-[490px]', data-main-image: true }}
+                {{ product.featured_image | image_url: width: 550 | image_tag: class: 'object-contain w-[450px] h-[450px]', data-main-image: true }}
               </div>
             {% endif %}
 
@@ -319,7 +307,7 @@
             {% if product.metafields["global"]["Free-Ebook-Image"] != blank %}
               <div class="mt-4">
                 <img src='{{ product.metafields["global"]["Free-Ebook-Image"] }}'
-                    class="free-ebook-img w-full max-w-[490px]"
+                    class="free-ebook-img w-full max-w-[450px]"
                     width="600"
                     height="200"
                     alt="Receive two free e-books with your order. 'The 3 Week Diet' and '53 Fat Burning Smoothies & Milkshakes' are yours free, a $50 value." />
@@ -333,114 +321,8 @@
     <!-- Right Side: Product Info -->
     <div class="flex-1 md:w-1/2 min-w-0">
 
-      <!-- Package Selector -->
-      <div class="md:px-6 md:py-5 p-4">
-        <h2 class="text-lg md:text-[21px] font-bold text-center text-[#0d4f9a] mb-1.5">Choose Your Package</h2>
-        <p class="text-center text-gray-700 text-xs md:text-sm mb-4">Select your money-saving option below:</p>
-        
-        <!-- Purchase Type Toggle -->
-        <div class="flex gap-2 mb-4 md:mb-14">
-          <button 
-            data-purchase-tab
-            class="flex-1 border-2 border-[#0d4f9a] bg-[#0d4f9a] text-white font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 rounded transition-colors cursor-pointer"
-          >
-            One-Time Purchase
-          </button>
-          <button 
-            data-purchase-tab
-            class="flex-1 border-2 border-[#0d4f9a] bg-white text-[#0d4f9a] hover:bg-gray-50 font-semibold text-[13px] md:text-[15px] py-2.5 px-2 md:px-4 rounded transition-colors cursor-pointer leading-tight"
-          >
-            Subscribe & Save<br class="md:hidden"><span class="md:hidden text-[11px]">Up To 50%</span><span class="hidden md:inline"> Up To 50%</span>
-          </button>
-        </div>
-
-        <!-- Package Options -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-0">
-          <!-- 1 Jar -->
-          <div class="border-2 md:border-r-0 border-[#0d4f9a] bg-white transition-all p-3 md:px-3.5 md:py-4 md:text-center">
-            <div class="flex md:block items-center gap-3">
-              <!-- Mobile Product Image -->
-              <div class="md:hidden w-20 h-20 flex-shrink-0">
-                {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 100 | image_tag: class: 'w-full h-full object-contain' }}
-                {% endif %}
-              </div>
-              <div class="flex-1 md:w-full">
-                <div class="text-xl md:text-[32px] font-bold text-[#0d4f9a] md:mb-1.5">1 Jar</div>
-                <div class="text-2xl md:text-[38px] font-bold text-gray-800 leading-none md:my-2.5 md:mb-4">
-                  <span class="text-lg md:text-[26px] align-top relative top-0.5">$</span>49
-                </div>
-              </div>
-              <button 
-                class="bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-6 md:px-4 text-xs md:text-sm md:w-full"
-                data-open-flavor-selector
-                data-quantity="1"
-                data-product='{{ product | json | escape }}'
-              >
-                CHOOSE<br class="md:hidden"><span class="md:hidden">FLAVOR</span><span class="hidden md:inline"> FLAVOR</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 3 Jars (Most Popular) -->
-          <div class="border-2 md:border-4 border-green-600 md:border-[#0d4f9a] bg-white transition-all md:shadow-lg p-3 md:px-4 md:py-5 md:text-center md:-my-3">
-            <div class="flex md:block items-center gap-3">
-              <!-- Mobile Product Image -->
-              <div class="md:hidden w-20 h-20 flex-shrink-0">
-                {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 100 | image_tag: class: 'w-full h-full object-contain' }}
-                {% endif %}
-              </div>
-              <div class="flex-1 md:w-full">
-                <div class="hidden md:block bg-[#0d4f9a] text-white px-4 py-1 text-sm font-bold whitespace-nowrap mb-3 md:-mx-4 md:-mt-5">
-                  Most Popular
-                </div>
-                <div class="text-xl md:text-[36px] font-bold text-[#0d4f9a] md:mb-2 md:mt-0">3 Jars</div>
-                <div class="text-xl md:text-[42px] font-bold text-green-600 leading-none md:my-3">
-                  <span class="text-base md:text-[28px] align-top relative top-0.5">$</span>44<span class="text-sm md:text-[18px] text-gray-600 ml-1 md:ml-0 md:block">Per Jar</span>
-                </div>
-                <div class="text-sm md:text-base text-red-600 font-semibold md:mb-4">(Save 10%)</div>
-                <div class="md:hidden text-sm text-[#0d4f9a] font-semibold italic">Most Popular!</div>
-              </div>
-              <button 
-                class="bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-6 md:py-3 md:px-4 text-xs md:text-[15px] md:w-full"
-                data-open-flavor-selector
-                data-quantity="3"
-                data-product='{{ product | json | escape }}'
-              >
-                CHOOSE<br class="md:hidden"><span class="md:hidden">FLAVORS</span><span class="hidden md:inline"> FLAVORS</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 6 Jars -->
-          <div class="border-2 md:border-l-0 border-[#0d4f9a] bg-white transition-all p-3 md:px-3.5 md:py-4 md:text-center">
-            <div class="flex md:block items-center gap-3">
-              <!-- Mobile Product Image -->
-              <div class="md:hidden w-20 h-20 flex-shrink-0">
-                {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 100 | image_tag: class: 'w-full h-full object-contain' }}
-                {% endif %}
-              </div>
-              <div class="flex-1 md:w-full">
-                <div class="text-xl md:text-[32px] font-bold text-[#0d4f9a] md:mb-1.5">6 Jars</div>
-                <div class="text-xl md:text-[38px] font-bold text-gray-800 leading-none md:my-2.5">
-                  <span class="text-base md:text-[26px] align-top relative top-0.5">$</span>39<span class="text-sm md:text-[17px] text-gray-600 ml-1 md:ml-0 md:block">Per Jar</span>
-                </div>
-                <div class="text-sm md:text-[15px] text-red-600 font-semibold md:mb-3">(Save 20%)</div>
-              </div>
-              <button 
-                class="bg-green-600 hover:bg-green-700 text-white font-bold rounded uppercase tracking-wider transition-colors cursor-pointer py-2.5 px-6 md:px-4 text-xs md:text-sm md:w-full"
-                data-open-flavor-selector
-                data-quantity="6"
-                data-product='{{ product | json | escape }}'
-              >
-                CHOOSE<br class="md:hidden"><span class="md:hidden">FLAVORS</span><span class="hidden md:inline"> FLAVORS</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Buy Box with Package Selector -->
+      {% render 'buy-box', product: product %}
 
       <div class="mt-3 md:mt-6 overflow-hidden">
         {% render 'yotpo-product-ugc' %}

@@ -79,5 +79,38 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "Hexagon Graphics",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Mission Section Hexagons"
+      },
+      {
+        "type": "image_picker",
+        "id": "hexagon_left_icon",
+        "label": "Left Icon",
+        "info": "Desktop left hexagon graphic"
+      },
+      {
+        "type": "image_picker",
+        "id": "hexagon_right_icon",
+        "label": "Right Icon",
+        "info": "Desktop right hexagon graphic"
+      },
+      {
+        "type": "image_picker",
+        "id": "hexagon_mobile_left_icon",
+        "label": "Mobile Left Icon",
+        "info": "Mobile left hexagon graphic"
+      },
+      {
+        "type": "image_picker",
+        "id": "hexagon_mobile_right_icon",
+        "label": "Mobile Right Icon",
+        "info": "Mobile right hexagon graphic"
+      }
+    ]
   }
 ]

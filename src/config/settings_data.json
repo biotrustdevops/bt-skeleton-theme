@@ -9,6 +9,10 @@
  */
 {
   "current": {
+    "hexagon_left_icon": "shopify://shop_images/hp-mission-left-icon-desktop.webp",
+    "hexagon_right_icon": "shopify://shop_images/hp-mission-right-icon-desktop.webp",
+    "hexagon_mobile_left_icon": "shopify://shop_images/hp-mission-left-icon-mobile.webp",
+    "hexagon_mobile_right_icon": "shopify://shop_images/hp-mission-right-icon-mobile.webp",
     "content_for_index": [],
     "blocks": {
       "14952540001915115444": {

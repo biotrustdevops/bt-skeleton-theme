@@ -12,7 +12,7 @@
 <section class="py-12 md:py-16 lg:py-20 bg-white" data-section-id="{{ section.id }}">
   <div class="md:container md:mx-auto px-0 md:px-4">
     {% if heading_text != blank %}
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#003d78] text-center mb-10 md:mb-14">{{ heading_text }}</h2>
+      <h2 class="text-[74px] font-normal leading-[120%] text-bt-blue text-center mb-10 md:mb-14" style="font-family: 'League Gothic', sans-serif;">{{ heading_text }}</h2>
     {% endif %}
     
     {% comment %} Swiper Container {% endcomment %}
@@ -21,79 +21,12 @@
         <div class="swiper-wrapper">
         {% for product in selected_collection.products limit: product_limit %}
             <div class="swiper-slide">
-              <div class="bg-gray-50 rounded-lg p-6 h-full flex flex-col">
-                {% comment %} Product Image {% endcomment %}
-                {% if product.featured_image %}
-                  <div class="mb-4 flex justify-center relative">
-                    {% comment %} SAVE X% Badge {% endcomment %}
-                    {% if product.compare_at_price > product.price %}
-                      {% liquid
-                        assign savings = product.compare_at_price | minus: product.price
-                        assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round
-                      %}
-                      <div class="absolute top-0 left-0 bg-bt-magenta text-white px-3 py-1 rounded-full text-sm font-bold z-10">
-                        SAVE {{ savings_percentage }}%
-                      </div>
-                    {% endif %}
-                    
-                    <img 
-                      src="{{ product.featured_image | image_url: width: 400 }}"
-                      srcset="{{ product.featured_image | image_url: width: 200 }} 200w,
-                              {{ product.featured_image | image_url: width: 300 }} 300w,
-                              {{ product.featured_image | image_url: width: 400 }} 400w"
-                      sizes="(max-width: 768px) 300px, 250px"
-                      alt="{{ product.title | escape }}"
-                      width="{{ product.featured_image.width }}"
-                      height="{{ product.featured_image.height }}"
-                      loading="lazy"
-                      class="w-auto h-48 md:h-56 object-contain"
-                    >
-                  </div>
-                {% endif %}
-                
-                {% comment %} Product Title {% endcomment %}
-                <h3 class="text-[#005eb8] font-bold text-base md:text-lg text-center mb-2 uppercase">
-                  {{ product.title | truncate: 50 }}
-                </h3>
-                
-                {% comment %} Product Price {% endcomment %}
-                <div class="text-center mb-2">
-                  {% if product.compare_at_price > product.price %}
-                    <span class="text-gray-400 line-through text-sm">{{ product.compare_at_price | money }}</span>
-                    <span class="text-[#005eb8] font-bold text-lg ml-2">{{ product.price | money }}</span>
-                  {% else %}
-                    <span class="text-[#005eb8] font-bold text-lg">{{ product.price | money }}</span>
-                  {% endif %}
-                </div>
-                
-                {% comment %} Product Description {% endcomment %}
-                {% if product.description != blank %}
-                  <p class="text-gray-600 text-xs md:text-sm text-center mb-4 flex-grow">
-                    {{ product.description | strip_html | truncate: 100 }}
-                  </p>
-                {% endif %}
-                
-                {% comment %} Star Rating (placeholder for now) {% endcomment %}
-                {% if show_rating %}
-                  <div class="flex items-center justify-center mb-4">
-                    <div class="flex items-center gap-1">
-                      {% for i in (1..5) %}
-                        <svg class="w-4 h-4 text-green-500 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                        </svg>
-                      {% endfor %}
-                    </div>
-                  </div>
-                {% endif %}
-                
-                {% comment %} Shop Now Button {% endcomment %}
-                <div class="mt-auto">
-                  <a href="{{ product.url }}" 
-                     class="block w-full text-center py-3 bg-gray-200 hover:bg-gray-300 text-[#005eb8] font-bold text-sm uppercase rounded transition-colors duration-200">
-                    {{ button_text }}
-                  </a>
-                </div>
-              </div>
+              {% render 'product-card', 
+                product: product,
+                button_text: button_text,
+                show_rating: show_rating,
+                use_yotpo: true
+              %}
             </div>
         {% endfor %}
         </div>
@@ -116,6 +49,22 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* Hide fallback stars when Yotpo loads */
+  .yotpo.yotpo-stars-rating ~ .yotpo-fallback {
+    display: none;
+  }
+  
+  /* Ensure consistent card heights */
+  .product-slider-{{ section.id }} .swiper-slide {
+    height: auto;
+  }
+  
+  .product-slider-{{ section.id }} .swiper-slide > div {
+    height: 100%;
+  }
+</style>
 
 {% comment %} Swiper CSS {% endcomment %}
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}

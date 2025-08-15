@@ -4,22 +4,77 @@
   assign description_text = section.settings.description_text | default: "We believe healthy aging means adding life to your years, not just years to your life. We're on a mission to empower you to take control of your health, so you can live a more vibrant, active and joyful life at every age."
 %}
 
-<section class="relative py-16 md:py-20 lg:py-24 overflow-hidden" data-section-id="{{ section.id }}">
+<section class="relative py-12 md:py-16 lg:py-20 overflow-hidden" data-section-id="{{ section.id }}">
   {% comment %} Decorative hexagon shapes {% endcomment %}
-  <div class="absolute inset-0 pointer-events-none">
-    {% comment %} Left side hexagons {% endcomment %}
-    <svg class="absolute left-0 top-8 w-32 md:w-40 lg:w-48 h-auto opacity-30" viewBox="-50 0 250 450" xmlns="http://www.w3.org/2000/svg">
-      <path d="M50 20 L120 60 L120 140 L50 180 L-20 140 L-20 60 Z" fill="#a8c8ec" opacity="0.5"/>
-      <path d="M80 150 L150 190 L150 270 L80 310 L10 270 L10 190 Z" fill="#c5d9f2" opacity="0.4"/>
-      <path d="M40 280 L110 320 L110 400 L40 440 L-30 400 L-30 320 Z" fill="#a8c8ec" opacity="0.3"/>
-    </svg>
+  {% if section.settings.show_hexagons %}
+    {% comment %} Left hexagons - On top of content (z-20) {% endcomment %}
+    <div class="absolute inset-0 pointer-events-none z-20">
+      {% comment %} Desktop Left side hexagons {% endcomment %}
+      {% if settings.hexagon_left_icon %}
+        <img 
+          src="{{ settings.hexagon_left_icon | image_url: width: 400 }}"
+          alt=""
+          class="absolute left-0 bottom-0 w-32 md:w-40 lg:w-48 h-auto hidden md:block"
+          loading="lazy"
+        >
+      {% else %}
+        <svg class="absolute left-0 bottom-0 w-32 md:w-40 lg:w-48 h-auto opacity-30 hidden md:block" viewBox="-50 0 250 450" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 20 L120 60 L120 140 L50 180 L-20 140 L-20 60 Z" fill="#a8c8ec" opacity="0.5"/>
+          <path d="M80 150 L150 190 L150 270 L80 310 L10 270 L10 190 Z" fill="#c5d9f2" opacity="0.4"/>
+          <path d="M40 280 L110 320 L110 400 L40 440 L-30 400 L-30 320 Z" fill="#a8c8ec" opacity="0.3"/>
+        </svg>
+      {% endif %}
+      
+      {% comment %} Mobile Left side hexagons {% endcomment %}
+      {% if settings.hexagon_mobile_left_icon %}
+        <img 
+          src="{{ settings.hexagon_mobile_left_icon | image_url: width: 200 }}"
+          alt=""
+          class="absolute left-0 bottom-0 w-24 h-auto md:hidden"
+          loading="lazy"
+        >
+      {% else %}
+        <svg class="absolute left-0 bottom-0 w-24 h-auto opacity-30 md:hidden" viewBox="-50 0 250 450" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 20 L120 60 L120 140 L50 180 L-20 140 L-20 60 Z" fill="#a8c8ec" opacity="0.5"/>
+          <path d="M80 150 L150 190 L150 270 L80 310 L10 270 L10 190 Z" fill="#c5d9f2" opacity="0.4"/>
+          <path d="M40 280 L110 320 L110 400 L40 440 L-30 400 L-30 320 Z" fill="#a8c8ec" opacity="0.3"/>
+        </svg>
+      {% endif %}
+    </div>
     
-    {% comment %} Right side hexagons {% endcomment %}
-    <svg class="absolute right-0 top-12 w-32 md:w-40 lg:w-48 h-auto opacity-30" viewBox="0 0 250 350" xmlns="http://www.w3.org/2000/svg">
-      <path d="M150 30 L220 70 L220 150 L150 190 L80 150 L80 70 Z" fill="#a8c8ec" opacity="0.5"/>
-      <path d="M120 180 L190 220 L190 300 L120 340 L50 300 L50 220 Z" fill="#c5d9f2" opacity="0.4"/>
-    </svg>
-  </div>
+    {% comment %} Right hexagons - On top of content (z-20) {% endcomment %}
+    <div class="absolute inset-0 pointer-events-none z-20">
+      {% comment %} Desktop Right side hexagons {% endcomment %}
+      {% if settings.hexagon_right_icon %}
+        <img 
+          src="{{ settings.hexagon_right_icon | image_url: width: 400 }}"
+          alt=""
+          class="absolute right-0 top-0 w-32 md:w-40 lg:w-48 h-auto hidden md:block"
+          loading="lazy"
+        >
+      {% else %}
+        <svg class="absolute right-0 top-0 w-32 md:w-40 lg:w-48 h-auto opacity-30 hidden md:block" viewBox="0 0 250 350" xmlns="http://www.w3.org/2000/svg">
+          <path d="M150 30 L220 70 L220 150 L150 190 L80 150 L80 70 Z" fill="#a8c8ec" opacity="0.5"/>
+          <path d="M120 180 L190 220 L190 300 L120 340 L50 300 L50 220 Z" fill="#c5d9f2" opacity="0.4"/>
+        </svg>
+      {% endif %}
+      
+      {% comment %} Mobile Right side hexagons {% endcomment %}
+      {% if settings.hexagon_mobile_right_icon %}
+        <img 
+          src="{{ settings.hexagon_mobile_right_icon | image_url: width: 200 }}"
+          alt=""
+          class="absolute right-0 top-0 w-24 h-auto md:hidden"
+          loading="lazy"
+        >
+      {% else %}
+        <svg class="absolute right-0 top-0 w-24 h-auto opacity-30 md:hidden" viewBox="0 0 250 350" xmlns="http://www.w3.org/2000/svg">
+          <path d="M150 30 L220 70 L220 150 L150 190 L80 150 L80 70 Z" fill="#a8c8ec" opacity="0.5"/>
+          <path d="M120 180 L190 220 L190 300 L120 340 L50 300 L50 220 Z" fill="#c5d9f2" opacity="0.4"/>
+        </svg>
+      {% endif %}
+    </div>
+  {% endif %}
   
   {% comment %} Mission content {% endcomment %}
   <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
@@ -31,7 +86,7 @@
       {% endif %}
       
       {% if main_heading != blank %}
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#003d78] mb-6 md:mb-8">
+        <h2 class="font-normal text-[#003d78] mb-6 md:mb-8" style="font-size: 74px; line-height: 88px; height: 88px; font-family: 'League Gothic', sans-serif;">
           {{ main_heading }}
         </h2>
       {% endif %}
@@ -90,6 +145,13 @@
       "id": "cta_link",
       "label": "Call to Action Link",
       "info": "Optional button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hexagons",
+      "label": "Show Hexagons",
+      "default": true,
+      "info": "Toggle hexagon graphics. Images are configured in Theme Settings > Hexagon Graphics"
     }
   ],
   "presets": [

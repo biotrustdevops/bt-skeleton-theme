@@ -1,0 +1,98 @@
+{% comment %}
+  Product Card Snippet
+  
+  Parameters:
+  - product: Product object (required)
+  - button_text: Text for the action button (default: 'LEARN MORE')
+  - show_rating: Show rating stars (default: true)
+  - use_yotpo: Use Yotpo for ratings (default: false)
+{% endcomment %}
+
+{% liquid
+  assign button_text = button_text | default: 'LEARN MORE'
+  assign show_rating = show_rating | default: true
+  assign use_yotpo = use_yotpo | default: false
+%}
+
+<div class="bg-[#E5E5E5] rounded-lg border border-[#E5E5E5] shadow-sm flex flex-col h-full relative">
+  
+  {% comment %} Product Image {% endcomment %}
+  {% if product.featured_image %}
+    <div class="flex-none mb-1.5 flex justify-center py-6 h-[270px] relative">
+      {% comment %} SAVE X% Badge {% endcomment %}
+      {% if product.compare_at_price > product.price %}
+        {% liquid
+          assign savings = product.compare_at_price | minus: product.price
+          assign savings_percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round
+        %}
+        <div class="absolute top-2 left-2 bg-bt-magenta text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+          SAVE {{ savings_percentage }}%
+        </div>
+      {% endif %}
+      
+      <a href="{{ product.url }}">
+        {% render 'image',
+          image: product.featured_image,
+          width: 240,
+          height: 240,
+          loading: 'lazy',
+          class: 'w-auto h-24 object-contain'
+        %}
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="grow flex flex-col justify-between bg-white rounded-b-lg p-2">
+    <div>
+      {% comment %} Product Title {% endcomment %}
+      <h3 class="text-[#0D4F9A] font-black text-base mb-2 uppercase leading-tight">
+        <a href="{{ product.url }}" class="hover:text-[#004a94] transition-colors">
+          {{ product.title | escape }}
+        </a>
+      </h3>
+
+      {% comment %} Star Rating {% endcomment %}
+      {% if show_rating %}
+        <div class="mb-3 flex items-center">
+          {% if use_yotpo %}
+            <div class="yotpo bottomLine" 
+                 data-product-id="{{ product.id }}"
+                 data-url="{{ product.url }}">
+            </div>
+            {% comment %} Fallback static stars if Yotpo not loaded {% endcomment %}
+            <div class="flex mr-2 yotpo-fallback">
+              {% for i in (1..5) %}
+                <svg class="w-3 h-3 text-[#2BB34D] fill-current" viewBox="0 0 20 20">
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>           
+                </svg>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="flex mr-2">
+              {% for i in (1..5) %}
+                <svg class="w-3 h-3 text-[#2BB34D] fill-current" viewBox="0 0 20 20">
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>           
+                </svg>
+              {% endfor %}
+            </div>
+            <span class="text-xs text-gray-600 font-medium">Based On 3562 Reviews</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% comment %} Product Sub-Heading {% endcomment %}
+    {% if product.metafields["global"]["Sub-Heading"] != blank %}
+      <p class="text-xs text-[#2E74B5] capitalize font-semibold p-1 mb-2 bg-[#F2F2F2] rounded-sm">
+        {{ product.metafields["global"]["Sub-Heading"] | downcase | strip_html | truncate: 120 }}
+      </p>
+    {% endif %}
+
+    {% comment %} Action Button {% endcomment %}
+    <div class="flex">
+      <a href="{{ product.url }}" class="flex-1 bg-[#2BB34D] text-white text-center py-3 px-2 rounded-sm font-black text-sm uppercase tracking-wide hover:bg-[#004a94] transition-colors block">
+        {{ button_text }}
+      </a>
+    </div>
+  </div>            
+</div>

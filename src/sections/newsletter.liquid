@@ -21,9 +21,7 @@
         
         <div class="newsletter__form-wrapper">
           <p class="newsletter__description">
-            {{ 'newsletter.description_part1' | t }}
-            <em>{{ 'newsletter.book_full_title' | t }}</em>
-            {{ 'newsletter.description_part2' | t }}
+            Get free instant access to our eBook, <em>The 7 BEST Snacks for a Flat Belly</em> + <strong>20% OFF</strong> your next purchase when you sign up to receive BioTRUST emails:
           </p>
           
           {% form 'customer', id: newsletter_id, class: 'newsletter__form' %}
@@ -33,14 +31,18 @@
                 type="email"
                 name="contact[email]"
                 class="newsletter__input"
-                placeholder="{{ 'newsletter.email_placeholder' | t }}"
-                aria-label="{{ 'newsletter.email_label' | t }}"
+                placeholder="address@example.com"
+                aria-label="Email address"
                 required
               >
               <button type="submit" class="newsletter__submit">
-                {{ 'newsletter.submit_button' | t }}
+                SIGN ME UP
               </button>
             </div>
+            
+            <p class="newsletter__consent">
+              Yes, sign me up for marketing emails from BioTRUST. For more information check out our <a href="{{ routes.root_url }}pages/privacy-policy" class="newsletter__privacy-link">Privacy Policy</a>.
+            </p>
             
             {% if form.errors %}
               <div class="newsletter__errors">
@@ -54,16 +56,15 @@
               </div>
             {% endif %}
           {% endform %}
-          
-          <p class="newsletter__consent">
-            {{ 'newsletter.consent_text' | t }}
-            <a href="{{ routes.root_url }}pages/privacy-policy" class="newsletter__privacy-link">{{ 'newsletter.privacy_policy' | t }}</a>.
-          </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<div class="newsletter__contact-bar">
+  <p>CONTACT US: (800) 766-5086 MON - FRI 9AM - 6PM ET</p>
+</div>
 
 {% stylesheet %}
   .newsletter-section {
@@ -101,6 +102,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 2rem;
+    padding-top: 1.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
@@ -140,20 +142,23 @@
 
   .newsletter__form-wrapper {
     flex: 1;
-    max-width: 500px;
+    max-width: 900px;
     text-align: left;
   }
 
   .newsletter__description {
     color: white;
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
   }
 
   .newsletter__description em {
     font-style: italic;
-    font-weight: 600;
+  }
+
+  .newsletter__description strong {
+    font-weight: 700;
   }
 
   .newsletter__form {
@@ -162,8 +167,9 @@
 
   .newsletter__input-group {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: stretch;
   }
 
   .newsletter__input {
@@ -186,12 +192,12 @@
   }
 
   .newsletter__submit {
-    padding: 1rem 2rem;
+    padding: 1rem 2.5rem;
     background: #00cc66;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
@@ -206,9 +212,10 @@
   }
 
   .newsletter__consent {
-    color: rgba(255, 255, 255, 0.9);
+    color: white;
     font-size: 0.875rem;
     line-height: 1.4;
+    margin-top: 0.75rem;
   }
 
   .newsletter__privacy-link {
@@ -218,6 +225,20 @@
 
   .newsletter__privacy-link:hover {
     color: #00cc66;
+  }
+
+  .newsletter__contact-bar {
+    background: #00cc66;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .newsletter__contact-bar p {
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
   }
 
   .newsletter__errors {
@@ -249,12 +270,21 @@
     }
 
     .newsletter__form-wrapper {
-      text-align: center;
+      text-align: left;
       padding: 0 1rem;
     }
 
     .newsletter__input-group {
       flex-direction: column;
+      gap: 1rem;
+    }
+
+    .newsletter__description {
+      font-size: 1rem;
+    }
+
+    .newsletter__contact-bar p {
+      font-size: 1rem;
     }
 
     .newsletter__submit {

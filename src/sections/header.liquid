@@ -113,7 +113,7 @@
 </div>
 
 {% # Main Header %}
-<header class="bg-white shadow-sm py-3 md:py-4 relative border-b-[5px] border-bt-blue" 
+<header class="bg-white shadow-sm py-3 md:py-4 relative border-b-[5px] border-bt-blue overflow-visible" 
   {% if section.settings.header_background_image %}
     style="background-image: url('{{ section.settings.header_background_image | image_url: width: 300 }}'); background-repeat: repeat; background-position: top left;"
   {% else %}
@@ -164,13 +164,69 @@
                   {{ link.title }}
                 </button>
               {% endif %}
-              <div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg hidden z-[9999]" data-nav-menu>
-                {% for child_link in link.links %}
-                  <a href="{{ child_link.url }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-bt-blue transition-colors">
-                    {{ child_link.title }}
-                  </a>
-                {% endfor %}
-              </div>
+              
+              {% if forloop.first and section.settings.enable_mega_menu %}
+                {% comment %} Mega Menu for Shop {% endcomment %}
+                <div class="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl z-[9999]" data-nav-menu data-mega-menu style="width: 1100px; margin-left: -200px; display: none;">
+                  <div class="flex h-full">
+                    {% comment %} Categories Column {% endcomment %>
+                    <div class="w-80 bg-gray-50 p-8 border-r border-gray-200">
+                      <h3 class="text-sm font-bold text-gray-500 uppercase mb-4 tracking-wider">Categories</h3>
+                      <ul class="space-y-2">
+                        {% liquid
+                          for child in link.links
+                            echo '<li>'
+                            echo '<a href="' | append: child.url | append: '" '
+                            echo 'class="block px-3 py-2 text-gray-700 hover:bg-white hover:text-bt-blue rounded transition-all duration-200 mega-menu-link" '
+                            assign handle = child.url | split: '/collections/' | last
+                            echo 'data-collection-handle="' | append: handle | append: '">'
+                            echo child.title
+                            echo '</a>'
+                            echo '</li>'
+                          endfor
+                        %}
+                      </ul>
+                    </div>
+                    
+                    {% comment %} Products Column {% endcomment %}
+                    <div class="flex-1 p-8">
+                      <div class="mega-menu-products">
+                        <h3 class="text-base font-bold text-gray-600 uppercase mb-6 tracking-wider">Featured Products</h3>
+                        <div class="grid grid-cols-3 gap-8" id="mega-menu-products-grid">
+                          {% comment %} Show first 6 products from all products collection by default {% endcomment %}
+                          {% assign featured_collection = collections['all'] %}
+                          {% for product in featured_collection.products limit: 6 %}
+                            <div class="mega-menu-product">
+                              <a href="{{ product.url }}" class="block group/product">
+                                {% if product.featured_image %}
+                                  <div class="aspect-square overflow-hidden rounded-lg mb-4 bg-gray-50" style="width: 220px; height: 220px;">
+                                    {{ product.featured_image | image_url: width: 440 | image_tag:
+                                      loading: 'lazy',
+                                      class: 'w-full h-full object-cover group-hover/product:scale-105 transition-transform duration-300',
+                                      widths: '220,440',
+                                      sizes: '220px'
+                                    }}
+                                  </div>
+                                {% endif %}
+                                <h4 class="text-sm font-medium text-gray-900 group-hover/product:text-bt-blue line-clamp-2 text-center">{{ product.title }}</h4>
+                              </a>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                {% comment %} Regular Dropdown Menu {% endcomment %}
+                <div class="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-[9999]" data-nav-menu style="display: none;">
+                  {% for child_link in link.links %}
+                    <a href="{{ child_link.url }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-bt-blue transition-colors">
+                      {{ child_link.title }}
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
           {% else %}
             <a href="{{ link.url }}" class="mx-2.5 py-2 text-gray-700 hover:text-bt-blue font-semibold uppercase transition-colors whitespace-nowrap" style="font-size: 15px; line-height: 22.5px;">
@@ -265,6 +321,86 @@
 </div>
 </header-dropdowns>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded - initializing dropdowns');
+    
+    // Find all nav dropdowns
+    const navDropdowns = document.querySelectorAll('[data-nav-dropdown]');
+    console.log('Found dropdowns:', navDropdowns.length);
+    
+    navDropdowns.forEach(dropdown => {
+      const menu = dropdown.querySelector('[data-nav-menu]');
+      const toggle = dropdown.querySelector('[data-nav-toggle]');
+      
+      if (!menu) {
+        console.log('No menu found for dropdown');
+        return;
+      }
+      
+      console.log('Setting up dropdown:', dropdown.dataset.navDropdown);
+      
+      // Fix overflow on parent
+      dropdown.style.overflow = 'visible';
+      
+      // Remove hidden class and set initial state
+      menu.classList.remove('hidden');
+      menu.style.display = 'none';
+      
+      // Show on hover
+      dropdown.addEventListener('mouseenter', function() {
+        // Fix parent overflow
+        dropdown.style.overflow = 'visible';
+        
+        // Remove all hiding classes and styles
+        menu.classList.remove('hidden', 'invisible', 'opacity-0');
+        menu.style.display = 'block';
+        menu.style.visibility = 'visible';
+        menu.style.opacity = '1';
+        menu.style.zIndex = '99999';
+        menu.style.position = 'absolute';
+        menu.style.backgroundColor = 'white';
+      });
+      
+      // Hide on mouse leave
+      dropdown.addEventListener('mouseleave', function() {
+        menu.style.display = 'none';
+      });
+      
+      // Also handle click
+      if (toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          if (menu.style.display === 'none' || menu.style.display === '') {
+            // Hide other menus
+            navDropdowns.forEach(other => {
+              if (other !== dropdown) {
+                const otherMenu = other.querySelector('[data-nav-menu]');
+                if (otherMenu) otherMenu.style.display = 'none';
+              }
+            });
+            menu.style.display = 'block';
+          } else {
+            menu.style.display = 'none';
+          }
+        });
+      }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('[data-nav-dropdown]')) {
+        navDropdowns.forEach(dropdown => {
+          const menu = dropdown.querySelector('[data-nav-menu]');
+          if (menu) menu.style.display = 'none';
+        });
+      }
+    });
+  });
+</script>
+
 {% stylesheet %}
   /* Use Tailwind classes for most styling, keeping minimal custom CSS */
   header-dropdowns {
@@ -289,15 +425,7 @@
     /* Center column by default */
   }
   
-  /* Navigation dropdown hover states */
-  [data-nav-dropdown]:hover [data-nav-menu] {
-    display: block !important;
-  }
-  
-  /* Active state for click-opened dropdowns */
-  [data-nav-dropdown].nav-open [data-nav-menu] {
-    display: block !important;
-  }
+  /* Navigation dropdown hover states are handled by Tailwind classes */
   
   /* Ensure dropdowns are above other content */
   [data-nav-menu] {
@@ -312,6 +440,23 @@
   /* Ensure dropdowns are properly positioned */
   [data-nav-dropdown] {
     position: relative !important;
+  }
+  
+  /* Fix overflow issues on parent containers */
+  header {
+    overflow: visible !important;
+  }
+  
+  header .max-w-7xl {
+    overflow: visible !important;
+  }
+  
+  .header__menu {
+    overflow: visible !important;
+  }
+  
+  header-dropdowns {
+    overflow: visible !important;
   }
   
   /* Ensure dropdowns are hidden when header is scrolled */
@@ -340,6 +485,24 @@
   [data-dropdown].active [data-dropdown-arrow] {
     transform: rotate(180deg);
   }
+  
+  /* Mega Menu Styling */
+  [data-mega-menu] {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .mega-menu-link.active {
+    background-color: white;
+    color: #0066cc;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -366,6 +529,13 @@
       "id": "menu",
       "label": "t:labels.menu",
       "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mega_menu",
+      "label": "Enable Mega Menu for Shop",
+      "default": true,
+      "info": "Show mega menu with products for the Shop dropdown"
     },
     {
       "type": "url",
@@ -405,9 +575,18 @@
 {% endschema %}
 
 {% javascript %}
+  console.log('Header JavaScript loading...');
+  
   class HeaderDropdowns extends HTMLElement {
     constructor() {
       super();
+      console.log('HeaderDropdowns constructor called');
+    }
+    
+    connectedCallback() {
+      console.log('HeaderDropdowns connected to DOM');
+      
+      // Initialize all elements
       this.dropdowns = this.querySelectorAll('[data-dropdown]');
       this.navDropdowns = this.querySelectorAll('[data-nav-dropdown]');
       this.mobileMenuToggle = this.querySelector('[data-mobile-menu-toggle]');
@@ -426,7 +605,10 @@
       this.headerHeight = this.offsetHeight;
       this.isHeaderHidden = false;
       
-      this.init();
+      console.log('Found nav dropdowns:', this.navDropdowns.length);
+      
+      // Initialize after a small delay to ensure DOM is ready
+      setTimeout(() => this.init(), 100);
     }
     
     init() {
@@ -437,6 +619,9 @@
       if (this.scrollBehavior === 'show_on_scroll_up') {
         this.initScrollBehavior();
       }
+      
+      // Initialize mega menu
+      this.initMegaMenu();
       
       // Initialize top bar dropdowns
       console.log('Initializing top bar dropdowns:', this.dropdowns.length);
@@ -468,67 +653,48 @@
         });
       });
       
-      // Initialize navigation dropdowns (all menu items with submenus)
-      console.log('Initializing navigation dropdowns');
-      this.navDropdowns.forEach((dropdown, index) => {
+      // Navigation dropdowns - add both hover and click support
+      this.navDropdowns.forEach((dropdown) => {
         const toggle = dropdown.querySelector('[data-nav-toggle]');
         const menu = dropdown.querySelector('[data-nav-menu]');
-        const dropdownName = dropdown.dataset.navDropdown || `dropdown-${index}`;
         
-        console.log(`Processing dropdown "${dropdownName}":`, {
-          hasToggle: !!toggle,
-          hasMenu: !!menu,
-          dropdown: dropdown
+        if (!toggle || !menu) return;
+        
+        // Remove hidden class if it exists
+        menu.classList.remove('hidden');
+        
+        // Show menu on hover
+        dropdown.addEventListener('mouseenter', () => {
+          menu.style.display = 'block';
         });
         
-        if (toggle && menu) {
-          console.log(`Setting up events for "${dropdownName}"`);
+        // Hide menu on mouse leave
+        dropdown.addEventListener('mouseleave', () => {
+          menu.style.display = 'none';
+        });
+        
+        // Toggle on click as fallback
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
           
-          // Toggle on click for menu buttons
-          toggle.addEventListener('click', (e) => {
-            console.log(`Click on "${dropdownName}" toggle`);
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Close other nav dropdowns
-            this.navDropdowns.forEach(otherDropdown => {
-              if (otherDropdown !== dropdown) {
-                otherDropdown.classList.remove('nav-open');
-                const otherMenu = otherDropdown.querySelector('[data-nav-menu]');
-                if (otherMenu) {
-                  console.log(`Closing dropdown: ${otherDropdown.dataset.navDropdown}`);
-                  otherMenu.classList.add('hidden');
-                }
+          // Toggle menu visibility
+          if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+          } else {
+            // Hide other menus
+            this.navDropdowns.forEach(other => {
+              if (other !== dropdown) {
+                const otherMenu = other.querySelector('[data-nav-menu]');
+                if (otherMenu) otherMenu.style.display = 'none';
               }
             });
-            
-            // Toggle current dropdown using a class on the parent
-            dropdown.classList.toggle('nav-open');
-            const isOpen = dropdown.classList.contains('nav-open');
-            console.log(`Dropdown "${dropdownName}" is now: ${isOpen ? 'OPEN' : 'CLOSED'}`);
-            
-            if (isOpen) {
-              menu.classList.remove('hidden');
-              console.log(`Menu for "${dropdownName}" should be visible now`);
-              // Debug: Check computed styles
-              const computedStyle = window.getComputedStyle(menu);
-              console.log(`Menu display: ${computedStyle.display}, visibility: ${computedStyle.visibility}, z-index: ${computedStyle.zIndex}`);
-              console.log(`Menu position:`, menu.getBoundingClientRect());
-            } else {
-              menu.classList.add('hidden');
-            }
-          });
-          
-          // Close when clicking outside
-          document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
-              dropdown.classList.remove('nav-open');
-              menu.classList.add('hidden');
-            }
-          });
-        } else {
-          console.log(`WARNING: Dropdown "${dropdownName}" missing toggle or menu`);
-        }
+            menu.style.display = 'block';
+          }
+        });
+        
+        // Initially hide the menu
+        menu.style.display = 'none';
       });
       
       // Initialize mobile menu
@@ -582,6 +748,76 @@
     
     closeDropdown(dropdown) {
       dropdown.classList.remove('active');
+    }
+    
+    initMegaMenu() {
+      const megaMenu = this.querySelector('[data-mega-menu]');
+      if (!megaMenu) return;
+      
+      const megaMenuLinks = megaMenu.querySelectorAll('.mega-menu-link');
+      const productsGrid = megaMenu.querySelector('#mega-menu-products-grid');
+      
+      if (!megaMenuLinks.length || !productsGrid) return;
+      
+      megaMenuLinks.forEach(link => {
+        link.addEventListener('mouseenter', async (e) => {
+          e.preventDefault();
+          
+          // Remove active class from all links
+          megaMenuLinks.forEach(l => l.classList.remove('active'));
+          // Add active class to current link
+          link.classList.add('active');
+          
+          // Get collection handle
+          const collectionHandle = link.dataset.collectionHandle;
+          if (!collectionHandle) return;
+          
+          // Show loading state
+          productsGrid.innerHTML = '<div class="col-span-3 text-center py-8 text-gray-500">Loading products...</div>';
+          
+          try {
+            // Fetch products from collection
+            const response = await fetch(`/collections/${collectionHandle}/products.json?limit=6`);
+            const data = await response.json();
+            
+            // Clear grid
+            productsGrid.innerHTML = '';
+            
+            // Add products to grid
+            if (data.products && data.products.length > 0) {
+              data.products.forEach(product => {
+                const productHtml = `
+                  <div class="mega-menu-product">
+                    <a href="/products/${product.handle}" class="block group">
+                      ${product.images && product.images[0] ? `
+                        <div class="aspect-square overflow-hidden rounded-lg mb-2 bg-gray-100">
+                          <img src="${product.images[0].src}&width=200" 
+                               alt="${product.title}" 
+                               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                               loading="lazy">
+                        </div>
+                      ` : ''}
+                      <h4 class="text-sm font-medium text-gray-800 group-hover:text-bt-blue line-clamp-2">${product.title}</h4>
+                      <p class="text-sm text-gray-600 mt-1">$${(product.variants[0].price / 100).toFixed(2)}</p>
+                    </a>
+                  </div>
+                `;
+                productsGrid.insertAdjacentHTML('beforeend', productHtml);
+              });
+            } else {
+              productsGrid.innerHTML = '<div class="col-span-3 text-center py-8 text-gray-500">No products found in this category</div>';
+            }
+          } catch (error) {
+            console.error('Error loading products:', error);
+            productsGrid.innerHTML = '<div class="col-span-3 text-center py-8 text-gray-500">Error loading products</div>';
+          }
+        });
+      });
+      
+      // Set first category as active by default
+      if (megaMenuLinks.length > 0) {
+        megaMenuLinks[0].dispatchEvent(new MouseEvent('mouseenter'));
+      }
     }
     
     openMobileMenu() {

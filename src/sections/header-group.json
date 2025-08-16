@@ -17,6 +17,7 @@
         "logo": "shopify://shop_images/biotrust-age-well-nutrition-logo-2.png",
         "logo_width": 300,
         "menu": "main-menu-v2",
+        "enable_mega_menu": false,
         "chat_link": "",
         "help_center_link": "",
         "header_background_image": "shopify://shop_images/bg_a71a657f-2566-4a98-a55e-e76b5555861c.png",

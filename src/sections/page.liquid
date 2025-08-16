@@ -5,9 +5,165 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/page
 {% endcomment %}
 
-<h1>{{ page.title }}</h1>
+<section class="page-section" id="{{ section.id }}">
+  <!-- Page Header -->
+  <div class="page-header bg-[#005eb8] text-white py-6">
+    <div class="md:container md:mx-auto px-4 md:px-4">
+      <h1 class="text-3xl lg:text-4xl font-bold">{{ page.title }}</h1>
+    </div>
+  </div>
 
-{{ page.content }}
+  <!-- Page Content -->
+  <div class="max-w-5xl mx-auto px-5 py-8 lg:py-12">
+    <div class="page-content prose prose-lg max-w-none">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .page-section {
+    background-color: #ffffff;
+    min-height: 60vh;
+  }
+
+  .page-content {
+    color: #333333;
+    line-height: 1.7;
+  }
+
+  .page-content h1,
+  .page-content h2,
+  .page-content h3,
+  .page-content h4,
+  .page-content h5,
+  .page-content h6 {
+    color: #0A3B60;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .page-content h1 {
+    font-size: 2rem;
+  }
+
+  .page-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .page-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .page-content h4 {
+    font-size: 1.25rem;
+  }
+
+  .page-content p {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-content ul,
+  .page-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 2rem;
+  }
+
+  .page-content ul {
+    list-style-type: disc;
+  }
+
+  .page-content ol {
+    list-style-type: decimal;
+  }
+
+  .page-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .page-content a {
+    color: #0066cc;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+
+  .page-content a:hover {
+    color: #0052a3;
+  }
+
+  .page-content strong,
+  .page-content b {
+    font-weight: 700;
+    color: #0A3B60;
+  }
+
+  .page-content em,
+  .page-content i {
+    font-style: italic;
+  }
+
+  .page-content blockquote {
+    border-left: 4px solid #0066cc;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #555555;
+  }
+
+  .page-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .page-content table th,
+  .page-content table td {
+    border: 1px solid #e5e5e5;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .page-content table th {
+    background-color: #f5f5f5;
+    font-weight: 700;
+    color: #0A3B60;
+  }
+
+  .page-content table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  .page-content hr {
+    border: none;
+    border-top: 1px solid #e5e5e5;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .page-content {
+      font-size: 1rem;
+    }
+
+    .page-content h1 {
+      font-size: 1.75rem;
+    }
+
+    .page-content h2 {
+      font-size: 1.5rem;
+    }
+
+    .page-content h3 {
+      font-size: 1.25rem;
+    }
+
+    .page-content h4 {
+      font-size: 1.125rem;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
